@@ -1,0 +1,30 @@
+Changes For One Solution CMS 2.2.1 - Sunday, May 5, 2013
+Added:
+	1). Added Testcases - AllTests.php - This will execute all system tests.
+	2). Added Testcases - Files.ini - This is the file listing all test cases to execute.
+	3). Added Testcases/Tier2-DataAccessLayer - AllTests.php - This will execute all Tier 2 Data Access Layer Tests.
+	4). Added Testcases/Tier2-DataAccessLayer - Files.ini - This is the file listings for all test cases in Tier 2 Data Access Layer.
+	5). Added Testcases/Tier2-DataAccessLayer - MethodsExistsTest.php - This test will test if all the methods exist in Tier 2 Data Acces Layer.
+	6). Added Testcases/Tier2-DataAccessLayer - TierCreationTest.php - This test will test if Tier 2 Data Access Layer gets created. 
+	7). Added Changes.txt - This list all changes that have been made to 2.2 release cycle.
+	8). Added Copyright.txt - This is the official copyright notice that goes at the top of every system file.
+	9). Added License.txt - This is the GPL license.
+	10). Added Readme.txt - This is a listing of what this version is about.
+	
+Updated (Fixed):
+	1). SimpleTest - The last version was corrupted. It has been re-added to the system.
+
+Removed:
+	1). Nothing Removed.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Changes For One Solution CMS 2.2.1 - Sunday, May 5, 2013 06:04:34 PM
+Added:
+	1). One Solution CMS 2.1 Bare Bones.
+	
+Updated (Fixed):
+	1). Nothing Updated.
+
+Removed:
+	1). Nothing Removed.
