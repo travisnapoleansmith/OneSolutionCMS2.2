@@ -56,14 +56,14 @@
 		 * @access public
 		*/	
 		public function Tier2DataAccessLayerAllTests() {
-			$this->FILES = parse_ini_file('Files.ini', true);
+			$this->FILES = parse_ini_file(dirname(__FILE__) . '/Files.ini', true);
 			
 			$this->TestSuite('Tier 2 - Data Access Layer - All Tests');
 			if ($this->FILES != NULL) {
 				foreach ($this->FILES as $Module => $FileName) {
 					$File = $FileName['FILE'];
 					if ($File != NULL) {
-						$this->addFile($File);
+						$this->addFile(dirname(__FILE__) . $File);
 					}
 				}
 			}

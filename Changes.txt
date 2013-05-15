@@ -1,4 +1,16 @@
-Changes For One Solution CMS 2.2.1 - Sunday, May 5, 2013
+Changes For One Solution CMS 2.2.3 - Tuesday, May 14, 2013
+Added:
+	1). Added Testcases/Tier2-DataAccessLayer - SetDatabaseAllTest.php - This file is designed to test Tier 2's setDatabaseAll method.
+	
+Updated (Fixed):
+	1). Updated all tests so they will run as a test suite.
+
+Removed:
+	1). Nothing Removed.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Changes For One Solution CMS 2.2.2 - Sunday, May 5, 2013 - 10:10:34 PM
 Added:
 	1). Added Testcases - AllTests.php - This will execute all system tests.
 	2). Added Testcases - Files.ini - This is the file listing all test cases to execute.

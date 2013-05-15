@@ -65,7 +65,7 @@
 				foreach ($this->FILES as $Module => $FileName) {
 					$File = $FileName['FILE'];
 					if ($File != NULL) {
-						$this->addFile($File);
+						$this->addFile(dirname(__FILE__) . $File);
 					}
 				}
 			}

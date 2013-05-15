@@ -107,10 +107,14 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @access public
 	 */
 	public function setDatabaseAll ($hostname, $user, $password, $databasename) {
-		$this->Hostname = $hostname;
-		$this->User = $user;
-		$this->Password = $password;
-		$this->DatabaseName = $databasename;
+		if ($hostname != NULL & $user != NULL & $password != NULL & $databasename != NULL) {
+			$this->Hostname = $hostname;
+			$this->User = $user;
+			$this->Password = $password;
+			$this->DatabaseName = $databasename;
+		} else {
+			return FALSE;
+		}
 	}
 
 	/**
@@ -145,6 +149,7 @@ class DataAccessLayer extends LayerModulesAbstract
 			$this->DatabaseTable[$key]->Connect();
 		} else {
 			array_push($this->ErrorMessage,'Connect: Key Cannot Be Null!');
+			return FALSE;
 		}
 	}
 
@@ -178,6 +183,7 @@ class DataAccessLayer extends LayerModulesAbstract
 			$this->DatabaseTable[$key]->Disconnect();
 		} else {
 			array_push($this->ErrorMessage,'Disconnect: Key Cannot Be Null!');
+			return FALSE;
 		}
 	}
 
@@ -249,18 +255,23 @@ class DataAccessLayer extends LayerModulesAbstract
 							}
 						} else {
 							array_push($this->ErrorMessage,"pass: $function from $databasetable - MySqlConnect Member Does Not Exist!");
+							return FALSE;
 						}
 					} else {
 						array_push($this->ErrorMessage,'pass: MySqlConnect Member Cannot Be An Array!');
+						return FALSE;
 					}
 				} else {
 					array_push($this->ErrorMessage,'pass: MySqlConnect Member Cannot Be Null!');
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'pass: Function Arguments Must Be An Array!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'pass: Function Arguments Cannot Be Null!');
+			return FALSE;
 		}
 	}
 
@@ -390,6 +401,7 @@ class DataAccessLayer extends LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'buildModules: Module Tablename is not set!');
+			return FALSE;
 		}
 	}
 
