@@ -45,9 +45,9 @@
 	require_once "$HOME/Modules/Tier2DataAccessLayer/Core/MySqlConnect/ClassMySqlConnect.php";
 	
 	/**
-	 * Tier 2 Set Database All Test
+	 * Tier 2 Connect Test All Test
 	 *
-	 * This file is designed to test Tier 2's setDatabaseAll method.
+	 * This file is designed to test Tier 2's ConnectAll method.
 	 *
 	 * @author Travis Napolean Smith
 	 * @copyright Copyright (c) 1999 - 2013 One Solution CMS
@@ -56,7 +56,7 @@
 	 * @version PHP - 2.2.1
 	 * @version C++ - Unknown
  	*/
-	class Tier2SetDatabaseAllTest extends UnitTestCase {
+	class Tier2ConnectTest extends UnitTestCase {
 		
 		/**
 		 * Tier2Database: DataAccessTier object for Tier 2
@@ -66,102 +66,162 @@
 		private $Tier2Database;
 		
 		/**
-		 * Create an instance of Tier2SetDatabaseAllTest.
+		 * Create an instance of Tier2ConnectAllTest.
 		 *
 		 * @access public
 		*/	
-		public function Tier2SetDatabaseAllTest () {
+		public function Tier2ConnectTest () {
 			$this->Tier2Database = new DataAccessLayer();
 		}
 		
+		
 		/**
-		 * testSetDatabaseAllNull
-		 * Tests if setDatabaseAll methods will accept Hostame, User, Password and DatabaseName all as NULL. 
+		 * testConnectAllNull
+		 * Tests if Connect methods will accept Hostame, User, Password and DatabaseName all as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllNull() {
+		public function testConnectAllNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, NULL, NULL, NULL);
 			$this->assertFalse($Return);
 			
+			$this->Tier2Database->setDatabaseTable(NULL);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect(NULL);
+			$this->assertFalse($Return);
 		}
 		
 		/**
-		 * testSetDatabaseAllHostnameNull
-		 * Tests if setDatabaseAll methods will accept Hostame as NULL. 
+		 * testConnectHostnameNull
+		 * Tests if Connect methods will accept Hostame as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllHostnameNull() {
+		public function testConnectHostnameNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, 'TEST', 'TEST', 'TEST');
 			$this->assertFalse($Return);
 			
+			$this->Tier2Database->setDatabaseTable('TEST');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect('TEST');
+			$this->assertFalse($Return);
+			
 		}
 		
 		/**
-		 * testSetDatabaseAllUserNull
-		 * Tests if setDatabaseAll methods will accept User as NULL. 
+		 * testConnectUserNull
+		 * Tests if Connect methods will accept User as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllUserNull() {
+		public function testConnectUserNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
 			$Return = $this->Tier2Database->setDatabaseAll('TEST', NULL, 'TEST', 'TEST');
 			$this->assertFalse($Return);
 			
+			$this->Tier2Database->setDatabaseTable('TEST');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect('TEST');
+			$this->assertFalse($Return);
+			
 		}
 		
 		/**
-		 * testSetDatabaseAllPasswordNull
-		 * Tests if setDatabaseAll methods will accept Password as NULL. 
+		 * testConnectPasswordNull
+		 * Tests if Connect methods will accept Password as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllPasswordNull() {
+		public function testConnectPasswordNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
 			$Return = $this->Tier2Database->setDatabaseAll('TEST', 'TEST', NULL, 'TEST');
 			$this->assertFalse($Return);
 			
+			$this->Tier2Database->setDatabaseTable('TEST');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect('TEST');
+			$this->assertFalse($Return);
+			
 		}
 		
 		/**
-		 * testSetDatabaseAllDatabaseNameNull
-		 * Tests if setDatabaseAll methods will accept DatabaseName as NULL. 
+		 * testConnectDatabaseNameNull
+		 * Tests if Connect methods will accept DatabaseName as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllDatabaseNameNull() {
+		public function testConnectDatabaseNameNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
 			$Return = $this->Tier2Database->setDatabaseAll('TEST', 'TEST', 'TEST', NULL);
 			$this->assertFalse($Return);
 			
+			$this->Tier2Database->setDatabaseTable('TEST');
+			
+			//$this->expectException('Key Doesn\'t Exist!');
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect('TEST');
+			$this->assertFalse($Return);
+			
 		}
 		
 		/**
-		 * testSetDatabaseAllDatabaseNameNull
-		 * Tests if setDatabaseAll methods will accept all data correctly. 
+		 * testConnectDatabaseTableInvalidName
+		 * Tests if Connect methods will accept Database Table as an invalid name. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllCorrectData() {
+		public function testConnectDatabaseTableInvalidName() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = $this->Tier2Database->setDatabaseAll('TEST', 'TEST', 'TEST', NULL);
+			$this->assertFalse($Return);
+			
+			$this->Tier2Database->setDatabaseTable('TEST');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect('INVALID');
+			$this->assertIsA($Return, 'Exception');
+			
+		}
+		
+		/**
+		 * testConnectCorrectData
+		 * Tests if Connect methods will accept all data correctly. 
+		 *
+		 * @access public
+		*/
+		public function testConnectCorrectData() {
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
 			$Return = $this->Tier2Database->setDatabaseAll('TEST', 'TEST', 'TEST', 'TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
+			$this->Tier2Database->setDatabaseTable('TEST');
+			
+			$Return = NULL;
+			$Return = $this->Tier2Database->Connect('TEST');
+			
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
 		}
+		
 	}
 ?>

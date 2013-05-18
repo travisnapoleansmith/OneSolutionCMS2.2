@@ -53,7 +53,7 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 		array_push($GLOBALS['ErrorMessage']['MySqlConnect'], $Hold);
 		$this->ErrorMessage = &$GLOBALS['ErrorMessage']['MySqlConnect'][key($GLOBALS['ErrorMessage']['MySqlConnect'])];
 	}
-
+	
 	/**
 	 * Connect
 	 * Connects to current database.
@@ -67,15 +67,34 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 			$this->Password = $GLOBALS['credentaillogonarray'][2];
 			$this->DatabaseName = $GLOBALS['credentaillogonarray'][3];
 		}
-
-		if (!($this->Link = mysql_connect($this->HostName, $this->User, $this->Password))) {
-			array_push($this->ErrorMessage,'Connect: Could not connect to server');
+		
+		if ($this->HostName == NULL | $this->User == NULL | $this->Password == NULL | $this->DatabaseName == NULL) {
+			throw new Exception('HostName, User, Password, and DatabaseName none of them can be NULL!');
+			return FALSE;
 		}
-
-		if ($this->Link) {
-			if (!mysql_select_db($this->DatabaseName, $this->Link)) {
-				array_push($this->ErrorMessage,'Connect: Could not select database');
+		
+		try {
+			$this->Link = @mysql_connect($this->HostName, $this->User, $this->Password);
+			if (!$this->Link) {
+				array_push($this->ErrorMessage,'Connect: Could not connect to server');
+				return new Exception('Could not connect to server');
 			}
+		} catch (Exception $E) {
+			throw $E;
+			return FALSE;
+		}
+		
+		try {
+			if ($this->Link) {
+				if (!mysql_select_db($this->DatabaseName, $this->Link)) {
+					array_push($this->ErrorMessage,'Connect: Could not select database');
+					throw new Exception('Could not select database');
+					return FALSE;
+				}
+			}
+		} catch (Exception $E) {
+			throw $E;
+			return FALSE;
 		}
 	}
 
