@@ -22,13 +22,12 @@
 	* @version    2.2.1, 2013-05-05
 	*************************************************************************************
 	*/
-	
 	$HOME = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
 	
-	/* Auto run for SimpleTest
-	*/
+	// Auto run for SimpleTest
 	require_once("$HOME/Testcases/SimpleTest/simpletest/autorun.php");
 	
+	require_once("$HOME/Testcases/settings.php");
 	/**
 	 * All Tier 2 Data Access Layer Test Cases
 	 *

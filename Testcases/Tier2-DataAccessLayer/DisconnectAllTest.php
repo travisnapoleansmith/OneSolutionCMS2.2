@@ -45,9 +45,9 @@
 	require_once "$HOME/Modules/Tier2DataAccessLayer/Core/MySqlConnect/ClassMySqlConnect.php";
 	
 	/**
-	 * Tier 2 Connect Test
+	 * Tier 2 Disconnect All Test
 	 *
-	 * This file is designed to test Tier 2's Connect method.
+	 * This file is designed to test Tier 2's DisconnectAll method.
 	 *
 	 * @author Travis Napolean Smith
 	 * @copyright Copyright (c) 1999 - 2013 One Solution CMS
@@ -56,14 +56,13 @@
 	 * @version PHP - 2.2.1
 	 * @version C++ - Unknown
  	*/
-	class Tier2ConnectTest extends UnitTestCase {
+	class Tier2DisconnectAllTest extends UnitTestCase {
 		
 		/**
 		 * Tier2Database: DataAccessTier object for Tier 2
 		 *
 		 * @var object
 		 */
-		 
 		private $Tier2Database;
 		
 		/**
@@ -95,11 +94,11 @@
 		private $DatabaseName;
 		
 		/**
-		 * Create an instance of Tier2ConnectAllTest.
+		 * Create an instance of Tier2DisconnectAllTest.
 		 *
 		 * @access public
 		*/	
-		public function Tier2ConnectTest () {
+		public function Tier2DisconnectAllTest () {
 			// Settings.ini File
 			$credentaillogonarray = $GLOBALS['credentaillogonarray'];
 			$this->ServerName = $credentaillogonarray[0];
@@ -112,12 +111,12 @@
 		
 		
 		/**
-		 * testConnectAllNull
-		 * Tests if Connect methods will accept Hostame, User, Password and DatabaseName all as NULL. 
+		 * testDisconnectAllAllNull
+		 * Tests if DisconnectAll methods will accept Hostame, User, Password and DatabaseName all as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testConnectAllNull() {
+		public function testDisconnectAllAllNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
@@ -127,17 +126,21 @@
 			$this->Tier2Database->setDatabaseTable(NULL);
 			
 			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect(NULL);
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 		}
 		
 		/**
-		 * testConnectHostnameNull
-		 * Tests if Connect methods will accept Hostame as NULL. 
+		 * testDisconnectAllHostnameNull
+		 * Tests if DisconnectAll methods will accept Hostame as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testConnectHostnameNull() {
+		public function testDisconnectAllHostnameNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
@@ -147,18 +150,22 @@
 			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
 			
 			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testConnectUserNull
-		 * Tests if Connect methods will accept User as NULL. 
+		 * testDisconnectAllUserNull
+		 * Tests if DisconnectAll methods will accept User as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testConnectUserNull() {
+		public function testDisconnectAllUserNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
@@ -168,18 +175,22 @@
 			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
 			
 			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testConnectPasswordNull
-		 * Tests if Connect methods will accept Password as NULL. 
+		 * testDisconnectAllPasswordNull
+		 * Tests if DisconnectAll methods will accept Password as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testConnectPasswordNull() {
+		public function testDisconnectAllPasswordNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
@@ -189,40 +200,22 @@
 			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
 			
 			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testConnectDatabaseNameNull
-		 * Tests if Connect methods will accept DatabaseName as NULL. 
+		 * testDisconnectAllDatabaseNameNull
+		 * Tests if DisconnectAll methods will accept DatabaseName as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testConnectDatabaseNameNull() {
-			$Return = TRUE;
-			$this->assertNotNull($this->Tier2Database);
-			
-			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
-			$this->assertFalse($Return);
-			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
-			
-			//$this->expectException('Key Doesn\'t Exist!');
-			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
-			$this->assertFalse($Return);
-			
-		}
-		
-		/**
-		 * testConnectDatabaseTableInvalidName
-		 * Tests if Connect methods will accept Database Table as an invalid name. 
-		 *
-		 * @access public
-		*/
-		public function testConnectDatabaseTableInvalidName() {
+		public function testDisconnectAllDatabaseNameNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
@@ -232,18 +225,22 @@
 			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
 			
 			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect('INVALID');
-			$this->assertIsA($Return, 'Exception');
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testConnectCorrectData
-		 * Tests if Connect methods will accept all data correctly. 
+		 * testDisconnectAllCorrectData
+		 * Tests if DisconnectAll methods will accept all data correctly. 
 		 *
 		 * @access public
 		*/
-		public function testConnectCorrectData() {
+		public function testDisconnectAllCorrectData() {
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
@@ -253,7 +250,12 @@
 			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
 			
 			$Return = NULL;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
+			$Return = $this->Tier2Database->ConnectAll();
+			
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = NULL;
+			$Return = $this->Tier2Database->DisconnectAll();
 			
 			$this->assertIsA($Return, 'DataAccessLayer');
 			

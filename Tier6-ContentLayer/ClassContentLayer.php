@@ -497,7 +497,6 @@ class ContentLayer extends LayerModulesAbstract
 			} else {
 				$ContentLayer = &$this->ContentLayerThemeGlobalLayerContent;
 			}
-
 			foreach ($ContentLayer as $Key => $ContentLayerDatabase) {
 				$PrintPreviewFlag = $ContentLayerDatabase['PrintPreview'];
 				if ($this->PrintPreview == FALSE || $PrintPreviewFlag == 'true') {
@@ -790,7 +789,7 @@ class ContentLayer extends LayerModulesAbstract
 		$StartNumber2 = NULL;
 		$Seperator2 = NULL;
 		$SecondStartNumber2 = NULL;
-
+		$PostName3 = NULL;
 		if ($functionarguments[3]) {
 			$Seperator = $functionarguments[3];
 		}
@@ -833,7 +832,13 @@ class ContentLayer extends LayerModulesAbstract
 				array_push($this->ErrorMessage,'MultiPostCheck: SecondStartNumber2 cannot be NULL!');
 			}
 		}
-
+		if ($functionarguments[9]) {
+			$PostName3 = $functionarguments[9];
+			if (is_null($PostName9)) {
+				array_push($this->ErrorMessage,'MultiPostCheck: PostName3 cannot be NULL!');
+			}
+		}
+		
 		if (is_int($StartNumber)) {
 			if (!is_null($StartNumber)) {
 				if (!is_null($PostName)) {
@@ -940,7 +945,7 @@ class ContentLayer extends LayerModulesAbstract
 										$temp .= $k;
 										$temp .= $Seperator2;
 										$temp .= $l;
-
+	
 										while (($_POST[$temp])) {
 											while (($_POST[$temp])) {
 												while (($_POST[$temp])) {
@@ -1006,7 +1011,48 @@ class ContentLayer extends LayerModulesAbstract
 											if (is_null($Seperator) & !is_null($SecondStartNumber)) {
 												array_push($this->ErrorMessage,'MultiPostCheck: SecondStartNumber is set but Seperator cannot be NULL!');
 											} else if (!is_null($Seperator) & is_null($SecondStartNumber)) {
-												array_push($this->ErrorMessage,'MultiPostCheck: Seperator is set but SecondStartNumber cannot be NULL!');
+												if (!is_null($PostName3)) {
+													$i = $StartNumber;
+													$j = $StartNumber2;
+													$temp = $PostName;
+													$temp .= $i;
+													$temp .= $Seperator;
+													$temp .= $PostName2;
+													$temp .= $j;
+													$temp .= $Seperator2;
+													$temp .= $PostName3;
+													
+													while (($_POST[$temp])) {
+														while (($_POST[$temp])) {
+															$hold = $this->PostCheck ($temp, 'FilteredInput', $Input);
+															if (!is_null($hold)) {
+																$Input = $hold;
+															}
+															
+															$j++;
+															$temp = $PostName;
+															$temp .= $i;
+															$temp .= $Seperator;
+															$temp .= $PostName2;
+															$temp .= $j;
+															$temp .= $Seperator2;
+															$temp .= $PostName3;
+														}
+														
+														$i++;
+														$j = $StartNumber2;
+														
+														$temp = $PostName;
+														$temp .= $i;
+														$temp .= $Seperator;
+														$temp .= $PostName2;
+														$temp .= $j;
+														$temp .= $Seperator2;
+														$temp .= $PostName3;
+													}
+												} else {
+													array_push($this->ErrorMessage,'MultiPostCheck: Seperator is set but SecondStartNumber cannot be NULL!');
+												}
 											} else if (!is_null($Seperator) & !is_null($SecondStartNumber)){
 												$i = $StartNumber;
 												$j = $SecondStartNumber;
@@ -1190,75 +1236,101 @@ class ContentLayer extends LayerModulesAbstract
 		$PassArray['ObjectType'] = 'LogonMonitor';
 		$PassArray['ObjectTypeName'] = 'logonmonitor';
 		
-		$loginidnumber = Array();
-		$loginidnumber['PageID'] = $_POST['Login'];
-		if ($_GET['PageID']){
-			$loginidnumber['PageID'] = $_GET['PageID'];
-		}
-
-		$DestinationPageID = NULL;
-		if ($_GET['DestinationPageID']) {
-			$DestinationPageID = $_GET['DestinationPageID'];
-		}
-
-		$AuthenticationPage = $this->LayerModuleSetting['ContentLayer']['ContentLayer']['Authentication']['SettingAttribute'];
-
-		$this->LayerModule->setPageID($loginidnumber['PageID']);
-		$hold = $this->LayerModule->pass('FormValidation', 'FORM', $_POST);
-		if ($hold['Error']) {
-			$_SESSION['POST'] = $hold;
-			$EventData['UserName'] = $_POST['UserName'];
-			$EventData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
-			$EventData['Timestamp'] = $_SERVER['REQUEST_TIME'];
-			$EventData['LogonType'] = 'BadCaptcha';
-			$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
-			
-			header("Location: $AuthenticationPage&SessionID=$sessionname");
-			
-		} else {
-			$hold = NULL;
-			$hold = $this->LayerModule->pass('UserAccounts', 'AUTHENTICATE', $_POST);
+		$SpamData = array();
+		$SpamData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
+		$SpamPassArray = array();
+		$SpamPassArray['Execute'] = TRUE;
+		$SpamPassArray['Method'] = 'findBannedIPAddress';
+		$SpamPassArray['ObjectType'] = 'SpamFilter';
+		$SpamPassArray['ObjectTypeName'] = 'spamfilter';
+		
+		$Return = $this->LayerModule->pass('BannedIPAddress', 'PROTECT', $SpamData, $SpamPassArray);
+		
+		if ($Return === 'TRUE') {
+			$loginidnumber = Array();
+			$loginidnumber['PageID'] = $_POST['Login'];
+			if ($_GET['PageID']){
+				$loginidnumber['PageID'] = $_GET['PageID'];
+			}
+	
+			$DestinationPageID = NULL;
+			if ($_GET['DestinationPageID']) {
+				$DestinationPageID = $_GET['DestinationPageID'];
+			}
+	
+			$AuthenticationPage = $this->LayerModuleSetting['ContentLayer']['ContentLayer']['Authentication']['SettingAttribute'];
+	
+			$this->LayerModule->setPageID($loginidnumber['PageID']);
+			$hold = $this->LayerModule->pass('FormValidation', 'FORM', $_POST);
 			if ($hold['Error']) {
+				$_SESSION['POST'] = $hold;
 				$EventData['UserName'] = $_POST['UserName'];
 				$EventData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
 				$EventData['Timestamp'] = $_SERVER['REQUEST_TIME'];
-				$EventData['LogonType'] = 'BadLogonAttempt';
+				$EventData['LogonType'] = 'BadCaptcha';
 				$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
 				
-				$_SESSION['POST'] = $hold;
 				header("Location: $AuthenticationPage&SessionID=$sessionname");
+				
 			} else {
-				$passarray = array();
-				$passarray['getUserInfo'] = array(array());
-				$hold = $this->LayerModule->pass('UserAccounts', 'AUTHENTICATE', $_POST, $passarray);
-				$UserInfo = $hold['getUserInfo']['UserAccounts'][0];
-				unset($UserInfo['Password']);
-				unset($UserInfo['Salt']);
-
-				$username = $_POST['UserName'];
-				setcookie("UserName", $username, NULL, '/');
-				setcookie("LoggedIn", TRUE, time()+3600, '/');
-				setcookie('Administrator', $UserInfo['Administrator'], time()+3600, '/');
-				setcookie('ContentCreator', $UserInfo['ContentCreator'], time()+3600, '/');
-				setcookie('Editor', $UserInfo['Editor'], time()+3600, '/');
-				setcookie('User', $UserInfo['User'], time()+3600, '/');
-				setcookie('Guest', $UserInfo['Guest'], time()+3600, '/');
-				
-				$EventData['UserName'] = $username;
-				$EventData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
-				$EventData['Timestamp'] = $_SERVER['REQUEST_TIME'];
-				$EventData['LogonType'] = 'GoodLogonAttempt';
-				
-				if ($DestinationPageID) {
+				$hold = NULL;
+				$hold = $this->LayerModule->pass('UserAccounts', 'AUTHENTICATE', $_POST);
+				if ($hold['Error']) {
+					$EventData['UserName'] = $_POST['UserName'];
+					$EventData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
+					$EventData['Timestamp'] = $_SERVER['REQUEST_TIME'];
+					$EventData['LogonType'] = 'BadLogonAttempt';
 					$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
-					header("Location: index.php?PageID=$DestinationPageID");
-					exit;
+					
+					$_SESSION['POST'] = $hold;
+					header("Location: $AuthenticationPage&SessionID=$sessionname");
 				} else {
-					$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
-					header("Location: index.php");
-					exit;
+					$passarray = array();
+					$passarray['getUserInfo'] = array(array());
+					$hold = $this->LayerModule->pass('UserAccounts', 'AUTHENTICATE', $_POST, $passarray);
+					$UserInfo = $hold['getUserInfo']['UserAccounts'][0];
+					unset($UserInfo['Password']);
+					unset($UserInfo['Salt']);
+	
+					$username = $_POST['UserName'];
+					setcookie("UserName", $username, NULL, '/');
+					setcookie("LoggedIn", TRUE, time()+3600, '/');
+					setcookie('Administrator', $UserInfo['Administrator'], time()+3600, '/');
+					setcookie('ContentCreator', $UserInfo['ContentCreator'], time()+3600, '/');
+					setcookie('Editor', $UserInfo['Editor'], time()+3600, '/');
+					setcookie('User', $UserInfo['User'], time()+3600, '/');
+					setcookie('Guest', $UserInfo['Guest'], time()+3600, '/');
+					
+					$EventData['UserName'] = $username;
+					$EventData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
+					$EventData['Timestamp'] = $_SERVER['REQUEST_TIME'];
+					$EventData['LogonType'] = 'GoodLogonAttempt';
+					
+					if ($DestinationPageID) {
+						$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
+						header("Location: index.php?PageID=$DestinationPageID");
+						exit;
+					} else {
+						$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
+						header("Location: index.php");
+						exit;
+					}
 				}
 			}
+		
+		} else {
+			$EventData['UserName'] = $_POST['UserName'];
+			$EventData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
+			$EventData['Timestamp'] = $_SERVER['REQUEST_TIME'];
+			$EventData['LogonType'] = 'Spam';
+			$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
+			
+			$_SESSION['POST']['Error']['SPAM'] = 'Your IP Address Has Been Banned From The Accessing Site.';
+			$_SESSION['POST']['Error']['SPAM'] .= "<br />";
+			$_SESSION['POST']['Error']['SPAM'] .= 'If This Is In Error Contact Site Adminstrator!';
+			
+			$AuthenticationPage = $this->LayerModuleSetting['ContentLayer']['ContentLayer']['Authentication']['SettingAttribute'];
+			header("Location: $AuthenticationPage&SessionID=$sessionname");
 		}
 	}
 
@@ -1520,7 +1592,9 @@ class ContentLayer extends LayerModulesAbstract
 		$FileDataForm = NULL;
 		$ElementName = NULL;
 		$AddLookupData = NULL;
+		$XMLOptions = NULL;
 		$arguments = func_get_args();
+		
 		if ($arguments[2] != NULL) {
 			$FileLocation = $arguments[2];
 		}
@@ -1535,6 +1609,10 @@ class ContentLayer extends LayerModulesAbstract
 
 		if ($arguments[5] != NULL) {
 			$AddLookupData = $arguments[5];
+		}
+		
+		if ($arguments[6] != NULL) {
+			$XMLOptions = $arguments[6];
 		}
 
 		$sessionname = $this->SessionStart($SessionName);
@@ -1570,7 +1648,11 @@ class ContentLayer extends LayerModulesAbstract
 
 		if ($hold['Error']) {
 			if ($FileName != NULL & $FileDataForm != NULL) {
-				$this->ProcessFormXMLFile($FileName, $FileDataForm, $ElementName);
+				if ($XMLOptions != NULL) {
+					$this->ProcessFormXMLFile($FileName, $FileDataForm, $ElementName, $XMLOptions);
+				} else {
+					$this->ProcessFormXMLFile($FileName, $FileDataForm, $ElementName);
+				}
 			}
 			$_SESSION['POST'] = $hold;
 			header("Location: $PageName&SessionID=$sessionname");
@@ -1585,41 +1667,140 @@ class ContentLayer extends LayerModulesAbstract
 	}
 
 	public function ProcessFormXMLFile($FileName, $FileDataForm, $ElementName) {
+		$RootElementName = NULL;
+		$Attribute = NULL;
+		$Raw = NULL;
+		$Skip = NULL;
+		$Repeat = NULL;
+		$arguments = func_get_args();
+		if ($arguments[3] != NULL) {
+			$RootElementName = $arguments[3]['RootElementName'];
+			$Attribute = $arguments[3]['Attribute'];
+			$Raw = $arguments[3]['Raw'];
+			$Skip = $arguments[3]['Skip'];
+			$Repeat = $arguments[3]['Repeat'];
+		}
 		$XMLFile = new XmlWriter();
 		$XMLFile->openURI($FileName);
 		$XMLFile->setIndent(4);
 		$XMLFile->startDocument('1.0', 'utf-8');
-		$XMLFile->startElement('Content');
+		if ($RootElementName != NULL) {
+			$XMLFile->startElement($RootElementName);
+		} else {
+			$XMLFile->startElement('Content');
+		}
 		foreach ($FileDataForm as $Key => $Value) {
+			if ($Skip != NULL) {
+				if ($Key == $Skip) {
+					if (is_array($Value)) {
+						foreach ($Value as $SubKey => $SubValue) {
+							if (!is_array($SubValue)) {
+								$XMLFile->startElement($SubKey);
+								$XMLFile->text($SubValue);
+								$XMLFile->endElement(); // ENDS KEY
+							} else {
+								if ($Repeat != NULL & array_key_exists($SubKey, $Repeat)) {
+									$RepeatAttribute = $Repeat[$SubKey]['name'];
+									$RepeatOptions = $Repeat[$SubKey]['options'];
+									if (is_array($SubValue[$RepeatAttribute])) {
+										$XMLFile->startElement($SubKey);
+										foreach ($SubValue[$RepeatAttribute] as $FinalKey => $FinalValue) {
+											$XMLFile->startElement($RepeatAttribute);
+											if (is_array($RepeatOptions)) {
+												foreach ($RepeatOptions as $OptionsKey => $OptionsValue) {
+													$XMLFile->writeAttribute($OptionsKey, $OptionsValue);
+												}
+											}
+											$XMLFile->text($FinalValue);
+											$XMLFile->endElement(); // ENDS REPEATATTRIBUTE
+										}
+										
+										$XMLFile->endElement(); // ENDS KEY
+									}
+								} else {
+									$XMLFile->startElement($SubKey);
+									$this->RecursiveProcessFormXMLFileElement($SubValue, $XMLFile);
+									$XMLFile->endElement(); // ENDS KEY
+								}
+							} 
+						}
+					}
+					continue; 
+				}
+			}
+			
 			if ($ElementName != NULL) {
 				$XMLFile->startElement($ElementName);
 			} else {
 				$XMLFile->startElement($Key);
 			}
-			$XMLFile->writeAttribute('name', $Key);
-			if (is_array($Value)) {
-				foreach ($Value as $SubElement => $SubValue) {
-					$XMLFile->startElement($SubElement);
-					$XMLFile->text($SubValue);
-					$XMLFile->endElement(); // ENDS SUBELEMENT
+			if ($Attribute != NULL) {
+				$XMLFile->writeAttribute($Attribute, $Key);
+			} else {
+				$XMLFile->writeAttribute('name', $Key);
+			}
+
+			if ($Raw === 'true') {
+				if (is_array($Value)) {
+					foreach ($Value as $SubKey => $SubValue) {
+						if (is_array($SubValue)) {
+							foreach ($SubValue as $FinalSubKey => $FinalSubValue) {
+								$XMLFile->startElement($SubKey);
+								if (is_array($FinalSubValue)) {
+									$this->RecursiveProcessFormXMLFileElement($FinalSubValue, $XMLFile);
+								} else {
+									$XMLFile->text($FinalSubValue);
+								}
+								
+								$XMLFile->endElement(); // ENDS SUBKEY
+							}
+						} else {
+						
+						}
+					}
+				} else {
+					$XMLFile->text($Value);
 				}
 			} else {
-				$XMLFile->text($Value);
+				if (is_array($Value)) {
+					$this->RecursiveProcessFormXMLFileElement($Value, $XMLFile);
+				} else {
+					$XMLFile->text($Value);
+				}
 			}
 			$XMLFile->endElement(); // ENDS KEY OR ELEMENTNAME
 		}
-		$XMLFile->endElement(); // ENDS Content;
+		$XMLFile->endElement(); // ENDS Content OR ROOTELEMENTNAME;
 		$XMLFile->endDocument();
 	}
-
+	
+	public function RecursiveProcessFormXMLFileElement ($Data, XmlWriter $XMLFile) {
+		foreach ($Data as $Element => $Value) {
+			if (is_array($Value)) {
+				$XMLFile->startElement($Element);
+					$this->RecursiveProcessFormXMLFileElement($Value, $XMLFile);
+				$XMLFile->endElement(); // ENDS ELEMENT
+			} else {
+				$XMLFile->startElement($Element);
+				$XMLFile->text($Value);
+				$XMLFile->endElement(); // ENDS ELEMENT
+			}
+		}
+	}
+	
 	public function FormSubmit($SessionName, $PageName, $ObjectType, $Function, array $Arguments) {
 
 	}
 
 	public function ModulePass($ModuleType, $ModuleName, $Function, array $Arguments) {
 		if ($ModuleType != NULL && $ModuleName != NULL && $Function != NULL) {
+			$Args = func_get_args();
 			$PassArguments = array();
 			$PassArguments[0] = $Arguments;
+			if ($Args[4] != NULL) {
+				$PassArguments[1] = $Args[4];
+			}
+			
 			$hold = call_user_func_array(array($this->Modules[$ModuleType][$ModuleName], $Function), $PassArguments);
 			if ($hold) {
 				return $hold;

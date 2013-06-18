@@ -66,11 +66,46 @@
 		private $Tier2Database;
 		
 		/**
+		 * ServerName: String from Settings.ini file. Listing the Database's Server Name
+		 *
+		 * @var string
+		 */
+		private $ServerName;
+		
+		/**
+		 * Username: String from Settings.ini file. Listing the Database's Username
+		 *
+		 * @var string
+		 */
+		private $Username;
+		
+		/**
+		 * Password: String from Settings.ini file. Listing the Database's Password
+		 *
+		 * @var string
+		 */
+		private $Password;
+		
+		/**
+		 * DatabaseName: String from Settings.ini file. Listing the Database's Database Name
+		 *
+		 * @var string
+		 */
+		private $DatabaseName;
+		
+		/**
 		 * Create an instance of Tier2ConnectAllTest.
 		 *
 		 * @access public
 		*/	
 		public function Tier2ConnectAllTest () {
+			// Settings.ini File
+			$credentaillogonarray = $GLOBALS['credentaillogonarray'];
+			$this->ServerName = $credentaillogonarray[0];
+			$this->Username = $credentaillogonarray[1];
+			$this->Password = $credentaillogonarray[2];
+			$this->DatabaseName = $credentaillogonarray[3];
+			
 			$this->Tier2Database = new DataAccessLayer();
 		}
 		
@@ -105,10 +140,10 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll(NULL, 'TEST', 'TEST', 'TEST');
+			$Return = $this->Tier2Database->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable('TEST');
+			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
 			
 			$Return = TRUE;
 			$Return = $this->Tier2Database->ConnectAll();
@@ -126,10 +161,10 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll('TEST', NULL, 'TEST', 'TEST');
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable('TEST');
+			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
 			
 			$Return = TRUE;
 			$Return = $this->Tier2Database->ConnectAll();
@@ -147,10 +182,10 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll('TEST', 'TEST', NULL, 'TEST');
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable('TEST');
+			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
 			
 			$Return = TRUE;
 			$Return = $this->Tier2Database->ConnectAll();
@@ -168,10 +203,10 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll('TEST', 'TEST', 'TEST', NULL);
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable('TEST');
+			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
 			
 			$Return = TRUE;
 			$Return = $this->Tier2Database->ConnectAll();
@@ -180,7 +215,7 @@
 		}
 		
 		/**
-		 * testConnectAllDatabaseNameNull
+		 * testConnectAllCorrectData
 		 * Tests if ConnectAll methods will accept all data correctly. 
 		 *
 		 * @access public
@@ -189,10 +224,10 @@
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll('TEST', 'TEST', 'TEST', 'TEST');
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
-			$this->Tier2Database->setDatabaseTable('TEST');
+			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
 			
 			$Return = NULL;
 			$Return = $this->Tier2Database->ConnectAll();

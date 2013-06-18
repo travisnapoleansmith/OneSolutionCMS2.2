@@ -1110,17 +1110,12 @@ abstract class LayerModulesAbstract
 
 				foreach ($File as $FileContent) {
 					$FileContent = str_replace("\n", '', $FileContent);
-					$ReturnFileContents = $this->processSqlFile($FileContent);
-					if (is_array($ReturnFileContents)) {
-						foreach ($ReturnFileContents as $Value) {
-							if ($this->LayerModuleOn === TRUE) {
-								$this->LayerModule->pass ($this->LayerModuleTableName, 'executeSQlCommand', array('SQLCommand' => $Value));
-							} else {
-								$this->Client->pass ($this->LayerModuleTableName, 'executeSQlCommand', array('SQLCommand' => $Value));
-							}
-						}
+					if (file_exists($FileContent)) {
+						$SqlFileCommand = 'mysql -h' . $this->Hostname . ' -u' . $this->User . ' -p' . $this->Password . ' ' . $this->DatabaseName . ' < ' . $FileContent;
+						system ($SqlFileCommand);
 					}
 				}
+				
 			} else {
 				array_push($this->ErrorMessage,'upgradeDatabase: Filename DOES NOT EXIST!');
 			}
@@ -1153,8 +1148,8 @@ abstract class LayerModulesAbstract
 	public function restoreDatabase($Filename) {
 		if (!empty($Filename)) {
 			if (file_exists($Filename)) {
-				//$SqlFileCommand = 'mysql -h ' . $this->Hostname . ' -u ' . $this->UserName . ' -p  < ' . $FileName;
-				//exec ($SqlFileCommand);
+				$SqlFileCommand = 'mysql -h' . $this->Hostname . ' -u' . $this->User . ' -p' . $this->Password . ' ' . $this->DatabaseName . ' < ' . $Filename;
+				system ($SqlFileCommand);
 			} else {
 				array_push($this->ErrorMessage,'restoreDatabase: Filename DOES NOT EXIST!');
 			}
@@ -1171,7 +1166,6 @@ abstract class LayerModulesAbstract
 				foreach ($File as $Line) {
 					// Skip it if it is a comment or it is empty space
 					if (substr($Line, 0, 2) == '--' || $Line == '' || strstr($Line, '/*') || strstr($Line, '/*') || empty($Line) || substr($Line, 0, 1) == "\r") {
-						//print "HERE\n";
 						continue;
 					}
 
@@ -1188,10 +1182,8 @@ abstract class LayerModulesAbstract
 					}
 				}
 				return $ReturnFile;
-				//$SqlFileCommand = 'mysql -u "' . $this->User . '" -p "' . $this->Password . '" "' . $this->DatabaseName . '" < ' . $Filename;
-				//print "$SqlFileCommand\n";
-				//print "$this->Hostname\n";
-				//exec ($SqlFileCommand);
+				//$SqlFileCommand = 'mysql -h' . $this->Hostname . ' -u' . $this->User . ' -p' . $this->Password . ' ' . $this->DatabaseName . ' < ' . $Filename;
+				//system ($SqlFileCommand);
 			}
 		}
 	}

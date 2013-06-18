@@ -45,7 +45,7 @@
 	require_once "$HOME/Modules/Tier2DataAccessLayer/Core/MySqlConnect/ClassMySqlConnect.php";
 	
 	/**
-	 * Tier 2 Set Database All Test
+	 * Tier 2 Create Database Table Test
 	 *
 	 * This file is designed to test Tier 2's setDatabaseAll method.
 	 *
@@ -56,7 +56,7 @@
 	 * @version PHP - 2.2.1
 	 * @version C++ - Unknown
  	*/
-	class Tier2SetDatabaseAllTest extends UnitTestCase {
+	class Tier2SetCreateDatabaseTableTest extends UnitTestCase {
 		
 		/**
 		 * Tier2Database: DataAccessTier object for Tier 2
@@ -94,11 +94,11 @@
 		private $DatabaseName;
 		
 		/**
-		 * Create an instance of Tier2SetDatabaseAllTest.
+		 * Create an instance of Tier2CreateDatabaseTableTest.
 		 *
 		 * @access public
 		*/	
-		public function Tier2SetDatabaseAllTest () {
+		public function Tier2SetCreateDatabaseTableTest () {
 			// Settings.ini File
 			$credentaillogonarray = $GLOBALS['credentaillogonarray'];
 			$this->ServerName = $credentaillogonarray[0];
@@ -110,91 +110,65 @@
 		}
 		
 		/**
-		 * testSetDatabaseAllNull
-		 * Tests if setDatabaseAll methods will accept Hostame, User, Password and DatabaseName all as NULL. 
+		 * testCreateDatabaseTablelNull
+		 * Tests if createDatabaseTable methods will accept Database Table Name as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllNull() {
+		public function testCreateDatabaseTableNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll(NULL, NULL, NULL, NULL);
+			$Return = $this->Tier2Database->createDatabaseTable(NULL);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testSetDatabaseAllHostnameNull
-		 * Tests if setDatabaseAll methods will accept Hostame as NULL. 
+		 * testCreateDatabaseTablelArray
+		 * Tests if createDatabaseTable methods will accept Database Table Name as an Array. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllHostnameNull() {
+		public function testCreateDatabaseTableArray() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
+			$Array = array('TEST', 'TEST2');
+			$Return = $this->Tier2Database->createDatabaseTable($Array);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testSetDatabaseAllUserNull
-		 * Tests if setDatabaseAll methods will accept User as NULL. 
+		 * testCreateDatabaseTableRepeatTable
+		 * Tests if createDatabaseTable methods will accept a tablename that has been used. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllUserNull() {
-			$Return = TRUE;
-			$this->assertNotNull($this->Tier2Database);
-			
-			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
-			$this->assertFalse($Return);
-			
-		}
-		
-		/**
-		 * testSetDatabaseAllPasswordNull
-		 * Tests if setDatabaseAll methods will accept Password as NULL. 
-		 *
-		 * @access public
-		*/
-		public function testSetDatabaseAllPasswordNull() {
-			$Return = TRUE;
-			$this->assertNotNull($this->Tier2Database);
-			
-			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
-			$this->assertFalse($Return);
-			
-		}
-		
-		/**
-		 * testSetDatabaseAllDatabaseNameNull
-		 * Tests if setDatabaseAll methods will accept DatabaseName as NULL. 
-		 *
-		 * @access public
-		*/
-		public function testSetDatabaseAllDatabaseNameNull() {
-			$Return = TRUE;
-			$this->assertNotNull($this->Tier2Database);
-			
-			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
-			$this->assertFalse($Return);
-			
-		}
-		
-		/**
-		 * testSetDatabaseAllCorrectData
-		 * Tests if setDatabaseAll methods will accept all data correctly. 
-		 *
-		 * @access public
-		*/
-		public function testSetDatabaseAllCorrectData() {
+		public function testCreateDatabaseTableRepeatTable() {
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('REPEATTABLE');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = $this->Tier2Database->createDatabaseTable('REPEATTABLE');
+			$this->assertIsA($Return, 'Exception');
+			
+		}
+		
+		/**
+		 * testCreateDatabaseTableCorrectData
+		 * Tests if createDatabaseTable methods will accept all data correctly. 
+		 *
+		 * @access public
+		*/
+		public function testCreateDatabaseTableCorrectData() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}

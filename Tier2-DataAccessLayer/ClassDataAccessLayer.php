@@ -106,13 +106,12 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @param string $DatabaseName the name of the database needed to connect to database.
 	 * @access public
 	 */
-	public function setDatabaseAll ($hostname, $user, $password, $databasename) {
-		if ($hostname != NULL & $user != NULL & $password != NULL & $databasename != NULL) {
-			$this->Hostname = $hostname;
-			$this->User = $user;
-			$this->Password = $password;
-			$this->DatabaseName = $databasename;
-			
+	public function setDatabaseAll ($Hostname, $User, $Password, $DatabaseName) {
+		if ($Hostname != NULL & $User != NULL & $Password != NULL & $DatabaseName != NULL) {
+			$this->Hostname = $Hostname;
+			$this->User = $User;
+			$this->Password = $Password;
+			$this->DatabaseName = $DatabaseName;
 			return $this;
 		} else {
 			array_push($this->ErrorMessage,'setDatabaseAll: hostname, user, password or databasename Cannot Be Null!');
@@ -193,12 +192,23 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @access public
 	 */
 	public function DisconnectAll () {
-		reset($this->DatabaseTable);
-		while (current($this->DatabaseTable)){
-			$tablename = key($this->DatabaseTable);
-			$this->DatabaseTable[key($this->DatabaseTable)]->Disconnect();
-
-			next($this->DatabaseTable);
+		if ($this->DatabaseTable != NULL) {
+			if (is_array($this->DatabaseTable)) {
+				foreach($this->DatabaseTable as $Key => $Value) {
+					$Return = $this->DatabaseTable[$Key]->Disconnect();
+					
+					if ($Return != TRUE) {
+						array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+						return FALSE;
+					}
+				}
+			} else {
+				array_push($this->ErrorMessage,'DisconnectAll: $this->DatabaseTable Must Be An Array!');
+				return FALSE;
+			}
+		} else {
+			array_push($this->ErrorMessage,'DisconnectAll: $this->DatabaseTable Cannot Be Null!');
+			return FALSE;
 		}
 		return $this;
 	}
@@ -211,10 +221,22 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @param string $DatabaseTable the name of the database table to disconnect from
 	 * @access public
 	*/
-	public function Disconnect ($key) {
-		if ($key != NULL) {
-			$this->DatabaseTable[$key]->Disconnect();
-			return $this;
+	public function Disconnect ($Key) {
+		if ($Key != NULL) {
+			$Return = NULL;
+			if (isset($this->DatabaseTable[$Key])) {
+				$Return = $this->DatabaseTable[$Key]->Disconnect();
+			} else {
+				array_push($this->ErrorMessage,'Disconnect: Exception Thrown - Message: Key Doesn\'t Exist!');
+				return new Exception('Key Doesn\'t Exist!');
+			}
+			
+			if ($Return == TRUE) {
+				return $this;
+			} else {
+				array_push($this->ErrorMessage,'Disconnect: Could Not Disconnect From Database!');
+				return FALSE;
+			}
 		} else {
 			array_push($this->ErrorMessage,'Disconnect: Key Cannot Be Null!');
 			return FALSE;
@@ -228,14 +250,31 @@ class DataAccessLayer extends LayerModulesAbstract
 	/**
 	 * createDatabaseTable
 	 *
-	 * Creates a connection for a database table
+	 * Creates a database table object
 	 *
-	 * @param string $DatabaseTable the name of the database table to create a connection to
+	 * @param string $DatabaseTableName the name of the database table to create
 	 * @access public
 	 */
-	public function createDatabaseTable($key) {
-		$this->DatabaseTable[$key] =  new MySqlConnect();
-		return $this;
+	public function createDatabaseTable($DatabaseTableName) {
+		if ($DatabaseTableName != NULL) {
+			if (!is_array($DatabaseTableName)) {
+				if (!isset($this->DatabaseTable[$DatabaseTableName])) {
+					$this->DatabaseTable[$DatabaseTableName] =  new MySqlConnect();
+					return $this;
+				} else {
+					array_push($this->ErrorMessage,'createDatabaseTable: Exception Thrown - Message: DatabaseTableName Has Already Been Set!');
+					return new Exception('DatabaseTableName Has Already Been Set!');
+				}
+				
+			} else {
+				array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be An Array!');
+				return FALSE;
+			}
+		} else {
+			array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be Null!');
+			return FALSE;
+		}
+		
 	}
 
 	protected function checkPass($DatabaseTable, $function, $functionarguments) {

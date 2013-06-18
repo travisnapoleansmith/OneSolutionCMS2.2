@@ -61,12 +61,13 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * @access public
 	*/
 	public function Connect () {
-		if ($this->HostName == NULL | $this->User == NULL | $this->Password == NULL | $this->DatabaseName == NULL) {
+		
+		/*if ($this->HostName == NULL | $this->User == NULL | $this->Password == NULL | $this->DatabaseName == NULL) {
 			$this->HostName = $GLOBALS['credentaillogonarray'][0];
 			$this->User = $GLOBALS['credentaillogonarray'][1];
 			$this->Password = $GLOBALS['credentaillogonarray'][2];
 			$this->DatabaseName = $GLOBALS['credentaillogonarray'][3];
-		}
+		}*/
 		
 		if ($this->HostName == NULL | $this->User == NULL | $this->Password == NULL | $this->DatabaseName == NULL) {
 			throw new Exception('HostName, User, Password, and DatabaseName none of them can be NULL!');
@@ -106,7 +107,16 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	*/
 	public function Disconnect () {
 		if ($this->Link) {
-			mysql_close($this->Link);
+			if (mysql_close($this->Link) === TRUE) {
+				return $this;
+			} else {
+				array_push($this->ErrorMessage,'Disconnect: Could not disconnect from server');
+				return new Exception('Could not disconnect from server');
+			}
+		} else {
+			array_push($this->ErrorMessage,'Disconnect: Link is not set!');
+			//return new Exception('Link is not set!');
+			return FALSE;
 		}
 	}
 	
