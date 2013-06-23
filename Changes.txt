@@ -1,4 +1,19 @@
-Changes For One Solution CMS 2.2.5 - Monday, June 17, 2013
+Changes For One Solution CMS 2.2.6 - Sunday, June 23, 2013 
+Added:
+	1). Added Testcases/Tier2-DataAccessLayer - PassTest.php - This file is designed to test Tier 2's Pass method.
+	2). Added Tier2-DataAccessLayer - destroyDatabaseTable - This allows for a user to unset a database object.
+	3). Added Testcases/Tier2-DataAccessLayer - DestroyDatabaseTableTest.php - This file is designed to test Tier 2's destroyDatabaseTable method.
+	
+Updated (Fixed):
+	1). Updated ClassDataAccessLayer - To add extra error checking. This has been moved over to 2.1.151 release cycle as well.
+	2). Updated All Tests Cases to add Tier 2 Data Access Layer Settings.
+
+Removed:
+	1). Nothing Removed.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Changes For One Solution CMS 2.2.5 - Monday, June 17, 2013 9:43:58 PM
 Added:
 	1). Added Testcases/Tier2-DataAccessLayer - DisconnectAllTest.php - This file is designed to test Tier 2's DisconnectAll method.
 	2). Added Testcases/Tier2-DataAccessLayer - DisconnectTest.php - This file is designed to test Tier 2's Disconnect method.

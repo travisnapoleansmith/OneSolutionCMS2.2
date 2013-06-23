@@ -22,7 +22,16 @@
 	* @version    2.2.1, 2013-05-05
 	*************************************************************************************
 	*/
-	$HOME = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
+	if ($_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] != NULL) {
+		$HOME = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
+	} else {
+		if ($_SERVER['REAL_DOCUMENT_ROOT'] != NULL) {
+			$_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] = $_SERVER['REAL_DOCUMENT_ROOT'];
+			$HOME = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
+		} else {
+			$HOME = NULL;
+		}
+	}
 	
 	// Auto run for SimpleTest
 	require_once("$HOME/Testcases/SimpleTest/simpletest/autorun.php");

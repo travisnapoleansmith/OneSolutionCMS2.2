@@ -1167,8 +1167,8 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	*/
 	public function setDatabaseRow ($IDNumber) {
 		$this->IDNumber = $IDNumber;
-		if ($this->MultRrowField) {
-			$this->MultRrowField = array();
+		if ($this->MultRowField) {
+			$this->MultRowField = array();
 		}
 
 		if (is_array($IDNumber)) {
@@ -1200,10 +1200,10 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 			if ($this->RowResult) {
 				$this->RowField = mysql_fetch_array($this->RowResult, MYSQL_ASSOC);
 
-				array_push($this->MultRrowField, $this->RowField);
+				array_push($this->MultRowField, $this->RowField);
 				$RowField = mysql_fetch_array($this->RowResult, MYSQL_ASSOC);
 				while ($RowField) {
-					array_push($this->MultRrowField, $RowField);
+					array_push($this->MultRowField, $RowField);
 					$RowField = mysql_fetch_array($this->RowResult, MYSQL_ASSOC);
 				}
 			}

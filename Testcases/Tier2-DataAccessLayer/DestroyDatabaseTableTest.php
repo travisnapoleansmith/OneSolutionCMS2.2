@@ -48,9 +48,9 @@
 	require_once "$HOME/Modules/Tier2DataAccessLayer/Core/MySqlConnect/ClassMySqlConnect.php";
 	
 	/**
-	 * Tier 2 Connect Test
+	 * Tier 2 Destroy Database Table Test
 	 *
-	 * This file is designed to test Tier 2's Connect method.
+	 * This file is designed to test Tier 2's setDatabaseAll method.
 	 *
 	 * @author Travis Napolean Smith
 	 * @copyright Copyright (c) 1999 - 2013 One Solution CMS
@@ -59,14 +59,13 @@
 	 * @version PHP - 2.2.1
 	 * @version C++ - Unknown
  	*/
-	class Tier2ConnectTest extends UnitTestCase {
+	class Tier2SetDestroyDatabaseTableTest extends UnitTestCase {
 		
 		/**
 		 * Tier2Database: DataAccessTier object for Tier 2
 		 *
 		 * @var object
 		 */
-		 
 		private $Tier2Database;
 		
 		/**
@@ -98,11 +97,11 @@
 		private $DatabaseName;
 		
 		/**
-		 * Create an instance of Tier2ConnectAllTest.
+		 * Create an instance of Tier2SetDestroyDatabaseTableTest.
 		 *
 		 * @access public
 		*/	
-		public function Tier2ConnectTest () {
+		public function Tier2SetDestroyDatabaseTableTest () {
 			// Settings.ini File
 			$credentaillogonarray = $GLOBALS['credentaillogonarray'];
 			$this->ServerName = $credentaillogonarray[0];
@@ -113,154 +112,74 @@
 			$this->Tier2Database = new DataAccessLayer();
 		}
 		
-		
 		/**
-		 * testConnectAllNull
-		 * Tests if Connect methods will accept Hostame, User, Password and DatabaseName all as NULL. 
+		 * testDestroyDatabaseTableNull
+		 * Tests if destroyDatabaseTable methods will accept Database Table Name as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testConnectAllNull() {
+		public function testDestroyDatabaseTableNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll(NULL, NULL, NULL, NULL);
-			$this->assertFalse($Return);
-			
-			$this->Tier2Database->setDatabaseTable(NULL);
-			
-			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect(NULL);
-			$this->assertFalse($Return);
-		}
-		
-		/**
-		 * testConnectHostnameNull
-		 * Tests if Connect methods will accept Hostame as NULL. 
-		 *
-		 * @access public
-		*/
-		public function testConnectHostnameNull() {
-			$Return = TRUE;
-			$this->assertNotNull($this->Tier2Database);
-			
-			$Return = $this->Tier2Database->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
-			$this->assertFalse($Return);
-			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
-			
-			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
+			$Return = $this->Tier2Database->destroyDatabaseTable(NULL);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testConnectUserNull
-		 * Tests if Connect methods will accept User as NULL. 
+		 * testDestroyDatabaseTableArray
+		 * Tests if destroyDatabaseTable methods will accept Database Table Name as an Array. 
 		 *
 		 * @access public
 		*/
-		public function testConnectUserNull() {
+		public function testDestroyDatabaseTableArray() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
-			$this->assertFalse($Return);
-			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
-			
-			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
+			$Array = array('TEST', 'TEST2');
+			$Return = $this->Tier2Database->destroyDatabaseTable($Array);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testConnectPasswordNull
-		 * Tests if Connect methods will accept Password as NULL. 
+		 * testDestroyDatabaseTableRepeatTable
+		 * Tests if destroyDatabaseTable methods will accept a tablename that has been destroyed. 
 		 *
 		 * @access public
 		*/
-		public function testConnectPasswordNull() {
-			$Return = TRUE;
+		public function testDestroyDatabaseTableRepeatTable() {
+			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
-			$this->assertFalse($Return);
+			$Return = $this->Tier2Database->createDatabaseTable('REPEATTABLE');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->destroyDatabaseTable('REPEATTABLE');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
-			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
-			$this->assertFalse($Return);
-			
-		}
-		
-		/**
-		 * testConnectDatabaseNameNull
-		 * Tests if Connect methods will accept DatabaseName as NULL. 
-		 *
-		 * @access public
-		*/
-		public function testConnectDatabaseNameNull() {
-			$Return = TRUE;
-			$this->assertNotNull($this->Tier2Database);
-			
-			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
-			$this->assertFalse($Return);
-			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
-			
-			//$this->expectException('Key Doesn\'t Exist!');
-			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
-			$this->assertFalse($Return);
-			
-		}
-		
-		/**
-		 * testConnectDatabaseTableInvalidName
-		 * Tests if Connect methods will accept Database Table as an invalid name. 
-		 *
-		 * @access public
-		*/
-		public function testConnectDatabaseTableInvalidName() {
-			$Return = TRUE;
-			$this->assertNotNull($this->Tier2Database);
-			
-			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
-			$this->assertFalse($Return);
-			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
-			
-			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect('INVALID');
+			$Return = $this->Tier2Database->destroyDatabaseTable('REPEATTABLE');
 			$this->assertIsA($Return, 'Exception');
 			
 		}
 		
 		/**
-		 * testConnectCorrectData
-		 * Tests if Connect methods will accept all data correctly. 
+		 * testDestroyDatabaseTableCorrectData
+		 * Tests if destroyDatabaseTable methods will accept all data correctly. 
 		 *
 		 * @access public
 		*/
-		public function testConnectCorrectData() {
+		public function testDestroyDatabaseTableCorrectData() {
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
-			
-			$Return = NULL;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
-			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
-		
 	}
 ?>

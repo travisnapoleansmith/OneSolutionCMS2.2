@@ -29,6 +29,9 @@
 	*/
 	require_once("$HOME/Testcases/SimpleTest/simpletest/autorun.php");
 	
+	// Tier 2 Settings
+	require_once "$HOME/Testcases/Configuration/Tier2DataAccessLayerSettings.php";
+	
 	// All Tier Abstract
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
 	

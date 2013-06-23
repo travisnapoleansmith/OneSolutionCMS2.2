@@ -26,7 +26,7 @@
 /**
  * Class Data Access Layer
  *
- * Class DataAccessLayer is designed as the security of the entire system.
+ * Class DataAccessLayer is designed as the database abstraction of the entire system.
  *
  * @author Travis Napolean Smith
  * @copyright Copyright (c) 1999 - 2013 One Solution CMS
@@ -276,10 +276,42 @@ class DataAccessLayer extends LayerModulesAbstract
 		}
 		
 	}
+	
+	/**
+	 * destroyDatabaseTable
+	 *
+	 * Destroys a database table object
+	 *
+	 * @param string $DatabaseTableName the name of the database table to destroy
+	 * @access public
+	 */
+	public function destroyDatabaseTable($DatabaseTableName) {
+		if ($DatabaseTableName != NULL) {
+			if (!is_array($DatabaseTableName)) {
+				if (isset($this->DatabaseTable[$DatabaseTableName])) {
+					unset($this->DatabaseTable[$DatabaseTableName]);
+					return $this;
+				} else {
+					array_push($this->ErrorMessage,'destroyDatabaseTable: Exception Thrown - Message: DatabaseTableName Has Not Been Set!');
+					return new Exception('DatabaseTableName Has Not Been Set!');
+				}
+				
+			} else {
+				array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be An Array!');
+				return FALSE;
+			}
+		} else {
+			array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be Null!');
+			return FALSE;
+		}
+		
+	}
 
-	protected function checkPass($DatabaseTable, $function, $functionarguments) {
-		reset($this->Modules);
+	protected function checkPass($DatabaseTable, $Function, $FunctionArguments) {
+		//reset($this->Modules);
+		
 		$hold = NULL;
+		
 		/*while (current($this->Modules)) {
 			//$tempobject = current($this->Modules[key($this->Modules)]);
 			//$databasetables = $tempobject->getTableNames();
@@ -289,46 +321,79 @@ class DataAccessLayer extends LayerModulesAbstract
 			//$hold = $tempobject->Verify($function, $functionarguments);
 			next($this->Modules);
 		}*/
-		if ($functionarguments[0]) {
-			$PassArguments = array();
-			$PassArguments[0] = $functionarguments;
+		
+		if (!is_null($FunctionArguments)) {
+			if (is_array($FunctionArguments)) {
+				if (!is_null($Function)) {
+					if (!is_array($Function)) {
+						if (isset($this->DatabaseTable["$DatabaseTable"])) {
+							if ($FunctionArguments[0]) {
+								$PassArguments = array();
+								$PassArguments[0] = $FunctionArguments;
+							} else {
+								$PassArguments = $FunctionArguments;
+							}
+							
+							$hold2 = call_user_func_array(array($this->DatabaseTable["$DatabaseTable"], "$Function"), $PassArguments);
+							if ($hold2) {
+								return $hold2;
+							} else {
+								return $this;
+							}
+						} else {
+							array_push($this->ErrorMessage,'checkPass: $DatabaseTable MUST BE SET!');
+							return FALSE;
+						}
+					} else {
+						array_push($this->ErrorMessage,'checkPass: MySqlConnect Member Cannot Be An Array!');
+						return FALSE;
+					}
+				} else {
+					array_push($this->ErrorMessage,'checkPass: MySqlConnect Member Cannot Be Null!');
+					return FALSE;
+				}
+			} else {
+				array_push($this->ErrorMessage,'checkPass: Function Arguments Must Be An Array!');
+				return FALSE;
+			}
 		} else {
-			$PassArguments = $functionarguments;
-		}
-		//print_r($functionarguments);
-		$hold2 = call_user_func_array(array($this->DatabaseTable["$DatabaseTable"], "$function"), $PassArguments);
-		if ($hold2) {
-			return $hold2;
-		} else {
+			array_push($this->ErrorMessage,'checkPass: Function Arguments Cannot Be Null!');
 			return FALSE;
 		}
 	}
 
-	public function pass($databasetable, $function, $functionarguments) {
-		if (!is_null($functionarguments)) {
-			if (is_array($functionarguments)) {
-				if (!is_null($function)) {
-					if (!is_array($function)) {
-						if ($this->DatabaseAllow[$function]) {
-							if ($functionarguments[0]) {
-								$PassArguments = array();
-								$PassArguments[0] = $functionarguments;
+	public function pass($DatabaseTable, $Function, $FunctionArguments) {
+		if (!is_null($FunctionArguments)) {
+			if (is_array($FunctionArguments)) {
+				if (!is_null($Function)) {
+					if (!is_array($Function)) {
+						if (isset($this->DatabaseTable["$DatabaseTable"])) {
+							if ($this->DatabaseAllow[$Function]) {
+								if ($FunctionArguments[0]) {
+									$PassArguments = array();
+									$PassArguments[0] = $FunctionArguments;
+								} else {
+									$PassArguments = $FunctionArguments;
+								}
+								$hold = call_user_func_array(array($this->DatabaseTable["$DatabaseTable"], "$Function"), $PassArguments);
+								if ($hold) {
+									return $hold;
+								} else {
+									return $this;
+								}
+							} else if ($this->DatabaseDeny[$Function]) {
+								$hold = $this->checkPass($DatabaseTable, $Function, $FunctionArguments);
+								if ($hold) {
+									return $hold;
+								} else {
+									return FALSE;
+								}
 							} else {
-								$PassArguments = $functionarguments;
-							}
-							$hold = call_user_func_array(array($this->DatabaseTable["$databasetable"], "$function"), $functionarguments);
-							if ($hold) {
-								return $hold;
-							}
-						} else if ($this->DatabaseDeny[$function]) {
-							$hold = $this->checkPass($databasetable, $function, $functionarguments);
-							if ($hold) {
-								return $hold;
-							} else {
+								array_push($this->ErrorMessage,"pass: $Function from $DatabaseTable - MySqlConnect Member Does Not Exist!");
 								return FALSE;
 							}
 						} else {
-							array_push($this->ErrorMessage,"pass: $function from $databasetable - MySqlConnect Member Does Not Exist!");
+							array_push($this->ErrorMessage,'pass: $DatabaseTable MUST BE SET!');
 							return FALSE;
 						}
 					} else {
@@ -391,7 +456,6 @@ class DataAccessLayer extends LayerModulesAbstract
 		$this->Disconnect($this->LayerTableName);
 
 		$this->LayerTable = $this->pass ($this->LayerTableName, 'getEntireTable', array());
-
 		if ($LayerModuleTableName && $this->LayerModuleTable && $LayerTableName && $this->LayerTable) {
 			$moduletable = current($this->LayerModuleTable);
 			$keymoduletable = key($this->LayerModuleTable);
