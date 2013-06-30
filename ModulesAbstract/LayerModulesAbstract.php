@@ -60,7 +60,7 @@ abstract class LayerModulesAbstract
 	protected $DatabaseName;
 	protected $DatabaseTable;
 
-	protected static $OneSolutionCMSVersion;
+	protected $OneSolutionCMSVersion;
 
 	protected $ModulesLocation;
 
@@ -214,7 +214,7 @@ abstract class LayerModulesAbstract
 			}
 
 		}
-
+		
 		$this->LayerModuleTableNameSetting = $LayerModuleTableNameSetting;
 		$this->LayerModuleTableName = $LayerModuleTableName;
 		$this->LayerTableName = $LayerTableName;
@@ -284,92 +284,91 @@ abstract class LayerModulesAbstract
 		$InnerKey['ObjectTypeName'] = 'ObjectTypeName';
 		$InnerKey['Setting'] = 'Setting';
 		$this->LayerModuleSetting = $this->buildArray($ModuleSetting, $InnerKey, 'ObjectType', $LayerModuleSetting);
-
+		$this->LayerModuleTable = array();
 		if ($LayerModuleTableName && $LayerModuleTable && $LayerTableName && $this->LayerTable) {
-			$moduletable = current($LayerModuleTable);
-			$keymoduletable = key($LayerModuleTable);
-			while ($moduletable) {
-				$ObjectType = $LayerModuleTable[$keymoduletable]['ObjectType'];
-				$ObjectTypeName = $LayerModuleTable[$keymoduletable]['ObjectTypeName'];
-				$ObjectTypeLocation = $LayerModuleTable[$keymoduletable]['ObjectTypeLocation'];
-				$ObjectTypeConfiguration = $LayerModuleTable[$keymoduletable]['ObjectTypeConfiguration'];
-				$ObjectTypePrintPreview = $LayerModuleTable[$keymoduletable]['ObjectTypePrintPreview'];
-				$ModuleFileName = array();
-				$ModuleFileName = $this->buildArray($ModuleFileName, 'ModuleFileName', $keymoduletable, $LayerModuleTable, 'Numerical');
-				$EnableDisable = $LayerModuleTable[$keymoduletable]['Enable/Disable'];
-				reset ($this->LayerTable);
-				$layertable = current($this->LayerTable);
-				$keylayertable = key($this->LayerTable);
-				while ($layertable) {
-					$NewObjectType = $this->LayerTable[$keylayertable]['ObjectType'];
-					$NewObjectTypeName = $this->LayerTable[$keylayertable]['ObjectTypeName'];
-
-					if ($NewObjectType == $ObjectType && $NewObjectTypeName == $ObjectTypeName) {
-						break;
-					}
-					next($this->LayerTable);
-					$layertable = current($this->LayerTable);
-					$keylayertable = key($this->LayerTable);
-				}
-
-				if ($EnableDisable == 'Enable') {
-					reset ($ModuleFileName);
-					foreach ($ModuleFileName as $FileName) {
-						$ModulesFile = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
-						$ModulesFile .= '/';
-						$ModulesFile .= $ObjectTypeLocation;
-						$ModulesFile .= '/';
-						$ModulesFile .= $FileName;
-						$ModulesFile .= '.php';
-
-						if (is_file($ModulesFile)) {
-							require_once($ModulesFile);
-						} else {
-							array_push($this->ErrorMessage,"buildModules: Module filename - $modulesfile does not exist!");
-						}
-					}
-
-					$this->LayerModuleTable[$ObjectType][$ObjectTypeName]['ObjectTypeLocation'] = $ObjectTypeLocation;
-					$this->LayerModuleTable[$ObjectType][$ObjectTypeName]['ObjectTypeConfiguration'] = $ObjectTypeConfiguration;
-					$this->LayerModuleTable[$ObjectType][$ObjectTypeName]['ObjectTypePrintPreview'] = $ObjectTypePrintPreview;
-					$this->LayerModuleTable[$ObjectType][$ObjectTypeName] += $ModuleFileName;
-					$this->LayerModuleTable[$ObjectType][$ObjectTypeName]['Enable/Disable'] = $EnableDisable;
-				}
-
-				if (is_array($layertable)) {
-					if (in_array($this->LayerTable[$keylayertable]['ObjectType'], $layertable) && in_array($this->LayerTable[$keylayertable]['ObjectTypeName'], $layertable)) {
-						$DatabaseTables = array();
-						$DatabaseTables = $this->buildArray($DatabaseTables, 'DatabaseTable', $keylayertable, $this->LayerTable, 'Numerical');
-						reset($DatabaseTables);
-						while (current($DatabaseTables)) {
-							$this->createDatabaseTable(current($DatabaseTables));
-							next ($DatabaseTables);
-						}
-						$DatabaseOptions = array();
-						if ($this->SessionTypeName['SessionTypeName'] == $ObjectTypeName) {
-							$DatabaseOptionsName = $ObjectType;
-							$DatabaseOptionsName .= 'Session';
-
-							$DatabaseOptions[$DatabaseOptionsName] = $_SESSION['POST'][$this->SessionTypeName['SessionValue']];
-						}
-
-						if ($this->LayerModuleSetting[$ObjectType][$ObjectTypeName]) {
-							reset($this->LayerModuleSetting[$ObjectType][$ObjectTypeName]);
-							while (current($this->LayerModuleSetting[$ObjectType][$ObjectTypeName])) {
-								$temp = current($this->LayerModuleSetting[$ObjectType][$ObjectTypeName]);
-								$Setting = $temp['Setting'];
-								$SettingAttribute = $temp['SettingAttribute'];
-								$DatabaseOptions[$Setting] = $SettingAttribute;
-								next($this->LayerModuleSetting[$ObjectType][$ObjectTypeName]);
+			if (is_array($this->LayerTable)) {
+				foreach ($LayerModuleTable as $ModuleTableKey => $ModuleTable) {
+					$ObjectType = $ModuleTable['ObjectType'];
+					$ObjectTypeName = $ModuleTable['ObjectTypeName'];
+					$ObjectTypeLocation = $ModuleTable['ObjectTypeLocation'];
+					$ObjectTypeConfiguration = $ModuleTable['ObjectTypeConfiguration'];
+					$ObjectTypePrintPreview = $ModuleTable['ObjectTypePrintPreview'];
+					
+					$EnableDisable = $ModuleTable['Enable/Disable'];
+			
+					if ($EnableDisable == 'Enable') {
+						foreach ($ModuleTable as $ModuleFileNameKey => $ModuleFileNameData) {
+							if (strstr($ModuleFileNameKey, 'ModuleFileName')) {
+								if (!empty($ModuleFileNameData)) {
+									$ModulesFile = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
+									$ModulesFile .= '/';
+									$ModulesFile .= $ObjectTypeLocation;
+									$ModulesFile .= '/';
+									$ModulesFile .= $ModuleFileNameData;
+									$ModulesFile .= '.php';
+									
+									if (is_file($ModulesFile)) {
+										require_once($ModulesFile);
+									} else {
+										array_push($this->ErrorMessage,"buildModules: Module filename - $ModulesFile does not exist!");
+									}
+									
+									$this->LayerModuleTable[$ObjectType][$ObjectTypeName][$ModuleFileNameKey] = $ModulesFile;
+								}
 							}
 						}
-						$this->createModules($ObjectType, $ObjectTypeName, $DatabaseTables, $DatabaseOptions);
+						
+						$this->LayerModuleTable[$ObjectType][$ObjectTypeName]['ObjectTypeLocation'] = $ObjectTypeLocation;
+						$this->LayerModuleTable[$ObjectType][$ObjectTypeName]['ObjectTypeConfiguration'] = $ObjectTypeConfiguration;
+						$this->LayerModuleTable[$ObjectType][$ObjectTypeName]['ObjectTypePrintPreview'] = $ObjectTypePrintPreview;
+						$this->LayerModuleTable[$ObjectType][$ObjectTypeName]['Enable/Disable'] = $EnableDisable;					
+						
+						$DatabaseTables = NULL;
+						foreach ($this->LayerTable as $Table) {
+							if ($Table['ObjectType'] == $ObjectType & $Table['ObjectTypeName'] == $ObjectTypeName) {
+								$DatabaseTables = $Table;
+								break;
+							}
+						}
+						
+						$DatabaseTableArray = array();
+						if (is_array($DatabaseTables)) {
+							foreach ($DatabaseTables as $DatabaseTablesKey => $DatabaseTableValue) {
+								if (strstr($DatabaseTablesKey, 'DatabaseTable')) {
+									$DatabaseTableArray[$DatabaseTablesKey] = $DatabaseTableValue;
+									if (!empty($DatabaseTableValue)) {
+										$this->createDatabaseTable($DatabaseTableValue);
+										
+										if ($this->SessionTypeName['SessionTypeName'] == $ObjectTypeName) {
+											$DatabaseOptionsName = $ObjectType;
+											$DatabaseOptionsName .= 'Session';
+		
+											$DatabaseOptions[$DatabaseOptionsName] = $_SESSION['POST'][$this->SessionTypeName['SessionValue']];
+										}
+										
+										
+									}
+									
+								}
+							}
+
+							if ($this->LayerModuleSetting[$ObjectType][$ObjectTypeName]) {
+								if (is_array($this->LayerModuleSetting[$ObjectType][$ObjectTypeName])) {
+									foreach ($this->LayerModuleSetting[$ObjectType][$ObjectTypeName] as $Key => $Value) {
+										$Setting = $Value['Setting'];
+										$SettingAttribute = $Value['SettingAttribute'];
+										$DatabaseOptions[$Setting] = $SettingAttribute;
+									}
+								}
+							}
+
+							$this->createModules($ObjectType, $ObjectTypeName, $DatabaseTableArray, $DatabaseOptions);
+							$DatabaseOptions = array();
+							
+						}
+						
 					}
 				}
-
-				next($LayerModuleTable);
-				$moduletable = current($LayerModuleTable);
-				$keymoduletable = key($LayerModuleTable);
 			}
 		} else {
 			array_push($this->ErrorMessage,'buildModules: Module Tablename is not set!');
@@ -378,7 +377,7 @@ abstract class LayerModulesAbstract
 
 	protected function createModules($ObjectType, $ObjectTypeName, $DatabaseTables, $DatabaseOptions) {
 		$this->Modules[$ObjectType][$ObjectTypeName] = new $ObjectType ($DatabaseTables, $DatabaseOptions, $this->LayerModule);
-
+		
 		reset($DatabaseTables);
 		$this->Modules[$ObjectType][$ObjectTypeName]->setDatabaseAll ($this->Hostname, $this->User, $this->Password, $this->DatabaseName, current($DatabaseTables));
 

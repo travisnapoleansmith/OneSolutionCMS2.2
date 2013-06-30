@@ -62,12 +62,14 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	*/
 	public function Connect () {
 		
-		/*if ($this->HostName == NULL | $this->User == NULL | $this->Password == NULL | $this->DatabaseName == NULL) {
-			$this->HostName = $GLOBALS['credentaillogonarray'][0];
-			$this->User = $GLOBALS['credentaillogonarray'][1];
-			$this->Password = $GLOBALS['credentaillogonarray'][2];
-			$this->DatabaseName = $GLOBALS['credentaillogonarray'][3];
-		}*/
+		if ($this->HostName == NULL | $this->User == NULL | $this->Password == NULL | $this->DatabaseName == NULL) {
+			if (isset($GLOBALS['credentaillogonarray']) & !isset($GLOBALS['ConnectionOverride'])) {
+				$this->HostName = $GLOBALS['credentaillogonarray'][0];
+				$this->User = $GLOBALS['credentaillogonarray'][1];
+				$this->Password = $GLOBALS['credentaillogonarray'][2];
+				$this->DatabaseName = $GLOBALS['credentaillogonarray'][3];
+			}
+		}
 		
 		if ($this->HostName == NULL | $this->User == NULL | $this->Password == NULL | $this->DatabaseName == NULL) {
 			throw new Exception('HostName, User, Password, and DatabaseName none of them can be NULL!');
@@ -97,6 +99,8 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 			throw $E;
 			return FALSE;
 		}
+		
+		return FALSE;
 	}
 
 	/**
@@ -1317,9 +1321,10 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 		}
 
 		$this->Connect();
+		
 		$Query = 'SHOW COLUMNS FROM `' . $this->DatabaseTable . '` ';
 		$Result = mysql_query($Query);
-
+		
 		$this->RowFieldNames = array();
 		while ($Row = mysql_fetch_array ($Result)) {
 			array_push($this->RowFieldNames, $Row['Field']);

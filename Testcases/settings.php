@@ -43,6 +43,8 @@
 	$databasename = $SETTINGS['DATABASE CONNECTION']['DATABASENAME'];
 
 	$credentaillogonarray = Array ($servername, $username, $password, $databasename);
-
+	
+	$ConnectionOverride = TRUE;
+	
 	$ErrorMessage = array();
 ?>

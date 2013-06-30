@@ -565,7 +565,7 @@ class ContentLayer extends LayerModulesAbstract
 								$this->Writer->writeRaw("\n");
 
 							}
-
+							
 							if ($ObjectEnableDisable == 'Enable') {
 								if ($ObjectTypeConfiguration != NULL) {
 									if (strstr($ObjectTypeConfiguration, '.html') || strstr($ObjectTypeConfiguration, '.htm')) {
