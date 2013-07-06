@@ -50,7 +50,7 @@
 	/**
 	 * Tier 2 Pass Test
 	 *
-	 * This file is designed to test Tier 2's setDatabaseAll method.
+	 * This file is designed to test Tier 2's pass method.
 	 *
 	 * @author Travis Napolean Smith
 	 * @copyright Copyright (c) 1999 - 2013 One Solution CMS
@@ -168,7 +168,6 @@
 			$this->assertFalse($Return);
 		}
 		
-		// CONTINUE HERE
 		/**
 		 * testPassNotSetAll
 		 * Tests if pass method will accept all arguments that are not set. 
@@ -408,14 +407,17 @@
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
+			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('name' => $this->DatabaseName));
+			$this->assertFalse($Return);
+			
 			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array());
-			$this->assertIsA($Return, 'DataAccessLayer');
+			$this->assertIsA($Return, 'String');
 			
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
-		// LEFT OFF HERE
+
 		/**
 		 * testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArray
 		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array. 
@@ -430,7 +432,7 @@
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('id' => 1));
-			$this->assertIsA($Return, 'DataAccessLayer');
+			$this->assertFalse($Return);
 			
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
@@ -451,7 +453,7 @@
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('id' => 1));
-			$this->assertIsA($Return, 'DataAccessLayer');
+			$this->assertFalse($Return);
 			
 			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array());
 			$this->assertIdentical($Return, 1);
@@ -475,7 +477,7 @@
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('id' => 1));
-			$this->assertIsA($Return, 'DataAccessLayer');
+			$this->assertFalse($Return);
 			
 			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array('id' => 1));
 			$this->assertIdentical($Return, 1);
@@ -498,7 +500,7 @@
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('id' => '1'));
-			$this->assertIsA($Return, 'DataAccessLayer');
+			$this->assertFalse($Return);
 			
 			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array());
 			$this->assertIdentical($Return, '1');
@@ -522,7 +524,7 @@
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('id' => '1'));
-			$this->assertIsA($Return, 'DataAccessLayer');
+			$this->assertFalse($Return);
 			
 			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array('id' => '1'));
 			$this->assertIdentical($Return, '1');
@@ -545,7 +547,7 @@
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array(array('id' => '1', 'id2' => '3')));
-			$this->assertIsA($Return, 'DataAccessLayer');
+			$this->assertFalse($Return);
 			
 			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array());
 			$this->assertIsA($Return, 'array');

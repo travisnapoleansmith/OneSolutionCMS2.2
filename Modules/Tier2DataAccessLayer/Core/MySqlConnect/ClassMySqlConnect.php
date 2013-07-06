@@ -61,7 +61,6 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * @access public
 	*/
 	public function Connect () {
-		
 		if ($this->HostName == NULL | $this->User == NULL | $this->Password == NULL | $this->DatabaseName == NULL) {
 			if (isset($GLOBALS['credentaillogonarray']) & !isset($GLOBALS['ConnectionOverride'])) {
 				$this->HostName = $GLOBALS['credentaillogonarray'][0];
@@ -77,23 +76,28 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 		}
 		
 		try {
-			$this->Link = @mysql_connect($this->HostName, $this->User, $this->Password);
-			if (!$this->Link) {
+			$this->Link = TRUE;
+			//$this->Link = mysql_connect($this->HostName, $this->User, $this->Password);
+			$Link = mysql_connect($this->HostName, $this->User, $this->Password);
+			//$this->Link = $Link;
+			if (!Link) {
 				array_push($this->ErrorMessage,'Connect: Could not connect to server');
-				return new Exception('Could not connect to server');
+				throw new SoapFault("Connect", 'Could not connect to server');
 			}
+			//return $Link;
 		} catch (Exception $E) {
-			throw $E;
+			throw new SoapFault("Connect", $E->getMessage());
 			return FALSE;
 		}
-		
+
 		try {
-			if ($this->Link) {
-				if (!mysql_select_db($this->DatabaseName, $this->Link)) {
+			if ($Link) {
+				if (!mysql_select_db($this->DatabaseName, $Link)) {
 					array_push($this->ErrorMessage,'Connect: Could not select database');
-					throw new Exception('Could not select database');
+					throw new SoapFault("Connect", 'Could not select database');
 					return FALSE;
 				}
+				
 			}
 		} catch (Exception $E) {
 			throw $E;
@@ -111,11 +115,13 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	*/
 	public function Disconnect () {
 		if ($this->Link) {
-			if (mysql_close($this->Link) === TRUE) {
+			$this->Connect();
+			if (mysql_close(/*$this->Link*/) === TRUE) {
+				$this->Link = NULL;
 				return $this;
 			} else {
 				array_push($this->ErrorMessage,'Disconnect: Could not disconnect from server');
-				return new Exception('Could not disconnect from server');
+				throw new SoapFault("Disconnect", 'Could not disconnect from server');
 			}
 		} else {
 			array_push($this->ErrorMessage,'Disconnect: Link is not set!');
@@ -133,7 +139,7 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	*/
 	protected function checkDatabaseName (){
 		$this->Connect();
-		$Results = mysql_list_dbs($this->Link);
+		$Results = mysql_list_dbs(/*$this->Link*/);
 		$i = 0;
 		while (mysql_db_name($Results, $i)){
 			$Temp = mysql_db_name($Results, $i);

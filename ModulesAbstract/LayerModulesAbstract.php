@@ -1731,6 +1731,10 @@ abstract class LayerModulesAbstract
 			array_push($this->ErrorMessage,'MultiArrayCombine: StartNumber MUST be set!');
 		}
 	}
+	
+	public function getMethods() {
+		return get_class_methods($this);
+	}
 
 }
 ?>

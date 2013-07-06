@@ -48,7 +48,7 @@
 	require_once "$HOME/Modules/Tier2DataAccessLayer/Core/MySqlConnect/ClassMySqlConnect.php";
 	
 	/**
-	 * Tier 2 Set Database All Test
+	 * Tier 2 Connect All Test
 	 *
 	 * This file is designed to test Tier 2's ConnectAll method.
 	 *
@@ -126,11 +126,15 @@
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, NULL, NULL, NULL);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable(NULL);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = TRUE;
 			$Return = $this->Tier2Database->ConnectAll();
 			$this->assertFalse($Return);
+			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 		}
 		
 		/**
@@ -146,11 +150,15 @@
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = TRUE;
 			$Return = $this->Tier2Database->ConnectAll();
 			$this->assertFalse($Return);
+			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
@@ -167,11 +175,15 @@
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = TRUE;
 			$Return = $this->Tier2Database->ConnectAll();
 			$this->assertFalse($Return);
+			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
@@ -188,11 +200,15 @@
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = TRUE;
 			$Return = $this->Tier2Database->ConnectAll();
 			$this->assertFalse($Return);
+			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
@@ -209,11 +225,15 @@
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = TRUE;
 			$Return = $this->Tier2Database->ConnectAll();
 			$this->assertFalse($Return);
+			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
@@ -230,13 +250,15 @@
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = NULL;
 			$Return = $this->Tier2Database->ConnectAll();
-			
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 		}
 		
 	}

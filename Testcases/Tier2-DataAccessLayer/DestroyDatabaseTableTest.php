@@ -50,7 +50,7 @@
 	/**
 	 * Tier 2 Destroy Database Table Test
 	 *
-	 * This file is designed to test Tier 2's setDatabaseAll method.
+	 * This file is designed to test Tier 2's destroyDatabaseTable method.
 	 *
 	 * @author Travis Napolean Smith
 	 * @copyright Copyright (c) 1999 - 2013 One Solution CMS
@@ -59,7 +59,7 @@
 	 * @version PHP - 2.2.1
 	 * @version C++ - Unknown
  	*/
-	class Tier2SetDestroyDatabaseTableTest extends UnitTestCase {
+	class Tier2DestroyDatabaseTableTest extends UnitTestCase {
 		
 		/**
 		 * Tier2Database: DataAccessTier object for Tier 2
@@ -101,7 +101,7 @@
 		 *
 		 * @access public
 		*/	
-		public function Tier2SetDestroyDatabaseTableTest () {
+		public function Tier2DestroyDatabaseTableTest () {
 			// Settings.ini File
 			$credentaillogonarray = $GLOBALS['credentaillogonarray'];
 			$this->ServerName = $credentaillogonarray[0];
@@ -159,8 +159,9 @@
 			$Return = $this->Tier2Database->destroyDatabaseTable('REPEATTABLE');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
+			$this->expectException();
 			$Return = $this->Tier2Database->destroyDatabaseTable('REPEATTABLE');
-			$this->assertIsA($Return, 'Exception');
+			//$this->assertIsA($Return, 'Exception');
 			
 		}
 		

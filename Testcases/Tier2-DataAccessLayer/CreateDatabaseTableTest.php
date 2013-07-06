@@ -50,7 +50,7 @@
 	/**
 	 * Tier 2 Create Database Table Test
 	 *
-	 * This file is designed to test Tier 2's setDatabaseAll method.
+	 * This file is designed to test Tier 2's createDatabaseTable method.
 	 *
 	 * @author Travis Napolean Smith
 	 * @copyright Copyright (c) 1999 - 2013 One Solution CMS
@@ -59,7 +59,7 @@
 	 * @version PHP - 2.2.1
 	 * @version C++ - Unknown
  	*/
-	class Tier2SetCreateDatabaseTableTest extends UnitTestCase {
+	class Tier2CreateDatabaseTableTest extends UnitTestCase {
 		
 		/**
 		 * Tier2Database: DataAccessTier object for Tier 2
@@ -101,7 +101,7 @@
 		 *
 		 * @access public
 		*/	
-		public function Tier2SetCreateDatabaseTableTest () {
+		public function Tier2CreateDatabaseTableTest () {
 			// Settings.ini File
 			$credentaillogonarray = $GLOBALS['credentaillogonarray'];
 			$this->ServerName = $credentaillogonarray[0];
@@ -156,8 +156,9 @@
 			$Return = $this->Tier2Database->createDatabaseTable('REPEATTABLE');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
+			$this->expectException();
 			$Return = $this->Tier2Database->createDatabaseTable('REPEATTABLE');
-			$this->assertIsA($Return, 'Exception');
+			//$this->assertIsA($Return, 'Exception');
 			
 		}
 		

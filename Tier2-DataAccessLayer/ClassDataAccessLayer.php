@@ -66,7 +66,6 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @access public
 	 */
 	public function __construct () {
-
 		$this->Modules = Array();
 		$this->DatabaseTable = Array();
 		$GLOBALS['ErrorMessage']['DataAccessLayer'] = array();
@@ -74,12 +73,12 @@ class DataAccessLayer extends LayerModulesAbstract
 
 		$this->DatabaseAllow = &$GLOBALS['Tier2DatabaseAllow'];
 		$this->DatabaseDeny = &$GLOBALS['Tier2DatabaseDeny'];
-
+		
 		$this->PageID = $_GET['PageID'];
 
 		$this->SessionName['SessionID'] = $_GET['SessionID'];
 	}
-
+	
 	/**
 	 * setModules
 	 *
@@ -132,12 +131,16 @@ class DataAccessLayer extends LayerModulesAbstract
 				if (is_array($this->DatabaseTable)) {
 					foreach ($this->DatabaseTable as $TableNameKey => $TableNameValue) {
 						try {
-							$this->DatabaseTable[$TableNameKey]->setDatabaseAll($this->Hostname, $this->User, $this->Password, $this->DatabaseName, $TableNameValue);
-							$this->DatabaseTable[$TableNameKey]->Connect();
+							if (!empty($TableNameKey)) {
+								$this->DatabaseTable[$TableNameKey]->setDatabaseAll($this->Hostname, $this->User, $this->Password, $this->DatabaseName, $TableNameValue);
+								$this->DatabaseTable[$TableNameKey]->Connect();
+							}
 						} catch (Exception $e) {
 							array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: ' . $e->getMessage() . '!');
+							return FALSE;
 						}
 					}
+					
 					return $this;
 				} else {
 					array_push($this->ErrorMessage,'ConnectAll: $this->DatabaseTable Must Be An Array!');
@@ -175,8 +178,7 @@ class DataAccessLayer extends LayerModulesAbstract
 				return $this;
 			} else {
 				array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: Key Doesn\'t Exist!');
-				
-				return new Exception('Key Doesn\'t Exist!');
+				throw new SoapFault("Connect", 'Key Doesn\'t Exist!');
 			}
 		} else {
 			array_push($this->ErrorMessage,'Connect: Key Cannot Be Null!');
@@ -195,9 +197,14 @@ class DataAccessLayer extends LayerModulesAbstract
 		if ($this->DatabaseTable != NULL) {
 			if (is_array($this->DatabaseTable)) {
 				foreach($this->DatabaseTable as $Key => $Value) {
-					$Return = $this->DatabaseTable[$Key]->Disconnect();
-					
-					if ($Return != TRUE) {
+					try {
+						$Return = $this->DatabaseTable[$Key]->Disconnect();
+						
+						if ($Return != TRUE) {
+							array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+							return FALSE;
+						}
+					} catch (SoapFault $E) {
 						array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
 						return FALSE;
 					}
@@ -228,7 +235,7 @@ class DataAccessLayer extends LayerModulesAbstract
 				$Return = $this->DatabaseTable[$Key]->Disconnect();
 			} else {
 				array_push($this->ErrorMessage,'Disconnect: Exception Thrown - Message: Key Doesn\'t Exist!');
-				return new Exception('Key Doesn\'t Exist!');
+				throw new SoapFault("Disconnect", 'Key Doesn\'t Exist!');
 			}
 			
 			if ($Return == TRUE) {
@@ -263,7 +270,7 @@ class DataAccessLayer extends LayerModulesAbstract
 					return $this;
 				} else {
 					array_push($this->ErrorMessage,'createDatabaseTable: Exception Thrown - Message: DatabaseTableName Has Already Been Set!');
-					return new Exception('DatabaseTableName Has Already Been Set!');
+					throw new SoapFault("createDatabaseTable", 'DatabaseTableName Has Already Been Set!');
 				}
 				
 			} else {
@@ -293,7 +300,7 @@ class DataAccessLayer extends LayerModulesAbstract
 					return $this;
 				} else {
 					array_push($this->ErrorMessage,'destroyDatabaseTable: Exception Thrown - Message: DatabaseTableName Has Not Been Set!');
-					return new Exception('DatabaseTableName Has Not Been Set!');
+					throw new SoapFault("destroyDatabaseTable", 'DatabaseTableName Has Not Been Set!');
 				}
 				
 			} else {
@@ -338,7 +345,9 @@ class DataAccessLayer extends LayerModulesAbstract
 							if ($hold2) {
 								return $hold2;
 							} else {
-								return $this;
+								return FALSE;
+								// NEEDS TO MAKE THIS WORK WITH ALL MODULES
+								//return $this;
 							}
 						} else {
 							array_push($this->ErrorMessage,'checkPass: $DatabaseTable MUST BE SET!');

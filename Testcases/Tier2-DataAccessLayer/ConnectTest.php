@@ -127,10 +127,14 @@
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, NULL, NULL, NULL);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable(NULL);
+			$Return = $this->Tier2Database->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier2Database->Connect(NULL);
+			$this->assertFalse($Return);
+			
+			$Return = $this->Tier2Database->destroyDatabaseTable(NULL);
 			$this->assertFalse($Return);
 		}
 		
@@ -147,11 +151,15 @@
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
+			$Return = $this->Tier2Database->Connect('TEST');
 			$this->assertFalse($Return);
+			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
@@ -168,11 +176,15 @@
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
+			$Return = $this->Tier2Database->Connect('TEST');
 			$this->assertFalse($Return);
+			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
@@ -189,11 +201,15 @@
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
+			$Return = $this->Tier2Database->Connect('TEST');
 			$this->assertFalse($Return);
+			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
@@ -210,13 +226,16 @@
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			//$this->expectException('Key Doesn\'t Exist!');
 			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
+			$Return = $this->Tier2Database->Connect(NULL);
 			$this->assertFalse($Return);
 			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 		}
 		
 		/**
@@ -232,11 +251,19 @@
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
 			$this->assertFalse($Return);
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
-			$Return = TRUE;
-			$Return = $this->Tier2Database->Connect('INVALID');
-			$this->assertIsA($Return, 'Exception');
+			try {
+				$Return = TRUE;
+				$Return = $this->Tier2Database->Connect('INVALID');
+			} catch (Exception $e) {
+				$this->pass();
+			}
+			//$this->assertIsA($Return, 'Exception');
+			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
@@ -253,11 +280,15 @@
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
-			$this->Tier2Database->setDatabaseTable($this->DatabaseName);
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$Return = NULL;
-			$Return = $this->Tier2Database->Connect($this->DatabaseName);
+			$Return = $this->Tier2Database->Connect('TEST');
 			
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}

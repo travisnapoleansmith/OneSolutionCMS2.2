@@ -1,4 +1,26 @@
-Changes For One Solution CMS 2.2.7 - Sunday, June 30, 2013 - 
+Changes For One Solution CMS 2.2.8 - Friday, July 5, 2013
+Added:
+	1). Added Testcases/Tier2-DataAccessLayer - SoapMethodsExistsTest.php - This test will test if all the methods exist in Tier 2 Data Acces Layer with SOAP.
+	2). Added Testcases/Tier2-DataAccessLayer - SoapSetDatabaseAllTest.php - This file is designed to test Tier 2's setDatabaseAll method with SOAP.
+	3). Added Testcases/Tier2-DataAccessLayer - SoapConnectAllTest.php - This file is designed to test Tier 2's ConnectAll method with SOAP.
+	4). Added Testcases/Tier2-DataAccessLayer - SoapConnectTest.php - This file is designed to test Tier 2's Connect method with SOAP.
+	5). Added Testcases/Tier2-DataAccessLayer - SoapDisconnectAllTest.php - This file is designed to test Tier 2's DisconnectAll method with SOAP.
+	6). Added Testcases/Tier2-DataAccessLayer - SoapDisconnectTest.php - This file is designed to test Tier 2's Disconnect method with SOAP. 
+	7). Added Testcases/Tier2-DataAccessLayer - SoapCreateDatabaseTableTest.php - This file is designed to test Tier 2's createDatabaseTable method with SOAP.
+	8). Added Testcases/Tier2-DataAccessLayer - SoapDestroyDatabaseTableTest.php - This file is designed to test Tier 2's destroyDatabaseTable method with SOAP.
+	9). Added Testcases/Tier2-DataAccessLayer - SoapPassTest.php - This file is designed to test Tier 2's Pass method with SOAP.
+	10). Added Tier2-DataAccessLayer - Added SOAP capabilities.
+	11). Added ClassMySqlConnect - Added SOAP capabilities.
+	
+Updated (Fixed):
+	1). Updated All 2.1 release files so they will work with the current system. All Testcases have been fixed.
+
+Removed:
+	1). Nothing Removed.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Changes For One Solution CMS 2.2.7 - Sunday, June 30, 2013 - 3:51:08 PM
 Added:
 	1). Nothing Added.
 	

@@ -22,7 +22,20 @@
 	* @version    2.1.141, 2013-01-14
 	*************************************************************************************
 	*/
-
+	ini_set("soap.wsdl_cache_enabled", 0); 
+	ini_set("session.auto_start", 0);
+	
+	if ($_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] != NULL) {
+		$HOME = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
+	} else {
+		if ($_SERVER['REAL_DOCUMENT_ROOT'] != NULL) {
+			$_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] = $_SERVER['REAL_DOCUMENT_ROOT'];
+			$HOME = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
+		} else {
+			$HOME = NULL;
+		}
+	}
+	
 	$HOME = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
 	// General Settings
 	require_once "$HOME/Configuration/settings.php";
@@ -30,38 +43,6 @@
 	$TOKENKEY = $GLOBALS['SETTINGS']['TIER CONFIGURATION']['TOKENKEY'];
 	$TOKEN = $_GET['Token'];
 
-	/*
-	require_once "../Libraries/GlobalLayer/GoogleOAuth/OAuthStore.php";
-	require_once "../Libraries/GlobalLayer/GoogleOAuth/OAuthServer.php";
-	//require_once "../Libraries/GlobalLayer/GoogleOAuth/OAuthRequester.php";
-
-	$Options = array('consumer_key' => "ABC1234", 'consumer_secret' => "1234ABC", 'token_secret' => "DOG");
-
-	$Store = OAuthStore::instance("2Leg", "Options");
-
-	$Server = new OAuthServer();
-
-	$Authorized == false;
-	try {
-		if ($Server->verifyIfSigned()) {
-			$Authorized = true;
-		}
-	} catch (OAuthException2 $E) {
-
-	}
-
-	if ($Authorized === true) {
-		print "DO THIS\n";
-	} else {
-		print "THIS ONE\n";
-	}
-	$Token = $Server->requestToken();
-	$HOLD = $Store->getSecretsForSignature(NULL, NULL);
-	print_r($HOLD);
-	//print_r($Store);
-	//print_r($Server);
-	*/
-	/*
 	if ($TOKEN === $TOKENKEY) {
 		// All Tier Abstract
 		require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
@@ -80,27 +61,29 @@
 
 		// Tier 2 Data Access Layer Settings
 		require_once "$HOME/Configuration/Tier2DataAccessLayerSettings.php";
-
+		
+		session_start();
+		
 		try {
-
-			$ServerLocation = $sitelink . '/Tier2-DataAccessLayer/';
-
-			$Server = new SoapServer(NULL, array('uri' => $ServerLocation, 'soap_version' => 'SOAP_1_2'));
-
+			$ServerLocation = $sitelink . 'Tier2-DataAccessLayer/';
+			
+			$Server = new SoapServer(NULL, array('uri' => $ServerLocation, 
+												/*'soap_version' => 'SOAP_1_2',*/
+												'encoding' => 'utf-8'));
+			
 			$Server->setClass('DataAccessLayer');
+			
 			$Server->setPersistence(SOAP_PERSISTENCE_SESSION);
-
+			
 			$Server->handle();
-
+			
 		} catch (SoapFault $E) {
 			error_log("SOAP ERROR: ". $E->getMessage());
 		}
-
+		
 	} else {
-		//header('WWW-Authenticate: Basic realm="My Realm"');
 		header('HTTP/1.0 401 Unauthorized');
-		//echo 'Text to send if user hits Cancel button';
 		exit;
 	}
-	*/
+	
 ?>
