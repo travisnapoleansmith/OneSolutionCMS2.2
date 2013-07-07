@@ -226,7 +226,7 @@ class ContentLayer extends LayerModulesAbstract
 	 * @param string $DatabaseName the name of the database needed to connect to database.
 	 * @access public
 	*/
-	public function setDatabaseAll ($Hostname, $User, $Password, $DatabaseName) {
+	/*public function setDatabaseAll ($Hostname, $User, $Password, $DatabaseName) {
 		$this->Hostname = $Hostname;
 		$this->User = $User;
 		$this->Password = $Password;
@@ -234,7 +234,7 @@ class ContentLayer extends LayerModulesAbstract
 
 		$this->LayerModule->setDatabaseAll ($Hostname, $User, $Password, $DatabaseName);
 
-	}
+	}*/
 
 	/**
 	 * setDatabaseTableName
@@ -287,9 +287,9 @@ class ContentLayer extends LayerModulesAbstract
 	 *
 	 * @access public
 	*/
-	public function ConnectAll () {
+	/*public function ConnectAll () {
 		$this->LayerModule->ConnectAll();
-	}
+	}*/
 
 	/**
 	 * Connect
@@ -299,9 +299,9 @@ class ContentLayer extends LayerModulesAbstract
 	 * @param string $DatabaseTable the name of the database table to connect to
 	 * @access public
 	*/
-	public function Connect ($DatabaseTable) {
+	/*public function Connect ($DatabaseTable) {
 		$this->LayerModule->Connect($DatabaseTable);
-	}
+	}*/
 
 	/**
 	 * DiscconnectAll
@@ -310,9 +310,9 @@ class ContentLayer extends LayerModulesAbstract
 	 *
 	 * @access public
 	*/
-	public function DisconnectAll () {
+	/*public function DisconnectAll () {
 		$this->LayerModule->DisconnectAll();
-	}
+	}*/
 
 	/**
 	 * Disconnect
@@ -322,9 +322,9 @@ class ContentLayer extends LayerModulesAbstract
 	 * @param string $DatabaseTable the name of the database table to disconnect from
 	 * @access public
 	*/
-	public function Disconnect ($DatabaseTable) {
+	/*public function Disconnect ($DatabaseTable) {
 		$this->LayerModule->Disconnect($DatabaseTable);
-	}
+	}*/
 
 	/**
 	 * buildDatabase
@@ -345,9 +345,9 @@ class ContentLayer extends LayerModulesAbstract
 	 * @param string $DatabaseTable the name of the database table to create a connection to
 	 * @access public
 	*/
-	public function createDatabaseTable($DatabaseTable) {
+	/*public function createDatabaseTable($DatabaseTable) {
 		$this->LayerModule->createDatabaseTable($DatabaseTable);
-	}
+	}*/
 
 	protected function checkPass($DatabaseTable, $function, $functionarguments) {
 		reset($this->Modules);

@@ -29,8 +29,9 @@
 	*/
 	require_once("$HOME/Testcases/SimpleTest/simpletest/autorun.php");
 	
-	// Tier 2 Settings
+	// Tier Settings
 	require_once "$HOME/Testcases/Configuration/Tier2DataAccessLayerSettings.php";
+	require_once "$HOME/Testcases/Configuration/Tier3ProtectionLayerSettings.php";
 	
 	// All Tier Abstract
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
@@ -39,18 +40,20 @@
 	require_once "$HOME/ModulesAbstract/Tier2DataAccessLayer/Tier2DataAccessLayerModulesAbstract.php";
 	
 	// Tiers Interface Includes
+	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 	require_once "$HOME/ModulesInterfaces/Tier2DataAccessLayer/Tier2DataAccessLayerModulesInterfaces.php";
 
 	// Tiers Includes
 	require_once "$HOME/Tier2-DataAccessLayer/ClassDataAccessLayer.php";
+	require_once "$HOME/Tier3-ProtectionLayer/ClassProtectionLayer.php";
 	
 	// Tier 2 Modules
 	require_once "$HOME/Modules/Tier2DataAccessLayer/Core/MySqlConnect/ClassMySqlConnect.php";
 	
 	/**
-	 * Tier 2 Creation Test
+	 * Tier 3 Creation Test
 	 *
-	 * This file is designed to create Tier 2.
+	 * This file is designed to create Tier 3.
 	 *
 	 * @author Travis Napolean Smith
 	 * @copyright Copyright (c) 1999 - 2013 One Solution CMS
@@ -59,33 +62,17 @@
 	 * @version PHP - 2.2.1
 	 * @version C++ - Unknown
  	*/
-	class Tier2CreationTest extends UnitTestCase {
-		
+	class Tier3CreationTest extends UnitTestCase {
 		/**
-		 * Tier2Database: DataAccessTier object for Tier 2
+		 * Tier3Database: ProtectionLayer object for Tier 3
 		 *
 		 * @var object
 		 */
-		private $Tier2Database;
+		private $Tier3Protection;
 		 
-		public function testTier2Creation () {
-			$this->Tier2Database = new DataAccessLayer();
-			$this->assertNotNull($this->Tier2Database);
+		public function testTier3CreationTest () {
+			$this->Tier3Protection = new ProtectionLayer();
+			$this->assertNotNull($this->Tier3Protection);
 		}
-		
-		/*function testMethods() {
-			$this->Tier2Database->setModules();
-			$this->Tier2Database->getModules(NULL);
-			$this->Tier2Database->setDatabaseAll(NULL, NULL, NULL, NULL);
-			$this->Tier2Database->ConnectAll();
-			$this->Tier2Database->Connect(NULL);
-			$this->Tier2Database->DisconnectAll();
-			$this->Tier2Database->Disconnect(NULL);
-			$this->Tier2Database->buildDatabase();
-			$this->Tier2Database->createDatabaseTable(NULL);
-			//$this->Tier2Database->checkPass(NULL, NULL, NULL);
-			$this->Tier2Database->pass(NULL, NULL, NULL);
-			$this->Tier2Database->buildModules(NULL, NULL, NULL);
-		}*/
 	}
 ?>

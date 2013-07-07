@@ -29,8 +29,9 @@
 	*/
 	require_once("$HOME/Testcases/SimpleTest/simpletest/autorun.php");
 	
-	// Tier 2 Settings
+	// Tier Settings
 	require_once "$HOME/Testcases/Configuration/Tier2DataAccessLayerSettings.php";
+	require_once "$HOME/Testcases/Configuration/Tier3ProtectionLayerSettings.php";
 	
 	// All Tier Abstract
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
@@ -39,18 +40,20 @@
 	require_once "$HOME/ModulesAbstract/Tier2DataAccessLayer/Tier2DataAccessLayerModulesAbstract.php";
 	
 	// Tiers Interface Includes
+	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 	require_once "$HOME/ModulesInterfaces/Tier2DataAccessLayer/Tier2DataAccessLayerModulesInterfaces.php";
 
 	// Tiers Includes
 	require_once "$HOME/Tier2-DataAccessLayer/ClassDataAccessLayer.php";
+	require_once "$HOME/Tier3-ProtectionLayer/ClassProtectionLayer.php";
 	
 	// Tier 2 Modules
 	require_once "$HOME/Modules/Tier2DataAccessLayer/Core/MySqlConnect/ClassMySqlConnect.php";
 	
 	/**
-	 * Tier 2 Destroy Database Table Test
+	 * Tier 2 Set Database All Test
 	 *
-	 * This file is designed to test Tier 2's destroyDatabaseTable method.
+	 * This file is designed to test Tier 2's setDatabaseAll method.
 	 *
 	 * @author Travis Napolean Smith
 	 * @copyright Copyright (c) 1999 - 2013 One Solution CMS
@@ -59,14 +62,14 @@
 	 * @version PHP - 2.2.1
 	 * @version C++ - Unknown
  	*/
-	class Tier2DestroyDatabaseTableTest extends UnitTestCase {
+	class Tier3SetDatabaseAllTest extends UnitTestCase {
 		
 		/**
-		 * Tier2Database: DataAccessTier object for Tier 2
+		 * Tier3Protection: ProtectionLayer object for Tier 3
 		 *
 		 * @var object
 		 */
-		private $Tier2Database;
+		private $Tier3Protection;
 		
 		/**
 		 * ServerName: String from Settings.ini file. Listing the Database's Server Name
@@ -97,11 +100,11 @@
 		private $DatabaseName;
 		
 		/**
-		 * Create an instance of Tier2DestroyDatabaseTableTest.
+		 * Create an instance of Tier3SetDatabaseAllTest.
 		 *
 		 * @access public
 		*/	
-		public function Tier2DestroyDatabaseTableTest () {
+		public function Tier3SetDatabaseAllTest () {
 			// Settings.ini File
 			$credentaillogonarray = $GLOBALS['credentaillogonarray'];
 			$this->ServerName = $credentaillogonarray[0];
@@ -109,77 +112,96 @@
 			$this->Password = $credentaillogonarray[2];
 			$this->DatabaseName = $credentaillogonarray[3];
 			
-			$this->Tier2Database = new DataAccessLayer();
+			$this->Tier3Protection = new ProtectionLayer();
 		}
 		
 		/**
-		 * testDestroyDatabaseTableNull
-		 * Tests if destroyDatabaseTable methods will accept Database Table Name as NULL. 
+		 * testSetDatabaseAllNull
+		 * Tests if setDatabaseAll methods will accept Hostame, User, Password and DatabaseName all as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testDestroyDatabaseTableNull() {
+		public function testSetDatabaseAllNull() {
 			$Return = TRUE;
-			$this->assertNotNull($this->Tier2Database);
+			$this->assertNotNull($this->Tier3Protection);
 			
-			$Return = $this->Tier2Database->destroyDatabaseTable(NULL);
+			$Return = $this->Tier3Protection->setDatabaseAll(NULL, NULL, NULL, NULL);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testDestroyDatabaseTableArray
-		 * Tests if destroyDatabaseTable methods will accept Database Table Name as an Array. 
+		 * testSetDatabaseAllHostnameNull
+		 * Tests if setDatabaseAll methods will accept Hostame as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testDestroyDatabaseTableArray() {
+		public function testSetDatabaseAllHostnameNull() {
 			$Return = TRUE;
-			$this->assertNotNull($this->Tier2Database);
+			$this->assertNotNull($this->Tier3Protection);
 			
-			$Array = array('TEST', 'TEST2');
-			$Return = $this->Tier2Database->destroyDatabaseTable($Array);
+			$Return = $this->Tier3Protection->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testDestroyDatabaseTableRepeatTable
-		 * Tests if destroyDatabaseTable methods will accept a tablename that has been destroyed. 
+		 * testSetDatabaseAllUserNull
+		 * Tests if setDatabaseAll methods will accept User as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testDestroyDatabaseTableRepeatTable() {
-			$Return = FALSE;
-			$this->assertNotNull($this->Tier2Database);
+		public function testSetDatabaseAllUserNull() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
 			
-			$Return = $this->Tier2Database->createDatabaseTable('REPEATTABLE');
-			$this->assertIsA($Return, 'DataAccessLayer');
-			
-			$Return = $this->Tier2Database->destroyDatabaseTable('REPEATTABLE');
-			$this->assertIsA($Return, 'DataAccessLayer');
-			
-			$this->expectException();
-			$Return = $this->Tier2Database->destroyDatabaseTable('REPEATTABLE');
-			//$this->assertIsA($Return, 'Exception');
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testDestroyDatabaseTableCorrectData
-		 * Tests if destroyDatabaseTable methods will accept all data correctly. 
+		 * testSetDatabaseAllPasswordNull
+		 * Tests if setDatabaseAll methods will accept Password as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testDestroyDatabaseTableCorrectData() {
+		public function testSetDatabaseAllPasswordNull() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSetDatabaseAllDatabaseNameNull
+		 * Tests if setDatabaseAll methods will accept DatabaseName as NULL. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllDatabaseNameNull() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSetDatabaseAllCorrectData
+		 * Tests if setDatabaseAll methods will accept all data correctly. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllCorrectData() {
 			$Return = FALSE;
-			$this->assertNotNull($this->Tier2Database);
+			$this->assertNotNull($this->Tier3Protection);
 			
-			$Return = $this->Tier2Database->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'DataAccessLayer');
-			
-			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'DataAccessLayer');
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'ProtectionLayer');
 			
 		}
 	}

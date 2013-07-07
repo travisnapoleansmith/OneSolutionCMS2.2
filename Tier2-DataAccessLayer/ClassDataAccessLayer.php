@@ -113,7 +113,7 @@ class DataAccessLayer extends LayerModulesAbstract
 			$this->DatabaseName = $DatabaseName;
 			return $this;
 		} else {
-			array_push($this->ErrorMessage,'setDatabaseAll: hostname, user, password or databasename Cannot Be Null!');
+			array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password or DatabaseName Cannot Be Null!');
 			return FALSE;
 		}
 	}
@@ -165,23 +165,28 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @access public
 	 */
 	public function Connect ($Key) {
-		if ($Key != NULL) {
-			if (isset($this->DatabaseTable[$Key])) {
-				try {
-					$this->DatabaseTable[$Key]->setDatabaseAll($this->Hostname, $this->User, $this->Password, $this->DatabaseName, $Key);
-					$this->DatabaseTable[$Key]->Connect();
-				} catch (Exception $E) {
-					array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: ' . $E->getMessage() . '!');
-					return FALSE;
-				} 
-				
-				return $this;
+		if ($this->Hostname != NULL & $this->User != NULL & $this->Password != NULL & $this->DatabaseName != NULL) {
+			if ($Key != NULL) {
+				if (isset($this->DatabaseTable[$Key])) {
+					try {
+						$this->DatabaseTable[$Key]->setDatabaseAll($this->Hostname, $this->User, $this->Password, $this->DatabaseName, $Key);
+						$this->DatabaseTable[$Key]->Connect();
+					} catch (Exception $E) {
+						array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: ' . $E->getMessage() . '!');
+						return FALSE;
+					} 
+					
+					return $this;
+				} else {
+					array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: Key Doesn\'t Exist!');
+					throw new SoapFault("Connect", 'Key Doesn\'t Exist!');
+				}
 			} else {
-				array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: Key Doesn\'t Exist!');
-				throw new SoapFault("Connect", 'Key Doesn\'t Exist!');
+				array_push($this->ErrorMessage,'Connect: Key Cannot Be Null!');
+				return FALSE;
 			}
 		} else {
-			array_push($this->ErrorMessage,'Connect: Key Cannot Be Null!');
+			array_push($this->ErrorMessage,'Connect: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be Null!');
 			return FALSE;
 		}
 	}

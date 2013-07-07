@@ -29,8 +29,9 @@
 	*/
 	require_once("$HOME/Testcases/SimpleTest/simpletest/autorun.php");
 	
-	// Tier 2 Settings
+	// Tier Settings
 	require_once "$HOME/Testcases/Configuration/Tier2DataAccessLayerSettings.php";
+	require_once "$HOME/Testcases/Configuration/Tier3ProtectionLayerSettings.php";
 	
 	// All Tier Abstract
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
@@ -39,18 +40,20 @@
 	require_once "$HOME/ModulesAbstract/Tier2DataAccessLayer/Tier2DataAccessLayerModulesAbstract.php";
 	
 	// Tiers Interface Includes
+	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 	require_once "$HOME/ModulesInterfaces/Tier2DataAccessLayer/Tier2DataAccessLayerModulesInterfaces.php";
 
 	// Tiers Includes
 	require_once "$HOME/Tier2-DataAccessLayer/ClassDataAccessLayer.php";
+	require_once "$HOME/Tier3-ProtectionLayer/ClassProtectionLayer.php";
 	
 	// Tier 2 Modules
 	require_once "$HOME/Modules/Tier2DataAccessLayer/Core/MySqlConnect/ClassMySqlConnect.php";
 	
 	/**
-	 * Tier 2 Creation Test
+	 * Tier 3 Methods Exists Test
 	 *
-	 * This file is designed to create Tier 2.
+	 * This file is designed to test if Tier 3's methods exists.
 	 *
 	 * @author Travis Napolean Smith
 	 * @copyright Copyright (c) 1999 - 2013 One Solution CMS
@@ -59,33 +62,43 @@
 	 * @version PHP - 2.2.1
 	 * @version C++ - Unknown
  	*/
-	class Tier2CreationTest extends UnitTestCase {
+	class Tier3MethodsTest extends UnitTestCase {
 		
 		/**
-		 * Tier2Database: DataAccessTier object for Tier 2
+		 * Tier3Protection: ProtectionLayer object for Tier 2
 		 *
 		 * @var object
 		 */
-		private $Tier2Database;
-		 
-		public function testTier2Creation () {
-			$this->Tier2Database = new DataAccessLayer();
-			$this->assertNotNull($this->Tier2Database);
+		private $Tier3Protection;
+		
+		/**
+		 * Create an instance of Tier3MethodsTest.
+		 *
+		 * @access public
+		*/	
+		public function Tier3MethodsTest () {
+			$this->Tier3Protection = new ProtectionLayer();
 		}
 		
-		/*function testMethods() {
-			$this->Tier2Database->setModules();
-			$this->Tier2Database->getModules(NULL);
-			$this->Tier2Database->setDatabaseAll(NULL, NULL, NULL, NULL);
-			$this->Tier2Database->ConnectAll();
-			$this->Tier2Database->Connect(NULL);
-			$this->Tier2Database->DisconnectAll();
-			$this->Tier2Database->Disconnect(NULL);
-			$this->Tier2Database->buildDatabase();
-			$this->Tier2Database->createDatabaseTable(NULL);
-			//$this->Tier2Database->checkPass(NULL, NULL, NULL);
-			$this->Tier2Database->pass(NULL, NULL, NULL);
-			$this->Tier2Database->buildModules(NULL, NULL, NULL);
-		}*/
+		/**
+		 * testMethodExists
+		 * Tests if all methods exists in ProtectionLayer
+		 *
+		 * @access public
+		*/
+		public function testMethodExists() {
+			$this->assertNotNull($this->Tier3Protection);
+			$this->assertTrue(method_exists($this->Tier3Protection, 'setModules'));
+			$this->assertTrue(method_exists($this->Tier3Protection, 'getModules'));
+			$this->assertTrue(method_exists($this->Tier3Protection, 'setDatabaseAll'));
+			$this->assertTrue(method_exists($this->Tier3Protection, 'ConnectAll'));
+			$this->assertTrue(method_exists($this->Tier3Protection, 'Connect'));
+			$this->assertTrue(method_exists($this->Tier3Protection, 'DisconnectAll'));
+			$this->assertTrue(method_exists($this->Tier3Protection, 'Disconnect'));
+			$this->assertTrue(method_exists($this->Tier3Protection, 'buildDatabase'));
+			$this->assertTrue(method_exists($this->Tier3Protection, 'createDatabaseTable'));
+			$this->assertTrue(method_exists($this->Tier3Protection, 'checkPass'));
+			$this->assertTrue(method_exists($this->Tier3Protection, 'pass'));
+		}
 	}
 ?>

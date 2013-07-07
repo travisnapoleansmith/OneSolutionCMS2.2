@@ -161,15 +161,346 @@ abstract class LayerModulesAbstract
 	public function getLayerModuleSetting () {
 		return $this->LayerModuleSetting;
 	}
-
-	public function setDatabaseAll ($hostname, $user, $password, $databasename, $databasetable) {
-		/*
-		$this->Hostname = $hostname;
-		$this->User = $user;
-		$this->Password = $password;
-		$this->DatabaseName = $databasename;*/
+	
+	// TIERS NEED
+	/**
+	 * setDatabaseAll
+	 *
+	 * Setter for Hostname, User, Password, Database name and Database table
+	 *
+	 * @param string $Hostname the name of the host needed to connect to database.
+	 * @param string $User the user account needed to connect to database.
+	 * @param string $Password the user's password needed to connect to database.
+	 * @param string $DatabaseName the name of the database needed to connect to database.
+	 * @access public
+	 */
+	public function setDatabaseAll ($Hostname, $User, $Password, $DatabaseName) {
+		if ($Hostname != NULL & $User != NULL & $Password != NULL & $DatabaseName != NULL) {
+			$this->Hostname = $Hostname;
+			$this->User = $User;
+			$this->Password = $Password;
+			$this->DatabaseName = $DatabaseName;
+			if ($this->LayerModuleOn === TRUE) {
+				if ($this->LayerModule != NULL) {
+					$this->LayerModule->setDatabaseAll ($Hostname, $User, $Password, $DatabaseName);
+				} else {
+					array_push($this->ErrorMessage,'setDatabaseAll: LayerModule Cannot Be Null!');
+					return FALSE;
+				}
+			} else {
+				if ($this->Client != NULL) {
+					$this->Client->setDatabaseAll ($Hostname, $User, $Password, $DatabaseName);
+				} else {
+					array_push($this->ErrorMessage,'setDatabaseAll: Client Cannot Be Null!');
+					return FALSE;
+				}
+			}
+			
+			return $this;
+		} else {
+			array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password or DatabaseName Cannot Be Null!');
+			return FALSE;
+		}
 	}
-
+	
+	// TIERS NEED
+	/**
+	 * ConnectAll
+	 *
+	 * Connects to all databases
+	 *
+	 * @access public
+	*/
+	public function ConnectAll () {
+		if ($this->Hostname != NULL & $this->User != NULL & $this->Password != NULL & $this->DatabaseName != NULL) {
+			try {
+				if ($this->LayerModuleOn === TRUE) {
+					if ($this->LayerModule != NULL) {
+						$this->LayerModule->ConnectAll();
+					} else {
+						array_push($this->ErrorMessage,'ConnectAll: LayerModule Cannot Be Null!');
+						return FALSE;
+					}
+				} else {
+					if ($this->Client != NULL) {
+						$this->Client->ConnectAll();
+					} else {
+						array_push($this->ErrorMessage,'ConnectAll: Client Cannot Be Null!');
+						return FALSE;
+					}
+				}
+			} catch (Exception $e) {
+				array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: ' . $e->getMessage() . '!');
+				return FALSE;
+			}
+		
+			return $this;
+		} else {
+			array_push($this->ErrorMessage,'ConnectAll: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be Null!');
+			return FALSE;
+		}
+	}
+	
+	// TIERS NEED
+	/**
+	 * Connect
+	 *
+	 * Connect to a database table
+	 *
+	 * @param string $DatabaseTable the name of the database table to connect to
+	 * @access public
+	 */
+	public function Connect ($Key) {
+		if ($this->Hostname != NULL & $this->User != NULL & $this->Password != NULL & $this->DatabaseName != NULL) {
+			if ($Key != NULL) {
+				try {
+					if ($this->LayerModuleOn === TRUE) {
+						if ($this->LayerModule != NULL) {
+							$Return = $this->LayerModule->Connect($Key);
+							if ($Return === FALSE) {
+								return FALSE;
+							}
+						 } else {
+							array_push($this->ErrorMessage,'Connect: LayerModule Cannot Be Null!');
+							return FALSE;
+						}
+					} else {
+						if ($this->Client != NULL) {
+							$Return = $this->Client->Connect($Key);
+							
+							if ($Return === FALSE) {
+								return FALSE;
+							}
+						} else {
+							array_push($this->ErrorMessage,'Connect: Client Cannot Be Null!');
+							return FALSE;
+						}
+					}
+				} catch (Exception $E) {
+					array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: ' . $E->getMessage() . '!');
+					return FALSE;
+				} 
+				
+				return $this;
+				
+			} else {
+				array_push($this->ErrorMessage,'Connect: Key Cannot Be Null!');
+				return FALSE;
+			}
+		} else {
+			array_push($this->ErrorMessage,'Connect: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be Null!');
+			return FALSE;
+		}
+	}
+	
+	// TIERS NEED
+	/**
+	 * DiscconnectAll
+	 *
+	 * Disconnects from all databases
+	 *
+	 * @access public
+	 */
+	 public function DisconnectAll () {
+		if ($this->LayerModuleOn === TRUE) {
+			if ($this->LayerModule != NULL) {
+				try {
+					$Return = $this->LayerModule->DisconnectAll();
+					
+					if ($Return != TRUE) {
+						array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+						return FALSE;
+					}
+				} catch (SoapFault $E) {
+					array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+					return FALSE;
+				}
+			} else {
+				array_push($this->ErrorMessage,'DisconnectAll: LayerModule Cannot Be Null!');
+				return FALSE;
+			}
+		} else {
+			if ($this->Client != NULL) {
+				try {
+					$Return = $this->Client->DisconnectAll();
+					
+					if ($Return != TRUE) {
+						array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+						return FALSE;
+					}
+				} catch (SoapFault $E) {
+					array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+					return FALSE;
+				}
+			} else {
+				array_push($this->ErrorMessage,'DisconnectAll: Client Cannot Be Null!');
+				return FALSE;
+			}
+		}
+		return $this;
+	}
+	
+	 // TIERS NEED
+	 /**
+	 * Disconnect
+	 *
+	 * Disconnection from a database table
+	 *
+	 * @param string $DatabaseTable the name of the database table to disconnect from
+	 * @access public
+	*/
+	public function Disconnect ($Key) {
+		if ($Key != NULL) {
+			if ($this->LayerModuleOn === TRUE) {
+				if ($this->LayerModule != NULL) {
+					try {
+						$Return = $this->LayerModule->Disconnect($Key);
+						
+						if ($Return == TRUE) {
+							return $this;
+						} else {
+							array_push($this->ErrorMessage,'Disconnect: Could Not Disconnect From Database!');
+							return FALSE;
+						}
+					} catch (SoapFault $E) {
+						array_push($this->ErrorMessage,'Disconnect: Could Not Disconnect From Database!');
+						return FALSE;
+					}
+				} else {
+					array_push($this->ErrorMessage,'Disconnect: LayerModule Cannot Be Null!');
+					return FALSE;
+				}
+			} else {
+				if ($this->Client != NULL) {
+					try {
+						$Return = $this->Client->Disconnect($Key);
+						
+						if ($Return == TRUE) {
+							return $this;
+						} else {
+							array_push($this->ErrorMessage,'Disconnect: Could Not Disconnect From Database!');
+							return FALSE;
+						}
+					} catch (SoapFault $E) {
+						array_push($this->ErrorMessage,'Disconnect: Could Not Disconnect From Database!');
+						return FALSE;
+					}
+				} else {
+					array_push($this->ErrorMessage,'Disconnect: Client Cannot Be Null!');
+					return FALSE;
+				}
+			}
+		} else {
+			array_push($this->ErrorMessage,'Disconnect: Key Cannot Be Null!');
+			return FALSE;
+		}
+	}
+	
+	// TIERS NEED
+	/**
+	 * createDatabaseTable
+	 *
+	 * Creates a connection for a database table
+	 *
+	 * @param string $DatabaseTable the name of the database table to create a connection to
+	 * @access public
+	 */
+	 public function createDatabaseTable($DatabaseTableName) {
+		if ($DatabaseTableName != NULL) {
+			if (!is_array($DatabaseTableName)) {
+				if ($this->LayerModuleOn === TRUE) {
+					if ($this->LayerModule != NULL) {
+						try {
+							$this->LayerModule->createDatabaseTable($DatabaseTableName);
+						} catch (SoapFault $E) {
+							throw new SoapFault("createDatabaseTable", $E->getMessage());
+						}
+					} else {
+						array_push($this->ErrorMessage,'createDatabaseTable: LayerModule Cannot Be Null!');
+						return FALSE;
+					}
+				} else {
+					if ($this->Client != NULL) {
+						try {
+							$this->Client->createDatabaseTable($DatabaseTableName);
+						} catch (SoapFault $E) {
+							throw new SoapFault("createDatabaseTable", $E->getMessage());
+						}
+					} else {
+						array_push($this->ErrorMessage,'createDatabaseTable: Client Cannot Be Null!');
+						return FALSE;
+					}
+				}
+				return $this;
+				
+			} else {
+				array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be An Array!');
+				return FALSE;
+			}
+		} else {
+			array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be Null!');
+			return FALSE;
+		}
+	}
+	
+	// TIERS NEED
+	/**
+	 * destroyDatabaseTable
+	 *
+	 * Destroys a database table object
+	 *
+	 * @param string $DatabaseTableName the name of the database table to destroy
+	 * @access public
+	 */
+	public function destroyDatabaseTable($DatabaseTableName) {
+		if ($DatabaseTableName != NULL) {
+			if (!is_array($DatabaseTableName)) {
+				if ($this->LayerModuleOn === TRUE) {
+					if ($this->LayerModule != NULL) {
+						try {
+							$Return = $this->LayerModule->destroyDatabaseTable($DatabaseTableName);
+							
+							if ($Return === FALSE) {
+								return FALSE;
+							} else {
+								return $this;
+							}
+						} catch (SoapFault $E) {
+							throw new SoapFault("destroyDatabaseTable", $E->getMessage());
+						}
+					} else {
+						array_push($this->ErrorMessage,'destroyDatabaseTable: LayerModule Cannot Be Null!');
+						return FALSE;
+					}
+				} else {
+					if ($this->Client != NULL) {
+						try {
+							$Return = $this->Client->destroyDatabaseTable($DatabaseTableName);
+							
+							if ($Return === FALSE) {
+								return FALSE;
+							} else {
+								return $this;
+							}
+						} catch (SoapFault $E) {
+							throw new SoapFault("destroyDatabaseTable", $E->getMessage());
+						}
+					} else {
+						array_push($this->ErrorMessage,'destroyDatabaseTable: Client Cannot Be Null!');
+						return FALSE;
+					}
+				}
+			} else {
+				array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be An Array!');
+				return FALSE;
+			}
+		} else {
+			array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be Null!');
+			return FALSE;
+		}
+	}
+	
+	/*
 	public function FetchDatabase ($idnumber) {
 
 	}
@@ -178,7 +509,7 @@ abstract class LayerModulesAbstract
 	}
 	public function getOutput() {
 
-	}
+	}*/
 
 	public function buildModules($LayerModuleTableName, $LayerTableName, $LayerModuleTableNameSetting) {
 		if ($this->SessionName) {
@@ -194,7 +525,11 @@ abstract class LayerModulesAbstract
 			//}
 
 			if ($this->LayerModuleOn === TRUE) {
-				$this->LayerModule->createDatabaseTable('Sessions');
+				try {
+					$this->LayerModule->createDatabaseTable('Sessions');
+				} catch (SoapFault $E) {
+				
+				}
 
 				$this->LayerModule->Connect('Sessions');
 				$this->LayerModule->pass ('Sessions', 'setDatabaseRow', array('idnumber' => $passarray));
@@ -203,7 +538,11 @@ abstract class LayerModulesAbstract
 				$this->SessionTypeName = $this->LayerModule->pass ('Sessions', 'getMultiRowField', array());
 				$this->SessionTypeName = $this->SessionTypeName[0];
 			} else {
-				$this->Client->createDatabaseTable('Sessions');
+				try {
+					$this->Client->createDatabaseTable('Sessions');
+				} catch (SoapFault $E) {
+				
+				}
 
 				$this->Client->Connect('Sessions');
 				$this->Client->pass ('Sessions', 'setDatabaseRow', array('idnumber' => $passarray));
@@ -224,13 +563,21 @@ abstract class LayerModulesAbstract
 		$this->createDatabaseTable($this->LayerTableName);
 
 		if ($this->LayerModuleOn === TRUE) {
-			$this->LayerModule->createDatabaseTable($this->LayerModuleTableNameSetting);
-			$this->LayerModule->createDatabaseTable($this->LayerModuleTableName);
-			$this->LayerModule->createDatabaseTable($this->LayerTableName);
+			try {
+				$this->LayerModule->createDatabaseTable($this->LayerModuleTableNameSetting);
+				$this->LayerModule->createDatabaseTable($this->LayerModuleTableName);
+				$this->LayerModule->createDatabaseTable($this->LayerTableName);
+			} catch (SoapFault $E) {
+				
+			}
 		} else {
-			$this->Client->createDatabaseTable($this->LayerModuleTableNameSetting);
-			$this->Client->createDatabaseTable($this->LayerModuleTableName);
-			$this->Client->createDatabaseTable($this->LayerTableName);
+			try {
+				$this->Client->createDatabaseTable($this->LayerModuleTableNameSetting);
+				$this->Client->createDatabaseTable($this->LayerModuleTableName);
+				$this->Client->createDatabaseTable($this->LayerTableName);
+			} catch (SoapFault $E) {
+				
+			}
 		}
 
 		$passarray = array();
@@ -337,8 +684,11 @@ abstract class LayerModulesAbstract
 								if (strstr($DatabaseTablesKey, 'DatabaseTable')) {
 									$DatabaseTableArray[$DatabaseTablesKey] = $DatabaseTableValue;
 									if (!empty($DatabaseTableValue)) {
-										$this->createDatabaseTable($DatabaseTableValue);
-										
+										try {
+											$this->createDatabaseTable($DatabaseTableValue);
+										} catch (SoapFault $E) {
+											
+										}
 										if ($this->SessionTypeName['SessionTypeName'] == $ObjectTypeName) {
 											$DatabaseOptionsName = $ObjectType;
 											$DatabaseOptionsName .= 'Session';

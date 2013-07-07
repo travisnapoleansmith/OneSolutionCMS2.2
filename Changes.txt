@@ -1,4 +1,27 @@
-Changes For One Solution CMS 2.2.8 - Friday, July 5, 2013
+Changes For One Solution CMS 2.2.9 - 
+Added:
+	1). Added Testcases/Tier3-ProtectionLayer - TierCreationTest.php - This test will test if Tier 3 Protection Layer gets create.
+	1). Added Testcases/Tier3-ProtectionLayer - MethodsExistsTest.php - This test will test if all the methods exist in Tier 3 Protection Layer.
+	2). Added Testcases/Tier3-ProtectionLayer - SetDatabaseAllTest.php - This file is designed to test Tier 3's setDatabaseAll method.
+	3). Added Testcases/Tier3-ProtectionLayer - ConnectAllTest.php - This file is designed to test Tier 3's ConnectAll method.
+	4). Added Testcases/Tier3-ProtectionLayer - ConnectTest.php - This file is designed to test Tier 3's Connect method.
+	5). Added Testcases/Tier3-ProtectionLayer - DisconnectAllTest.php - This file is designed to test Tier 3's DisconnectAll method.
+	6). Added Testcases/Tier3-ProtectionLayer - DisconnectTest.php - This file is designed to test Tier 3's Disconnect method. 
+	7). Added Testcases/Tier3-ProtectionLayer - CreateDatabaseTableTest.php - This file is designed to test Tier 3's createDatabaseTable method.
+	8). Added Testcases/Tier3-ProtectionLayer - DestroyDatabaseTableTest.php - This file is designed to test Tier 3's destroyDatabaseTable method.
+	9). Added Testcases/Tier3-ProtectionLayer - PassTest.php - This file is designed to test Tier 3's Pass method.
+	
+Updated (Fixed):
+	1). Updated All 2.1 release files so they will work with the current system. All Testcases have been fixed.
+	2). Updated Tier 3 Protection Tier to pass all testcases.
+	3). Updated LayerModulesAbstract so it will handle the bulk of each tier. All tiers minus Tier 2 have been updated.
+
+Removed:
+	1). Nothing Removed.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Changes For One Solution CMS 2.2.8 - Friday, July 5, 2013 - 9:08:50 PM
 Added:
 	1). Added Testcases/Tier2-DataAccessLayer - SoapMethodsExistsTest.php - This test will test if all the methods exist in Tier 2 Data Acces Layer with SOAP.
 	2). Added Testcases/Tier2-DataAccessLayer - SoapSetDatabaseAllTest.php - This file is designed to test Tier 2's setDatabaseAll method with SOAP.
