@@ -516,7 +516,12 @@ abstract class LayerModulesAbstract
 			reset($this->SessionName);
 			$passarray = array();
 			$passarray['SessionName'] = key($this->SessionName);
-			$this->createDatabaseTable('Sessions');
+			
+			/*try {
+				$this->LayerModule->createDatabaseTable('Sessions');
+			} catch (SoapFault $E) {
+			
+			}*/
 
 			//reset($this->Layers);
 			//while (current($this->Layers)) {

@@ -129,7 +129,8 @@ class ProtectionLayer extends LayerModulesAbstract
 	 * @param string $DatabaseName the name of the database needed to connect to database.
 	 * @access public
 	 */
-	/*public function setDatabaseAll ($hostname, $user, $password, $databasename) {
+	/*
+	public function setDatabaseAll ($hostname, $user, $password, $databasename) {
 		$this->Hostname = $hostname;
 		$this->User = $user;
 		$this->Password = $password;
@@ -181,7 +182,8 @@ class ProtectionLayer extends LayerModulesAbstract
 	 *
 	 * @access public
 	*/
-	/*public function ConnectAll () {
+	/*
+	public function ConnectAll () {
 		if ($this->LayerModuleOn === TRUE) {
 			$this->LayerModule->ConnectAll();
 		} else {
@@ -227,7 +229,8 @@ class ProtectionLayer extends LayerModulesAbstract
 	 * @param string $DatabaseTable the name of the database table to connect to
 	 * @access public
 	 */
-	/*public function Connect ($key) {
+	/*
+	public function Connect ($key) {
 		if ($this->LayerModuleOn === TRUE) {
 			$this->LayerModule->Connect($key);
 		} else {
@@ -285,7 +288,8 @@ class ProtectionLayer extends LayerModulesAbstract
 	 *
 	 * @access public
 	 */
-	/*public function DisconnectAll () {
+	/*
+	public function DisconnectAll () {
 		if ($this->LayerModuleOn === TRUE) {
 			$this->LayerModule->DisconnectAll();
 		} else {
@@ -340,7 +344,8 @@ class ProtectionLayer extends LayerModulesAbstract
 	 * @param string $DatabaseTable the name of the database table to disconnect from
 	 * @access public
 	*/
-	/*public function Disconnect ($key) {
+	/*
+	public function Disconnect ($key) {
 		if ($this->LayerModuleOn === TRUE) {
 			$this->LayerModule->Disconnect($key);
 		} else {
@@ -407,7 +412,8 @@ class ProtectionLayer extends LayerModulesAbstract
 	 * @param string $DatabaseTable the name of the database table to create a connection to
 	 * @access public
 	 */
-	/*public function createDatabaseTable($key) {
+	/*
+	public function createDatabaseTable($key) {
 		if ($this->LayerModuleOn === TRUE) {
 			try {
 				$this->LayerModule->createDatabaseTable($key);

@@ -403,7 +403,11 @@ class DataAccessLayer extends LayerModulesAbstract
 								return FALSE;
 							}
 						} else {
-							array_push($this->ErrorMessage,'pass: $DatabaseTable MUST BE SET!');
+							$Debug = debug_backtrace();
+							$Size = count($Debug);
+							$Size--;
+							$LastTrace = $Debug[$Size]['function'];
+							array_push($this->ErrorMessage,'pass: Function: ' . $Function . ' - $DatabaseTable MUST BE SET! ' . 'Last function: ' . $LastTrace);
 							return FALSE;
 						}
 					} else {

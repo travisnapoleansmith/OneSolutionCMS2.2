@@ -79,7 +79,12 @@ class ValidationLayer extends LayerModulesAbstract
 
 		$this->LayerModule = new AuthenticationLayer();
 		$this->LayerModule->setPriorLayerModule($this);
-		$this->LayerModule->createDatabaseTable('ContentLayer');
+		//try {
+			//$this->LayerModule->createDatabaseTable('ContentLayer');
+		//} catch (SoapFault $E) {
+			//return FALSE;
+		//}
+		//$this->LayerModule->createDatabaseTable('ContentLayer');
 		$this->LayerModule->setDatabaseAll ($credentaillogonarray[0], $credentaillogonarray[1], $credentaillogonarray[2], $credentaillogonarray[3], NULL);
 		$this->LayerModule->buildModules('AuthenticationLayerModules', 'AuthenticationLayerTables', 'AuthenticationLayerModulesSettings');
 
@@ -114,14 +119,15 @@ class ValidationLayer extends LayerModulesAbstract
 	 * @param string $DatabaseName the name of the database needed to connect to database.
 	 * @access public
 	 */
-	/*public function setDatabaseAll ($hostname, $user, $password, $databasename) {
+	//
+	public function setDatabaseAll ($hostname, $user, $password, $databasename) {
 		$this->Hostname = $hostname;
 		$this->User = $user;
 		$this->Password = $password;
 		$this->DatabaseName = $databasename;
 
 		$this->LayerModule->setDatabaseAll ($hostname, $user, $password, $databasename);
-	}*/
+	}
 
 	/**
 	 * ConnectAll
@@ -130,9 +136,10 @@ class ValidationLayer extends LayerModulesAbstract
 	 *
 	 * @access public
 	*/
-	/*public function ConnectAll () {
+	//
+	public function ConnectAll () {
 		$this->LayerModule->ConnectAll();
-	}*/
+	}
 
 	/**
 	 * Connect
@@ -142,9 +149,10 @@ class ValidationLayer extends LayerModulesAbstract
 	 * @param string $DatabaseTable the name of the database table to connect to
 	 * @access public
 	 */
-	/*public function Connect ($key) {
+	//
+	public function Connect ($key) {
 		$this->LayerModule->Connect($key);
-	}*/
+	}
 
 	/**
 	 * DiscconnectAll
@@ -153,9 +161,10 @@ class ValidationLayer extends LayerModulesAbstract
 	 *
 	 * @access public
 	 */
-	/*public function DisconnectAll () {
+	//
+	public function DisconnectAll () {
 		$this->LayerModule->DisconnectAll();
-	}*/
+	}
 
 	/**
 	 * Disconnect
@@ -165,9 +174,10 @@ class ValidationLayer extends LayerModulesAbstract
 	 * @param string $DatabaseTable the name of the database table to disconnect from
 	 * @access public
 	*/
-	/*public function Disconnect ($key) {
+	//
+	public function Disconnect ($key) {
 		$this->LayerModule->Disconnect($key);
-	}*/
+	}
 
 	public function buildDatabase() {
 
@@ -181,9 +191,14 @@ class ValidationLayer extends LayerModulesAbstract
 	 * @param string $DatabaseTable the name of the database table to create a connection to
 	 * @access public
 	 */
-	/*public function createDatabaseTable($key) {
-		$this->LayerModule->createDatabaseTable($key);
-	}*/
+	
+	public function createDatabaseTable($DatabaseTableName) {
+		try {
+			$this->LayerModule->createDatabaseTable($DatabaseTableName);
+		} catch (SoapFault $E) {
+			return FALSE;
+		}
+	}
 
 	protected function checkPass($DatabaseTable, $function, $functionarguments) {
 		reset($this->Modules);
