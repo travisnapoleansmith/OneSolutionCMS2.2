@@ -32,17 +32,23 @@
 	// Tier 2 Settings
 	require_once "$HOME/Testcases/Configuration/Tier2DataAccessLayerSettings.php";
 	
+	// Tier 3 Protection Layer Settings
+	require_once "$HOME/Configuration/Tier3ProtectionLayerSettings.php";
+	
 	// All Tier Abstract
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
 	
 	// Tiers Modules Abstract
 	require_once "$HOME/ModulesAbstract/Tier2DataAccessLayer/Tier2DataAccessLayerModulesAbstract.php";
+	require_once "$HOME/ModulesAbstract/Tier3ProtectionLayer/Tier3ProtectionLayerModulesAbstract.php";
 	
 	// Tiers Interface Includes
 	require_once "$HOME/ModulesInterfaces/Tier2DataAccessLayer/Tier2DataAccessLayerModulesInterfaces.php";
+	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 
 	// Tiers Includes
 	require_once "$HOME/Tier2-DataAccessLayer/ClassDataAccessLayer.php";
+	require_once "$HOME/Tier3-ProtectionLayer/ClassProtectionLayer.php";
 	
 	// Tier 2 Modules
 	require_once "$HOME/Modules/Tier2DataAccessLayer/Core/MySqlConnect/ClassMySqlConnect.php";
@@ -113,32 +119,65 @@
 		}
 		
 		/**
-		 * testCreateDatabaseTablelNull
+		 * testCreateDatabaseTablelAsNull
 		 * Tests if createDatabaseTable methods will accept Database Table Name as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testCreateDatabaseTableNull() {
+		public function testCreateDatabaseTableAsNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable(NULL);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testCreateDatabaseTablelArray
+		 * testCreateDatabaseTablelAsArray
 		 * Tests if createDatabaseTable methods will accept Database Table Name as an Array. 
 		 *
 		 * @access public
 		*/
-		public function testCreateDatabaseTableArray() {
+		public function testCreateDatabaseTableAsArray() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
 			$Array = array('TEST', 'TEST2');
+			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable($Array);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable($Array);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testCreateDatabaseTablelAsObject
+		 * Tests if createDatabaseTable methods will accept Database Table Name as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testCreateDatabaseTableAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable($Object);
 			$this->assertFalse($Return);
 			
 		}
@@ -153,10 +192,12 @@
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('REPEATTABLE');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 			$this->expectException();
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('REPEATTABLE');
 			//$this->assertIsA($Return, 'Exception');
 			
@@ -172,6 +213,7 @@
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			

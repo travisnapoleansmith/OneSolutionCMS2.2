@@ -34,15 +34,29 @@
 	}
 	
 	$HOME = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
+
+	global $HOST;
+	
+	if ($_SERVER['HTTP_HOST'] != NULL) {
+		$HOST = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+	} else if ($_SERVER['DOMAIN_NAME'] != NULL) {
+		$HOST = 'http://' . $_SERVER['DOMAIN_NAME'] . '/';
+	} else if ($_SERVER['SERVER_NAME'] != NULL) {
+		$HOST = 'http://' . $_SERVER['SERVER_NAME'] . '/';
+	} else {
+		$HOST = NULL;
+	}
 	// General Settings
 	//require_once "$HOME/Configuration/settings.php";
 	ini_set('session.auto_start', 0);
 	
-	function SetupSoap() {
+	function Tier2SetupSoap() {
+		$HOST = $GLOBALS['HOST'];
+		
 		$TOKENKEY = $GLOBALS['SETTINGS']['TIER CONFIGURATION']['TOKENKEY'];
 		
-		$Location = 'http://version2-2beta.onesolutioncms.com/Tier2-DataAccessLayer/SoapServerDataAccessLayer.php?Token=' . $TOKENKEY;
-		$Uri = 'http://version2-2beta.onesolutioncms.com/';
+		$Location = $HOST . 'Tier2-DataAccessLayer/SoapServerDataAccessLayer.php?Token=' . $TOKENKEY;
+		$Uri = $HOST;
 		$Tier2DataAccessLayerClient = new SoapClient(NULL, array('location' => $Location,
 											'uri' => $Uri,
 											'soap_version' => SOAP_1_2, 

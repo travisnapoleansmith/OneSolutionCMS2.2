@@ -90,32 +90,32 @@ abstract class LayerModulesAbstract
 		return $this->ObjectID;
 	}
 
-	public function setHostname ($hostname){
-		$this->Hostname = $hostname;
+	public function setHostname ($Hostname){
+		$this->Hostname = $Hostname;
 	}
 
 	public function getHostname () {
 		return $this->Hostname;
 	}
 
-	public function setUser ($user){
-		$this->User = $user;
+	public function setUser ($User){
+		$this->User = $User;
 	}
 
 	public function getUser () {
 		return $this->User;
 	}
 
-	public function setPassword ($password){
-		$this->Password = $password;
+	public function setPassword ($Password){
+		$this->Password = $Password;
 	}
 
 	public function getPassword () {
 		return $this->Password;
 	}
 
-	public function setDatabaseName ($databasename){
-		$this->DatabaseName = $databasename;
+	public function setDatabaseName ($DatabaseName){
+		$this->DatabaseName = $DatabaseName;
 	}
 
 	public function getDatabaseName () {
@@ -126,8 +126,8 @@ abstract class LayerModulesAbstract
 		return $this->OneSolutionCMSVersion;
 	}
 
-	public function setDatabasetable ($databasetable){
-		$this->DatabaseTable[$databasetable] =  new MySqlConnect();
+	public function setDatabasetable ($DatabaseTable){
+		$this->DatabaseTable[$DatabaseTable] =  new MySqlConnect();
 	}
 
 	public function getDatabaseTable() {
@@ -138,16 +138,16 @@ abstract class LayerModulesAbstract
 		return $this->Space;
 	}
 
-	public function getError ($idnumber) {
-		return $this->ErrorMessage[$idnumber];
+	public function getError ($IDNumber) {
+		return $this->ErrorMessage[$IDNumber];
 	}
 
 	public function getErrorArray() {
 		return $this->ErrorMessage;
 	}
 
-	public function setModulesLocation ($moduleslocation){
-		$this->ModulesLocation = $moduleslocation;
+	public function setModulesLocation ($ModulesLocation){
+		$this->ModulesLocation = $ModulesLocation;
 	}
 
 	public function getModulesLocation () {
@@ -176,6 +176,37 @@ abstract class LayerModulesAbstract
 	 */
 	public function setDatabaseAll ($Hostname, $User, $Password, $DatabaseName) {
 		if ($Hostname != NULL & $User != NULL & $Password != NULL & $DatabaseName != NULL) {
+			if (is_array($Hostname) === TRUE | is_array($User) === TRUE | is_array($Password) === TRUE | is_array($DatabaseName) === TRUE) {
+				$this->Hostname = NULL;
+				$this->User = NULL;
+				$this->Password = NULL;
+				$this->DatabaseName = NULL;
+				
+				array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password or DatabaseName Cannot Be An Array!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+			
+			if (is_object($Hostname) === TRUE | is_object($User) === TRUE | is_object($Password) === TRUE | is_object($DatabaseName) === TRUE) {
+				$this->Hostname = NULL;
+				$this->User = NULL;
+				$this->Password = NULL;
+				$this->DatabaseName = NULL;
+				array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password or DatabaseName Cannot Be An Object!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+			
+			if (is_resource($Hostname) === TRUE | is_resource($User) === TRUE | is_resource($Password) === TRUE | is_resource($DatabaseName) === TRUE) {
+				$this->Hostname = NULL;
+				$this->User = NULL;
+				$this->Password = NULL;
+				$this->DatabaseName = NULL;
+				array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password or DatabaseName Cannot Be A Resource!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+			
 			$this->Hostname = $Hostname;
 			$this->User = $User;
 			$this->Password = $Password;
@@ -185,6 +216,7 @@ abstract class LayerModulesAbstract
 					$this->LayerModule->setDatabaseAll ($Hostname, $User, $Password, $DatabaseName);
 				} else {
 					array_push($this->ErrorMessage,'setDatabaseAll: LayerModule Cannot Be Null!');
+					$BackTrace = debug_backtrace(FALSE);
 					return FALSE;
 				}
 			} else {
@@ -192,6 +224,7 @@ abstract class LayerModulesAbstract
 					$this->Client->setDatabaseAll ($Hostname, $User, $Password, $DatabaseName);
 				} else {
 					array_push($this->ErrorMessage,'setDatabaseAll: Client Cannot Be Null!');
+					$BackTrace = debug_backtrace(FALSE);
 					return FALSE;
 				}
 			}
@@ -199,6 +232,7 @@ abstract class LayerModulesAbstract
 			return $this;
 		} else {
 			array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password or DatabaseName Cannot Be Null!');
+			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
 	}
@@ -213,30 +247,64 @@ abstract class LayerModulesAbstract
 	*/
 	public function ConnectAll () {
 		if ($this->Hostname != NULL & $this->User != NULL & $this->Password != NULL & $this->DatabaseName != NULL) {
+			if (is_array($this->Hostname) === TRUE | is_array($this->User) === TRUE | is_array($this->Password) === TRUE | is_array($this->DatabaseName) === TRUE) {
+				$BackTrace = debug_backtrace(FALSE);
+				array_push($this->ErrorMessage,'ConnectAll: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be An Array!');
+				return FALSE;
+			}
+			
+			if (is_object($this->Hostname) === TRUE| is_object($this->User) === TRUE | is_object($this->Password) === TRUE | is_object($this->DatabaseName) === TRUE) {
+				$BackTrace = debug_backtrace(FALSE);
+				array_push($this->ErrorMessage,'ConnectAll: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be An Object!');
+				return FALSE;
+			}
+			
+			if (is_resource($this->Hostname) === TRUE| is_resource($this->User) === TRUE | is_resource($this->Password) === TRUE | is_resource($this->DatabaseName) === TRUE) {
+				$BackTrace = debug_backtrace(FALSE);
+				array_push($this->ErrorMessage,'ConnectAll: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be A Resource!');
+				return FALSE;
+			}
+			
 			try {
-				if ($this->LayerModuleOn === TRUE) {
-					if ($this->LayerModule != NULL) {
-						$this->LayerModule->ConnectAll();
+				if (is_array($this->DatabaseTable) === TRUE) {
+					if (empty($this->DatabaseTable) === FALSE) {
+						if ($this->LayerModuleOn === TRUE) {
+							if ($this->LayerModule != NULL) {
+								$this->LayerModule->ConnectAll();
+							} else {
+								array_push($this->ErrorMessage,'ConnectAll: LayerModule Cannot Be Null!');
+								$BackTrace = debug_backtrace(FALSE);
+								return FALSE;
+							}
+						} else {
+							if ($this->Client != NULL) {
+								$this->Client->ConnectAll();
+							} else {
+								array_push($this->ErrorMessage,'ConnectAll: Client Cannot Be Null!');
+								$BackTrace = debug_backtrace(FALSE);
+								return FALSE;
+							}
+						}
 					} else {
-						array_push($this->ErrorMessage,'ConnectAll: LayerModule Cannot Be Null!');
+						array_push($this->ErrorMessage,'ConnectAll: $this->DatabaseTable Is An Array But Is Empty!');
+						$BackTrace = debug_backtrace(FALSE);
 						return FALSE;
 					}
 				} else {
-					if ($this->Client != NULL) {
-						$this->Client->ConnectAll();
-					} else {
-						array_push($this->ErrorMessage,'ConnectAll: Client Cannot Be Null!');
-						return FALSE;
-					}
+					array_push($this->ErrorMessage,'ConnectAll: $this->DatabaseTable Must Be An Array!');
+					$BackTrace = debug_backtrace(FALSE);
+					return FALSE;
 				}
 			} catch (Exception $e) {
 				array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: ' . $e->getMessage() . '!');
+				$BackTrace = debug_backtrace(FALSE);
 				return FALSE;
 			}
 		
 			return $this;
 		} else {
 			array_push($this->ErrorMessage,'ConnectAll: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be Null!');
+			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
 	}
@@ -252,6 +320,24 @@ abstract class LayerModulesAbstract
 	 */
 	public function Connect ($Key) {
 		if ($this->Hostname != NULL & $this->User != NULL & $this->Password != NULL & $this->DatabaseName != NULL) {
+			if (is_array($this->HostName) === TRUE| is_array($this->User) === TRUE | is_array($this->Password) === TRUE | is_array($this->DatabaseName) === TRUE) {
+				$BackTrace = debug_backtrace(FALSE);
+				array_push($this->ErrorMessage,'Connect: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be An Array!');
+				return FALSE;
+			}
+			
+			if (is_object($this->HostName) === TRUE| is_object($this->User) === TRUE | is_object($this->Password) === TRUE | is_object($this->DatabaseName) === TRUE) {
+				$BackTrace = debug_backtrace(FALSE);
+				array_push($this->ErrorMessage,'Connect: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be An Object!');
+				return FALSE;
+			}
+			
+			if (is_resource($this->HostName) === TRUE| is_resource($this->User) === TRUE | is_resource($this->Password) === TRUE | is_resource($this->DatabaseName) === TRUE) {
+				$BackTrace = debug_backtrace(FALSE);
+				array_push($this->ErrorMessage,'Connect: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be A Resource!');
+				return FALSE;
+			}
+			
 			if ($Key != NULL) {
 				try {
 					if ($this->LayerModuleOn === TRUE) {
@@ -262,6 +348,7 @@ abstract class LayerModulesAbstract
 							}
 						 } else {
 							array_push($this->ErrorMessage,'Connect: LayerModule Cannot Be Null!');
+							$BackTrace = debug_backtrace(FALSE);
 							return FALSE;
 						}
 					} else {
@@ -273,11 +360,13 @@ abstract class LayerModulesAbstract
 							}
 						} else {
 							array_push($this->ErrorMessage,'Connect: Client Cannot Be Null!');
+							$BackTrace = debug_backtrace(FALSE);
 							return FALSE;
 						}
 					}
 				} catch (Exception $E) {
 					array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: ' . $E->getMessage() . '!');
+					$BackTrace = debug_backtrace(FALSE);
 					return FALSE;
 				} 
 				
@@ -285,10 +374,12 @@ abstract class LayerModulesAbstract
 				
 			} else {
 				array_push($this->ErrorMessage,'Connect: Key Cannot Be Null!');
+				$BackTrace = debug_backtrace(FALSE);
 				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'Connect: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be Null!');
+			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
 	}
@@ -309,14 +400,17 @@ abstract class LayerModulesAbstract
 					
 					if ($Return != TRUE) {
 						array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+						$BackTrace = debug_backtrace(FALSE);
 						return FALSE;
 					}
 				} catch (SoapFault $E) {
 					array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+					$BackTrace = debug_backtrace(FALSE);
 					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'DisconnectAll: LayerModule Cannot Be Null!');
+				$BackTrace = debug_backtrace(FALSE);
 				return FALSE;
 			}
 		} else {
@@ -326,14 +420,17 @@ abstract class LayerModulesAbstract
 					
 					if ($Return != TRUE) {
 						array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+						$BackTrace = debug_backtrace(FALSE);
 						return FALSE;
 					}
 				} catch (SoapFault $E) {
 					array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+					$BackTrace = debug_backtrace(FALSE);
 					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'DisconnectAll: Client Cannot Be Null!');
+				$BackTrace = debug_backtrace(FALSE);
 				return FALSE;
 			}
 		}
@@ -351,6 +448,25 @@ abstract class LayerModulesAbstract
 	*/
 	public function Disconnect ($Key) {
 		if ($Key != NULL) {
+			$Return = NULL;
+			if (is_array($Key) === TRUE) {
+				array_push($this->ErrorMessage,'Disconnect: Key Cannot Be An Array!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+			
+			if (is_object($Key) === TRUE) {
+				array_push($this->ErrorMessage,'Disconnect: Key Cannot Be An Object!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+			
+			if (is_resource($Key) === TRUE) {
+				array_push($this->ErrorMessage,'Disconnect: Key Cannot Be A Resource!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+			
 			if ($this->LayerModuleOn === TRUE) {
 				if ($this->LayerModule != NULL) {
 					try {
@@ -360,14 +476,17 @@ abstract class LayerModulesAbstract
 							return $this;
 						} else {
 							array_push($this->ErrorMessage,'Disconnect: Could Not Disconnect From Database!');
+							$BackTrace = debug_backtrace(FALSE);
 							return FALSE;
 						}
 					} catch (SoapFault $E) {
 						array_push($this->ErrorMessage,'Disconnect: Could Not Disconnect From Database!');
+						$BackTrace = debug_backtrace(FALSE);
 						return FALSE;
 					}
 				} else {
 					array_push($this->ErrorMessage,'Disconnect: LayerModule Cannot Be Null!');
+					$BackTrace = debug_backtrace(FALSE);
 					return FALSE;
 				}
 			} else {
@@ -379,19 +498,23 @@ abstract class LayerModulesAbstract
 							return $this;
 						} else {
 							array_push($this->ErrorMessage,'Disconnect: Could Not Disconnect From Database!');
+							$BackTrace = debug_backtrace(FALSE);
 							return FALSE;
 						}
 					} catch (SoapFault $E) {
 						array_push($this->ErrorMessage,'Disconnect: Could Not Disconnect From Database!');
+						$BackTrace = debug_backtrace(FALSE);
 						return FALSE;
 					}
 				} else {
 					array_push($this->ErrorMessage,'Disconnect: Client Cannot Be Null!');
+					$BackTrace = debug_backtrace(FALSE);
 					return FALSE;
 				}
 			}
 		} else {
 			array_push($this->ErrorMessage,'Disconnect: Key Cannot Be Null!');
+			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
 	}
@@ -407,38 +530,57 @@ abstract class LayerModulesAbstract
 	 */
 	 public function createDatabaseTable($DatabaseTableName) {
 		if ($DatabaseTableName != NULL) {
-			if (!is_array($DatabaseTableName)) {
-				if ($this->LayerModuleOn === TRUE) {
-					if ($this->LayerModule != NULL) {
-						try {
-							$this->LayerModule->createDatabaseTable($DatabaseTableName);
-						} catch (SoapFault $E) {
-							throw new SoapFault("createDatabaseTable", $E->getMessage());
+			if (is_array($DatabaseTableName) === FALSE) {
+				if (is_object($DatabaseTableName) === FALSE) {
+					if (is_resource($DatabaseTableName) === FALSE) {
+						if ($this->LayerModuleOn === TRUE) {
+							if ($this->LayerModule != NULL) {
+								try {
+									$this->setDatabasetable($DatabaseTableName);
+									$this->LayerModule->createDatabaseTable($DatabaseTableName);
+								} catch (SoapFault $E) {
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("createDatabaseTable", $E->getMessage());
+								}
+							} else {
+								array_push($this->ErrorMessage,'createDatabaseTable: LayerModule Cannot Be Null!');
+								$BackTrace = debug_backtrace(FALSE);
+								return FALSE;
+							}
+						} else {
+							if ($this->Client != NULL) {
+								try {
+									$this->Client->createDatabaseTable($DatabaseTableName);
+								} catch (SoapFault $E) {
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("createDatabaseTable", $E->getMessage());
+								}
+							} else {
+								array_push($this->ErrorMessage,'createDatabaseTable: Client Cannot Be Null!');
+								$BackTrace = debug_backtrace(FALSE);
+								return FALSE;
+							}
 						}
+						return $this;
 					} else {
-						array_push($this->ErrorMessage,'createDatabaseTable: LayerModule Cannot Be Null!');
+						array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be A Resource!');
+						$BackTrace = debug_backtrace(FALSE);
 						return FALSE;
 					}
 				} else {
-					if ($this->Client != NULL) {
-						try {
-							$this->Client->createDatabaseTable($DatabaseTableName);
-						} catch (SoapFault $E) {
-							throw new SoapFault("createDatabaseTable", $E->getMessage());
-						}
-					} else {
-						array_push($this->ErrorMessage,'createDatabaseTable: Client Cannot Be Null!');
-						return FALSE;
-					}
+					array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be An Object!');
+					$BackTrace = debug_backtrace(FALSE);
+					return FALSE;
 				}
-				return $this;
 				
 			} else {
 				array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be An Array!');
+				$BackTrace = debug_backtrace(FALSE);
 				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be Null!');
+			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
 	}
@@ -454,48 +596,66 @@ abstract class LayerModulesAbstract
 	 */
 	public function destroyDatabaseTable($DatabaseTableName) {
 		if ($DatabaseTableName != NULL) {
-			if (!is_array($DatabaseTableName)) {
-				if ($this->LayerModuleOn === TRUE) {
-					if ($this->LayerModule != NULL) {
-						try {
-							$Return = $this->LayerModule->destroyDatabaseTable($DatabaseTableName);
-							
-							if ($Return === FALSE) {
-								return FALSE;
+			if (is_array($DatabaseTableName) === FALSE) {
+				if (is_object($DatabaseTableName) === FALSE) {
+					if (is_resource($DatabaseTableName) === FALSE) {
+						if ($this->LayerModuleOn === TRUE) {
+							if ($this->LayerModule != NULL) {
+								try {
+									$Return = $this->LayerModule->destroyDatabaseTable($DatabaseTableName);
+									
+									if ($Return === FALSE) {
+										return FALSE;
+									} else {
+										return $this;
+									}
+								} catch (SoapFault $E) {
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("destroyDatabaseTable", $E->getMessage());
+								}
 							} else {
-								return $this;
+								array_push($this->ErrorMessage,'destroyDatabaseTable: LayerModule Cannot Be Null!');
+								$BackTrace = debug_backtrace(FALSE);
+								return FALSE;
 							}
-						} catch (SoapFault $E) {
-							throw new SoapFault("destroyDatabaseTable", $E->getMessage());
+						} else {
+							if ($this->Client != NULL) {
+								try {
+									$Return = $this->Client->destroyDatabaseTable($DatabaseTableName);
+									
+									if ($Return === FALSE) {
+										return FALSE;
+									} else {
+										return $this;
+									}
+								} catch (SoapFault $E) {
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("destroyDatabaseTable", $E->getMessage());
+								}
+							} else {
+								array_push($this->ErrorMessage,'destroyDatabaseTable: Client Cannot Be Null!');
+								$BackTrace = debug_backtrace(FALSE);
+								return FALSE;
+							}
 						}
 					} else {
-						array_push($this->ErrorMessage,'destroyDatabaseTable: LayerModule Cannot Be Null!');
+						array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be A Resource!');
+						$BackTrace = debug_backtrace(FALSE);
 						return FALSE;
 					}
 				} else {
-					if ($this->Client != NULL) {
-						try {
-							$Return = $this->Client->destroyDatabaseTable($DatabaseTableName);
-							
-							if ($Return === FALSE) {
-								return FALSE;
-							} else {
-								return $this;
-							}
-						} catch (SoapFault $E) {
-							throw new SoapFault("destroyDatabaseTable", $E->getMessage());
-						}
-					} else {
-						array_push($this->ErrorMessage,'destroyDatabaseTable: Client Cannot Be Null!');
-						return FALSE;
-					}
+					array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be An Object!');
+					$BackTrace = debug_backtrace(FALSE);
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be An Array!');
+				$BackTrace = debug_backtrace(FALSE);
 				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be Null!');
+			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
 	}
@@ -662,6 +822,7 @@ abstract class LayerModulesAbstract
 									if (is_file($ModulesFile)) {
 										require_once($ModulesFile);
 									} else {
+										$BackTrace = debug_backtrace(FALSE);
 										array_push($this->ErrorMessage,"buildModules: Module filename - $ModulesFile does not exist!");
 									}
 									
@@ -727,6 +888,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'buildModules: Module Tablename is not set!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1028,6 +1190,7 @@ abstract class LayerModulesAbstract
 
 		} else {
 			array_push($this->ErrorMessage,'updateModuleContent: PageID and DatabaseTableName cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1086,6 +1249,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'deleteModuleContent: PageID and DatabaseTableName cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1141,6 +1305,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'enableModuleContent: PageID and DatabaseTableName cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1199,6 +1364,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'disableModuleContent: PageID and DatabaseTableName cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1257,6 +1423,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'approvedModuleContent: PageID and DatabaseTableName cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1314,6 +1481,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'notApprovedModuleContent: PageID and DatabaseTableName cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1372,6 +1540,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'spamModuleContent: PageID and DatabaseTableName cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1430,6 +1599,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'pendingModuleContent: PageID and DatabaseTableName cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1472,9 +1642,11 @@ abstract class LayerModulesAbstract
 				
 			} else {
 				array_push($this->ErrorMessage,'upgradeDatabase: Filename DOES NOT EXIST!');
+				$BackTrace = debug_backtrace(FALSE);
 			}
 		} else {
 			array_push($this->ErrorMessage,'upgradeDatabase: Filename CANNOT BE EMPTY!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1487,15 +1659,19 @@ abstract class LayerModulesAbstract
 						system ($SqlFileCommand);
 					} else {
 						array_push($this->ErrorMessage,'backupDatabase: Filename EXISTS!');
+						$BackTrace = debug_backtrace(FALSE);
 					}
 				} else {
 					array_push($this->ErrorMessage,'backupDatabase: DirectoryName DOES NOT EXIST!');
+					$BackTrace = debug_backtrace(FALSE);
 				}
 			} else {
 				array_push($this->ErrorMessage,'backupDatabase: DirectoryName CANNOT BE EMPTY!');
+				$BackTrace = debug_backtrace(FALSE);
 			}
 		} else {
 			array_push($this->ErrorMessage,'backupDatabase: Filename CANNOT BE EMPTY!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1506,9 +1682,11 @@ abstract class LayerModulesAbstract
 				system ($SqlFileCommand);
 			} else {
 				array_push($this->ErrorMessage,'restoreDatabase: Filename DOES NOT EXIST!');
+				$BackTrace = debug_backtrace(FALSE);
 			}
 		} else {
 			array_push($this->ErrorMessage,'restoreDatabase: Filename CANNOT BE EMPTY!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1744,6 +1922,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'updateRecord: PageID, Content and DatabaseTableName cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1784,6 +1963,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'updateModuleSetting: ObjectType, ObjectTypeName, ModuleSetting and ModuleSettingAttribute cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1802,6 +1982,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'sortTable: SortOrder cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 
@@ -1820,10 +2001,13 @@ abstract class LayerModulesAbstract
 
 		if (is_null($StartKey)) {
 			array_push($this->ErrorMessage,'MultiArrayBuild: RemoveKey cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		} else if (is_null($ConditionalKey)) {
 			array_push($this->ErrorMessage,'MultiArrayBuild: Key cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		} else if (is_null($StartNumber)) {
 			array_push($this->ErrorMessage,'MultiArrayBuild: StartNumber cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
 		} else {
 			$temp = array();
 			$i = $StartNumber;
@@ -1945,6 +2129,7 @@ abstract class LayerModulesAbstract
 									unset($Source[$i]);
 								} else {
 									array_push($this->ErrorMessage,"MultiArrayBuild: Array Sort Order from index - $i key - $SetOrder MUST BE AN INTEGER!");
+									$BackTrace = debug_backtrace(FALSE);
 									throw new Exception("FATAL ERROR: MultiArrayBuild: Array Sort Order from index - $i key - $SetOrder MUST BE AN INTEGER!");
 								}
 							} catch (Exception $e) {
@@ -2045,6 +2230,7 @@ abstract class LayerModulesAbstract
 
 				} else {
 					array_push($this->ErrorMessage,'MultiArrayBuild: Sort cannot be an ARRAY!');
+					$BackTrace = debug_backtrace(FALSE);
 				}
 			}
 
@@ -2075,6 +2261,7 @@ abstract class LayerModulesAbstract
 
 				} else {
 					array_push($this->ErrorMessage,"MultiArrayCombine: StartNumber MUST BE AN INTEGER!");
+					$BackTrace = debug_backtrace(FALSE);
 					throw new Exception("FATAL ERROR: MultiArrayCombine: StartNumber MUST BE AN INTEGER!");
 				}
 			} catch (Exception $e){
@@ -2084,6 +2271,7 @@ abstract class LayerModulesAbstract
 			}
 		} else {
 			array_push($this->ErrorMessage,'MultiArrayCombine: StartNumber MUST be set!');
+			$BackTrace = debug_backtrace(FALSE);
 		}
 	}
 	

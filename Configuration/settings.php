@@ -24,7 +24,7 @@
 	*/
 
 	ini_set('upload_max_filesize', '64M');
-	$SETTINGS = parse_ini_file('settings.ini', true);
+	$SETTINGS = parse_ini_file("$HOME/UserData/Configuration/Settings.ini", true);
 	$HOME = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
 
 	$servername = $SETTINGS['DATABASE CONNECTION']['SERVERNAME'];

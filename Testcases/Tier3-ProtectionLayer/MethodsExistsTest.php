@@ -29,19 +29,22 @@
 	*/
 	require_once("$HOME/Testcases/SimpleTest/simpletest/autorun.php");
 	
-	// Tier Settings
+	// Tier 2 Settings
 	require_once "$HOME/Testcases/Configuration/Tier2DataAccessLayerSettings.php";
-	require_once "$HOME/Testcases/Configuration/Tier3ProtectionLayerSettings.php";
+	
+	// Tier 3 Protection Layer Settings
+	require_once "$HOME/Configuration/Tier3ProtectionLayerSettings.php";
 	
 	// All Tier Abstract
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
 	
 	// Tiers Modules Abstract
 	require_once "$HOME/ModulesAbstract/Tier2DataAccessLayer/Tier2DataAccessLayerModulesAbstract.php";
+	require_once "$HOME/ModulesAbstract/Tier3ProtectionLayer/Tier3ProtectionLayerModulesAbstract.php";
 	
 	// Tiers Interface Includes
-	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 	require_once "$HOME/ModulesInterfaces/Tier2DataAccessLayer/Tier2DataAccessLayerModulesInterfaces.php";
+	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 
 	// Tiers Includes
 	require_once "$HOME/Tier2-DataAccessLayer/ClassDataAccessLayer.php";

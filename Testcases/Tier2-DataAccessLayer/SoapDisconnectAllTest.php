@@ -110,25 +110,27 @@
 			$this->Password = $credentaillogonarray[2];
 			$this->DatabaseName = $credentaillogonarray[3];
 			
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 		}
 		
 		
 		/**
-		 * testSoapDisconnectAllAllNull
+		 * testSoapDisconnectAllAllAsNull
 		 * Tests if DisconnectAll methods will accept Hostame, User, Password and DatabaseName all as NULL with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapDisconnectAllAllNull() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapDisconnectAllAllAsNull() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, NULL, NULL, NULL);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable(NULL);
 			$this->assertFalse($Return);
 			
@@ -140,25 +142,28 @@
 			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable(NULL);
 			$this->assertFalse($Return);
 		}
 		
 		/**
-		 * testSoapDisconnectAllHostnameNull
+		 * testSoapDisconnectAllHostnameAsNull
 		 * Tests if DisconnectAll methods will accept Hostame as NULL with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapDisconnectAllHostnameNull() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapDisconnectAllHostnameAsNull() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -170,26 +175,29 @@
 			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 		}
 		
 		/**
-		 * testSoapDisconnectAllUserNull
+		 * testSoapDisconnectAllUsernameAsNull
 		 * Tests if DisconnectAll methods will accept User as NULL with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapDisconnectAllUserNull() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapDisconnectAllUsernameAsNull() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -201,26 +209,29 @@
 			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 		}
 		
 		/**
-		 * testSoapDisconnectAllPasswordNull
+		 * testSoapDisconnectAllPasswordAsNull
 		 * Tests if DisconnectAll methods will accept Password as NULL with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapDisconnectAllPasswordNull() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapDisconnectAllPasswordAsNull() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -232,26 +243,29 @@
 			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 		}
 		
 		/**
-		 * testSoapDisconnectAllDatabaseNameNull
+		 * testSoapDisconnectAllDatabaseNameAsNull
 		 * Tests if DisconnectAll methods will accept DatabaseName as NULL with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapDisconnectAllDatabaseNameNull() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapDisconnectAllDatabaseNameAsNull() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -263,11 +277,360 @@
 			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 		}
 		
+		/**
+		 * testSoapDisconnectAllAllAsArray
+		 * Tests if DisconnectAll methods will accept Hostame, User, Password and DatabaseName all as Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapDisconnectAllAllAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll(array(1), array(1), array(1), array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapDisconnectAllHostnameAsArray
+		 * Tests if DisconnectAll methods will accept Hostame as Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapDisconnectAllHostnameAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll(array(1), $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapDisconnectAllUsernameAsArray
+		 * Tests if DisconnectAll methods will accept User as Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapDisconnectAllUsernameAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, array(1), $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapDisconnectAllPasswordAsArray
+		 * Tests if DisconnectAll methods will accept Password as Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapDisconnectAllPasswordAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, array(1), $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapDisconnectAllAllAsObject
+		 * Tests if DisconnectAll methods will accept Hostame, User, Password and DatabaseName all as Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapDisconnectAllAllAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($Object, $Object, $Object, $Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapDisconnectAllHostnameAsObject
+		 * Tests if DisconnectAll methods will accept Hostame as Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapDisconnectAllHostnameAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($Object, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapDisconnectAllUsernameAsObject
+		 * Tests if DisconnectAll methods will accept User as Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapDisconnectAllUsernameAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $Object, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapDisconnectAllPasswordAsObject
+		 * Tests if DisconnectAll methods will accept Password as Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapDisconnectAllPasswordAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $Object, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapDisconnectAllDatabaseTableAsArray
+		 * Tests if DisconnectAll methods will accept DatabaseTable as Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapDisconnectAllDatabaseTableAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSoapDisconnectAllDatabaseTableAsObject
+		 * Tests if DisconnectAll methods will accept DatabaseTable as Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapDisconnectAllDatabaseTableAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+		}
+
 		/**
 		 * testSoapDisconnectAllCorrectData
 		 * Tests if DisconnectAll methods will accept all data correctly with SOAP. 
@@ -275,27 +638,28 @@
 		 * @access public
 		*/
 		public function testSoapDisconnectAllCorrectData() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
-			$Return = NULL;
+			$Return = TRUE;
 			$Return = $this->Tier2Database->ConnectAll();
-			
 			$this->assertIsA($Return, 'stdClass');
 			
-			$Return = NULL;
+			$Return = TRUE;
 			$Return = $this->Tier2Database->DisconnectAll();
-			
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');		}
 		

@@ -29,19 +29,22 @@
 	*/
 	require_once("$HOME/Testcases/SimpleTest/simpletest/autorun.php");
 	
-	// Tier Settings
+	// Tier 2 Settings
 	require_once "$HOME/Testcases/Configuration/Tier2DataAccessLayerSettings.php";
-	require_once "$HOME/Testcases/Configuration/Tier3ProtectionLayerSettings.php";
+	
+	// Tier 3 Protection Layer Settings
+	require_once "$HOME/Configuration/Tier3ProtectionLayerSettings.php";
 	
 	// All Tier Abstract
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
 	
 	// Tiers Modules Abstract
 	require_once "$HOME/ModulesAbstract/Tier2DataAccessLayer/Tier2DataAccessLayerModulesAbstract.php";
+	require_once "$HOME/ModulesAbstract/Tier3ProtectionLayer/Tier3ProtectionLayerModulesAbstract.php";
 	
 	// Tiers Interface Includes
-	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 	require_once "$HOME/ModulesInterfaces/Tier2DataAccessLayer/Tier2DataAccessLayerModulesInterfaces.php";
+	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 
 	// Tiers Includes
 	require_once "$HOME/Tier2-DataAccessLayer/ClassDataAccessLayer.php";
@@ -115,7 +118,6 @@
 			$this->Tier3Protection = new ProtectionLayer();
 		}
 		
-		
 		/**
 		 * testConnectAllAllNull
 		 * Tests if ConnectAll methods will accept Hostame, User, Password and DatabaseName all as NULL. 
@@ -126,18 +128,21 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll(NULL, NULL, NULL, NULL);
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->ConnectAll();
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
+			$this->assertFalse($Return);
 		}
 		
 		/**
@@ -150,43 +155,49 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->ConnectAll();
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testConnectAllUserNull
+		 * testConnectAllUsernameNull
 		 * Tests if ConnectAll methods will accept User as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testConnectAllUserNull() {
+		public function testConnectAllUsernameNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->ConnectAll();
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 		}
 		
@@ -200,18 +211,21 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->ConnectAll();
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 		}
 		
@@ -225,21 +239,398 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->ConnectAll();
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 		}
 		
+		/**
+		 * testConnectAllAllAsArray
+		 * Tests if ConnectAll methods will accept Hostame, User, Password and DatabaseName all as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllAllAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll(array(1), array(1), array(1), array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testConnectAllHostnameAsArray
+		 * Tests if ConnectAll methods will accept Hostame as as Array. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllHostnameAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll(array(1), $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testConnectAllUsernameAsArray
+		 * Tests if ConnectAll methods will accept Username as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllUsernameAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, array(1), $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testConnectAllPasswordAsArray
+		 * Tests if ConnectAll methods will accept Password as as Array. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllPasswordAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, array(1), $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testConnectAllDatabaseNameAsArray
+		 * Tests if ConnectAll methods will accept DatabaseName as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllDatabaseNameAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+
+		/**
+		 * testConnectAllAllAsObject
+		 * Tests if ConnectAll methods will accept Hostame, User, Password and DatabaseName all as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllAllAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new StdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($Object, $Object, $Object, $Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testConnectAllHostnameAsObject
+		 * Tests if ConnectAll methods will accept Hostame as as Object. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllHostnameAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new StdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($Object, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testConnectAllUsernameAsObject
+		 * Tests if ConnectAll methods will accept Username as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllUsernameAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new StdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $Object, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testConnectAllPasswordAsObject
+		 * Tests if ConnectAll methods will accept Password as as Object. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllPasswordAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new StdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $Object, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testConnectAllDatabaseNameAsObject
+		 * Tests if ConnectAll methods will accept DatabaseName as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllDatabaseNameAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new StdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testConnectAllDatabaseNameNull
+		 * Tests if ConnectAll methods will accept Database Table as NULL. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllDatabaseTableNull() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testConnectAllDatabaseNameAsArray
+		 * Tests if ConnectAll methods will accept Database Table as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllDatabaseTableAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+
+		/**
+		 * testConnectAllDatabaseNameAsObject
+		 * Tests if ConnectAll methods will accept Database Table as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testConnectAllDatabaseTableAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+		}
+	
 		/**
 		 * testConnectAllCorrectData
 		 * Tests if ConnectAll methods will accept all data correctly. 
@@ -250,16 +641,19 @@
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertIsA($Return, 'ProtectionLayer');
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'ProtectionLayer');
 			
-			$Return = NULL;
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->ConnectAll();
 			$this->assertIsA($Return, 'ProtectionLayer');
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'ProtectionLayer');
 		}

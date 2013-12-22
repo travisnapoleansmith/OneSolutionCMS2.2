@@ -116,7 +116,14 @@ class ContentLayer extends LayerModulesAbstract
 	 * @var string
 	 */
 	protected $ContentLayerThemeName;
-
+	
+	/**
+	 * Content Layer Theme Location
+	 *
+	 * @var string
+	 */
+	protected $ContentLayerThemeLocation;
+	
 	/**
 	 * Content Layer Theme Global Layer Table Content
 	 *
@@ -269,10 +276,13 @@ class ContentLayer extends LayerModulesAbstract
 			$this->Connect($this->ContentLayerThemeTableName);
 			$this->LayerModule->pass ($this->ContentLayerThemeTableName, 'setDatabaseRow', array('idnumber' => $passarray));
 			$this->Disconnect($this->ContentLayerThemeTableName);
-
+			
 			$Theme = $this->LayerModule->pass ($this->ContentLayerThemeTableName, 'getMultiRowField', array());
 			$this->ContentLayerThemeName = $Theme[0]['ThemeName'];
-
+			
+			$this->ContentLayerThemeLocation = $Theme[0]['ThemeLocation'];
+			$GLOBALS['ThemeLocation'] = $this->ContentLayerThemeLocation;
+			
 			$passarray = array();
 			$passarray['ThemeName'] = $this->ContentLayerThemeName;
 
@@ -1685,6 +1695,8 @@ class ContentLayer extends LayerModulesAbstract
 		$Raw = NULL;
 		$Skip = NULL;
 		$Repeat = NULL;
+		$SimpleViewer = NULL;
+		
 		$arguments = func_get_args();
 		if ($arguments[3] != NULL) {
 			$RootElementName = $arguments[3]['RootElementName'];
@@ -1692,7 +1704,9 @@ class ContentLayer extends LayerModulesAbstract
 			$Raw = $arguments[3]['Raw'];
 			$Skip = $arguments[3]['Skip'];
 			$Repeat = $arguments[3]['Repeat'];
+			$SimpleViewer = $arguments[3]['SimpleViewer'];
 		}
+		
 		$XMLFile = new XmlWriter();
 		$XMLFile->openURI($FileName);
 		$XMLFile->setIndent(4);
@@ -1706,6 +1720,12 @@ class ContentLayer extends LayerModulesAbstract
 			if ($Skip != NULL) {
 				if ($Key == $Skip) {
 					if (is_array($Value)) {
+						if ($SimpleViewer === TRUE) {
+							$OneTime = TRUE;
+						} else {
+							$OneTime = FALSE;
+						}
+						
 						foreach ($Value as $SubKey => $SubValue) {
 							if (!is_array($SubValue)) {
 								$XMLFile->startElement($SubKey);
@@ -1719,12 +1739,21 @@ class ContentLayer extends LayerModulesAbstract
 										$XMLFile->startElement($SubKey);
 										foreach ($SubValue[$RepeatAttribute] as $FinalKey => $FinalValue) {
 											$XMLFile->startElement($RepeatAttribute);
-											if (is_array($RepeatOptions)) {
-												foreach ($RepeatOptions as $OptionsKey => $OptionsValue) {
-													$XMLFile->writeAttribute($OptionsKey, $OptionsValue);
+											if ($OneTime === TRUE) {
+												$OneTime = FALSE;
+												$XMLFile->writeAttribute('width', 30);
+												$XMLFile->writeAttribute('sort', 'na');
+												$XMLFile->writeAttribute('type', 'cntr');
+											} else {
+												if (is_array($RepeatOptions)) {
+													foreach ($RepeatOptions as $OptionsKey => $OptionsValue) {
+														$XMLFile->writeAttribute($OptionsKey, $OptionsValue);
+													}
 												}
+												
+												$XMLFile->text($FinalValue);
 											}
-											$XMLFile->text($FinalValue);
+											
 											$XMLFile->endElement(); // ENDS REPEATATTRIBUTE
 										}
 										
@@ -1776,9 +1805,11 @@ class ContentLayer extends LayerModulesAbstract
 				}
 			} else {
 				if (is_array($Value)) {
+					//$XMLFile->writeRaw(print_r($FileDataForm));
 					$this->RecursiveProcessFormXMLFileElement($Value, $XMLFile);
 				} else {
-					$XMLFile->text($Value);
+					$XMLFile->writeRaw($Value);
+					//$XMLFile->text($Value);
 				}
 			}
 			$XMLFile->endElement(); // ENDS KEY OR ELEMENTNAME
@@ -1788,6 +1819,17 @@ class ContentLayer extends LayerModulesAbstract
 	}
 	
 	public function RecursiveProcessFormXMLFileElement ($Data, XmlWriter $XMLFile) {
+		$Attributes = NULL;
+		
+		if (isset($Data['Attributes'])) {
+			$Attributes = $Data['Attributes'];
+			unset($Data['Attributes']);
+			
+			foreach ($Attributes as $Attribute => $AttributeValue) {
+				$XMLFile->writeAttribute($Attribute, $AttributeValue);
+			}
+		}
+		
 		foreach ($Data as $Element => $Value) {
 			if (is_array($Value)) {
 				$XMLFile->startElement($Element);

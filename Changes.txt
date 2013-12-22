@@ -1,4 +1,34 @@
-Changes For One Solution CMS 2.2.10 - Friday, July 19, 2013
+Changes For One Solution CMS 2.2.11 - Sunday, December 22, 2013
+Added:
+	1). Added Testcases/Tier3-ProtectionLayer - SoapMethodsExistsTest.php - This test will test if all the methods exist in Tier 3 Protection Layer with SOAP.
+	2). Added Testcases/Tier3-ProtectionLayer - SoapSetDatabaseAllTest.php - This file is designed to test Tier 3's setDatabaseAll method with SOAP.
+	3). Added Testcases/Tier3-ProtectionLayer - SoapConnectAllTest.php - This file is designed to test Tier 3's ConnectAll method with SOAP.
+	4). Added Testcases/Tier3-ProtectionLayer - SoapConnectTest.php - This file is designed to test Tier 3's Connect method with SOAP.
+	5). Added Testcases/Tier3-ProtectionLayer - SoapDisconnectAllTest.php - This file is designed to test Tier 3's DisconnectAll method with SOAP.
+	6). Added Testcases/Tier3-ProtectionLayer - SoapDisconnectTest.php - This file is designed to test Tier 3's Disconnect method with SOAP. 
+	7). Added Testcases/Tier3-ProtectionLayer - SoapCreateDatabaseTableTest.php - This file is designed to test Tier 3's createDatabaseTable method with SOAP.
+	8). Added Testcases/Tier3-ProtectionLayer - SoapDestroyDatabaseTableTest.php - This file is designed to test Tier 3's destroyDatabaseTable method with SOAP.
+	9). Added Testcases/Tier3-ProtectionLayer - SoapPassTest.php - This file is designed to test Tier 3's Pass method with SOAP.
+	10). Added Tier3-ProtectionLayer - Added SOAP capabilities.
+	11). Added Tier2-DataAccessLayer - .htaccess so only the server can get to SoapServerDataAccessLayer.php - SOAP Server - and not the outside world.
+	12). Added Tier3-ProtectionLayer - .htaccess so only the server can get to SoapServerProtectionLayer.php - SOAP Server - and not the outside world.
+	13). Added Tier4-AuthenticationLayer - .htaccess so only the server can get to SoapServerAuthenticationLayer.php - SOAP Server - and not the outside world.
+	14). Added Tier5-ValidationLayer - .htaccess so only the server can get to SoapServerValidationLayer.php - SOAP Server - and not the outside world.
+	15). Added Tier6-ContentLayer - .htaccess so only the server can get to SoapServerContentLayer.php - SOAP Server - and not the outside world.
+	
+Updated (Fixed):
+	1). Updated All 2.1 release files so they will work with the current system. All Testcases have been fixed.
+	2). Updated All Tests Cases to check values as an array and as an object.
+	3). Updated ClassMySqlConnect - To add extra error checking for array, object and resource. This has been moved over to 2.1.156 release cycle as well.
+	4). Updated ClassDataAccessLayer - To add extra error checking for array, object and resource. This has been moved over to 2.1.156 release cycle as well.
+	4). Updated ClassProtectionLayer - To add extra error checking for array, object and resource. This has been moved over to 2.1.156 release cycle as well.
+
+Removed:
+	1). Nothing Removed.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Changes For One Solution CMS 2.2.10 - Friday, July 19, 2013 - 4:17:07 PM
 Added:
 	1). Nothing Added.
 	

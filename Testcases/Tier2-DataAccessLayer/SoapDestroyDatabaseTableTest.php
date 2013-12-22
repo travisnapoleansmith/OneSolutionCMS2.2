@@ -110,40 +110,75 @@
 			$this->Password = $credentaillogonarray[2];
 			$this->DatabaseName = $credentaillogonarray[3];
 			
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 		}
 		
 		/**
-		 * testSoapDestroyDatabaseTableNull
+		 * testSoapDestroyDatabaseTableAsNull
 		 * Tests if destroyDatabaseTable methods will accept Database Table Name as NULL with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapDestroyDatabaseTableNull() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapDestroyDatabaseTableAsNull() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable(NULL);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testSoapDestroyDatabaseTableArray
+		 * testSoapDestroyDatabaseTableAsArray
 		 * Tests if destroyDatabaseTable methods will accept Database Table Name as an Array with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapDestroyDatabaseTableArray() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapDestroyDatabaseTableAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
 			$Array = array('TEST', 'TEST2');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable($Array);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable($Array);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSoapDestroyDatabaseTableAsObject
+		 * Tests if destroyDatabaseTable methods will accept Database Table Name as an Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapDestroyDatabaseTableAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable($Object);
 			$this->assertFalse($Return);
 			
 		}
@@ -155,17 +190,20 @@
 		 * @access public
 		*/
 		public function testSoapDestroyDatabaseTableRepeatTable() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('REPEATTABLE');
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('REPEATTABLE');
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$this->expectException();
 			$Return = $this->Tier2Database->destroyDatabaseTable('REPEATTABLE');
 			//$this->assertIsA($Return, 'Exception');
@@ -179,14 +217,16 @@
 		 * @access public
 		*/
 		public function testSoapDestroyDatabaseTableCorrectData() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			

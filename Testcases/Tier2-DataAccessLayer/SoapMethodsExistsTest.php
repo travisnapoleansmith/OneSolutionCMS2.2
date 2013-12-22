@@ -75,7 +75,7 @@
 		 * @access public
 		*/	
 		public function Tier2SoapMethodsTest () {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 		}
 		
 		/**

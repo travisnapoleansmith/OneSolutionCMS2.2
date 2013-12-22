@@ -111,25 +111,26 @@
 			$this->Password = $credentaillogonarray[2];
 			$this->DatabaseName = $credentaillogonarray[3];
 			
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 		}
 		
-		
 		/**
-		 * testSoapConnectAllNull
+		 * testSoapConnectAllAsNull
 		 * Tests if Connect methods will accept Hostame, User, Password and DatabaseName all as NULL with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapConnectAllNull() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapConnectAllAsNull() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, NULL, NULL, NULL);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable(NULL);
 			$this->assertFalse($Return);
 			
@@ -137,25 +138,28 @@
 			$Return = $this->Tier2Database->Connect(NULL);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable(NULL);
 			$this->assertFalse($Return);
 		}
 		
 		/**
-		 * testSoapConnectHostnameNull
+		 * testSoapConnectHostnameAsNull
 		 * Tests if Connect methods will accept Hostame as NULL with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapConnectHostnameNull() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapConnectHostnameAsNull() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -163,26 +167,29 @@
 			$Return = $this->Tier2Database->Connect('TEST');
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 		}
 		
 		/**
-		 * testSoapConnectUserNull
+		 * testSoapConnectUsernameAsNull
 		 * Tests if Connect methods will accept User as NULL with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapConnectUserNull() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapConnectUsernameAsNull() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -190,26 +197,29 @@
 			$Return = $this->Tier2Database->Connect('TEST');
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 		}
 		
 		/**
-		 * testSoapConnectPasswordNull
+		 * testSoapConnectPasswordAsNull
 		 * Tests if Connect methods will accept Password as NULL with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapConnectPasswordNull() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapConnectPasswordAsNull() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -217,26 +227,29 @@
 			$Return = $this->Tier2Database->Connect('TEST');
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 		}
 		
 		/**
-		 * testSoapConnectDatabaseNameNull
+		 * testSoapConnectDatabaseNameAsNull
 		 * Tests if Connect methods will accept DatabaseName as NULL with SOAP. 
 		 *
 		 * @access public
 		*/
-		public function testSoapConnectDatabaseNameNull() {
-			$this->Tier2Database = SetupSoap();
+		public function testSoapConnectDatabaseNameAsNull() {
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -245,6 +258,316 @@
 			$Return = $this->Tier2Database->Connect(NULL);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapConnectAllAsArray
+		 * Tests if Connect methods will accept Hostame, User, Password and DatabaseName all as Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectAllAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll(array(1), array(1), array(1), array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapConnectHostnameAsArray
+		 * Tests if Connect methods will accept Hostame as Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectHostnameAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll(array(1), $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect('TEST');
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapConnectUsernameAsArray
+		 * Tests if Connect methods will accept User as Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectUsernameAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, array(1), $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect('TEST');
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapConnectPasswordAsArray
+		 * Tests if Connect methods will accept Password as Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectPasswordAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, array(1), $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect('TEST');
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapConnectDatabaseNameAsArray
+		 * Tests if Connect methods will accept DatabaseName as Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectDatabaseNameAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			//$this->expectException('Key Doesn\'t Exist!');
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect(NULL);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapConnectAllAsObject
+		 * Tests if Connect methods will accept Hostame, User, Password and DatabaseName all as Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectAllAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($Object, $Object, $Object, $Object);
+			$this->assertFalse($Return);
+			
+			$Return = $this->Tier2Database->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapConnectHostnameAsObject
+		 * Tests if Connect methods will accept Hostame as Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectHostnameAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($Object, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect('TEST');
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapConnectUsernameAsObject
+		 * Tests if Connect methods will accept User as Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectUsernameAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $Object, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect('TEST');
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapConnectPasswordAsObject
+		 * Tests if Connect methods will accept Password as Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectPasswordAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $Object, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect('TEST');
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapConnectDatabaseNameAsObject
+		 * Tests if Connect methods will accept DatabaseName as Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectDatabaseNameAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			//$this->expectException('Key Doesn\'t Exist!');
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect(NULL);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -257,14 +580,16 @@
 		 * @access public
 		*/
 		public function testSoapConnectDatabaseTableInvalidName() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
-			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
-			$this->assertFalse($Return);
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -275,8 +600,67 @@
 				$this->pass();
 			}
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapConnectDatabaseTableAsArray
+		 * Tests if Connect methods will accept Database Table as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectDatabaseTableAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSoapConnectDatabaseTableAsObject
+		 * Tests if Connect methods will accept Database Table as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testSoapConnectDatabaseTableAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->Connect($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
 			
 		}
 		
@@ -287,22 +671,24 @@
 		 * @access public
 		*/
 		public function testSoapConnectCorrectData() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
-			$Return = NULL;
+			$Return = TRUE;
 			$Return = $this->Tier2Database->Connect('TEST');
-			
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			

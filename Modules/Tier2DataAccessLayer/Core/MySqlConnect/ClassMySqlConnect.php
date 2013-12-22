@@ -71,7 +71,26 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 		}
 		
 		if ($this->HostName == NULL | $this->User == NULL | $this->Password == NULL | $this->DatabaseName == NULL) {
+			$BackTrace = debug_backtrace(FALSE);
 			throw new Exception('HostName, User, Password, and DatabaseName none of them can be NULL!');
+			return FALSE;
+		}
+		
+		if (is_array($this->HostName) === TRUE | is_array($this->User) === TRUE | is_array($this->Password) === TRUE | is_array($this->DatabaseName) === TRUE) {
+			$BackTrace = debug_backtrace(FALSE);
+			throw new Exception('HostName, User, Password, and DatabaseName none of them can be an array!');
+			return FALSE;
+		}
+		
+		if (is_object($this->HostName) === TRUE | is_object($this->User) === TRUE | is_object($this->Password) === TRUE | is_object($this->DatabaseName) === TRUE) {
+			$BackTrace = debug_backtrace(FALSE);
+			throw new Exception('HostName, User, Password, and DatabaseName none of them can be an object!');
+			return FALSE;
+		}
+		
+		if (is_resource($this->HostName) === TRUE | is_resource($this->User) === TRUE | is_resource($this->Password) === TRUE | is_resource($this->DatabaseName) === TRUE) {
+			$BackTrace = debug_backtrace(FALSE);
+			throw new Exception('HostName, User, Password, and DatabaseName none of them can be a resource!');
 			return FALSE;
 		}
 		
@@ -82,10 +101,12 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 			//$this->Link = $Link;
 			if (!Link) {
 				array_push($this->ErrorMessage,'Connect: Could not connect to server');
+				$BackTrace = debug_backtrace(FALSE);
 				throw new SoapFault("Connect", 'Could not connect to server');
 			}
 			//return $Link;
 		} catch (Exception $E) {
+			$BackTrace = debug_backtrace(FALSE);
 			throw new SoapFault("Connect", $E->getMessage());
 			return FALSE;
 		}
@@ -94,12 +115,14 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 			if ($Link) {
 				if (!mysql_select_db($this->DatabaseName, $Link)) {
 					array_push($this->ErrorMessage,'Connect: Could not select database');
+					$BackTrace = debug_backtrace(FALSE);
 					throw new SoapFault("Connect", 'Could not select database');
 					return FALSE;
 				}
 				
 			}
 		} catch (Exception $E) {
+			$BackTrace = debug_backtrace(FALSE);
 			throw $E;
 			return FALSE;
 		}
@@ -121,10 +144,13 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 				return $this;
 			} else {
 				array_push($this->ErrorMessage,'Disconnect: Could not disconnect from server');
+				$BackTrace = debug_backtrace(FALSE);
 				throw new SoapFault("Disconnect", 'Could not disconnect from server');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'Disconnect: Link is not set!');
+			$BackTrace = debug_backtrace(FALSE);
 			//return new Exception('Link is not set!');
 			return FALSE;
 		}
@@ -135,9 +161,9 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * Check to see if database name exists.
 	 *
 	 * @return Database Name or BOOL FALSE if the database name does not exist.
-	 * @access protected
+	 * @access public
 	*/
-	protected function checkDatabaseName (){
+	public function checkDatabaseName (){
 		$this->Connect();
 		$Results = mysql_list_dbs(/*$this->Link*/);
 		$i = 0;
@@ -148,6 +174,7 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 			}
 			$i++;
 		}
+		$BackTrace = debug_backtrace(FALSE);
 		array_push($this->ErrorMessage,'checkDatabaseName: Database Name does not exist');
 		return FALSE;
 	}
@@ -157,11 +184,12 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * Check to see if database table exists.
 	 *
 	 * @return Database Table Name or BOOL FALSE if the table name does not exist.
-	 * @access protected
+	 * @access public
 	*/
-	protected function checkTableName () {
+	public function checkTableName () {
 		$TableName = $this->DatabaseTable;
 		if ($this->TableNames === NULL) {
+			$Result = NULL;
 			$this->Connect();
 
 			$Query = 'SHOW TABLES FROM `' . $this->DatabaseName . '`';
@@ -191,9 +219,9 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 *
 	 * @param string $Permission String of permissions to check for. Must be a string.
 	 * @return BOOL TRUE if the permissions exists or permissions are set to ALL or BOOL FALSE if the permissions have been denied.
-	 * @access protected
+	 * @access public
 	*/
-	protected function checkPermissions ($Permission) {
+	public function checkPermissions ($Permission) {
 		$this->Connect();
 		$Query = 'SHOW GRANTS';
 		$Result = mysql_query($Query);
@@ -216,9 +244,9 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 *
 	 * @param string $Field String of Field Name to be checked. Must be a string.
 	 * @return Field Name if the field exists BOOL FALSE if the field not exist.
-	 * @access protected
+	 * @access public
 	*/
-	protected function checkField ($Field) {
+	public function checkField ($Field) {
 		$this->Connect();
 		$Query = 'SHOW COLUMNS FROM `' . $this->DatabaseTable . '` LIKE "' . $Field . '" ';
 		$Result = mysql_query($Query);
@@ -230,6 +258,8 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 				return $UserData;
 			} else {
 				array_push($this->ErrorMessage,'checkField: Field does not exist');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("checkField", 'Field does not exist');
 				return FALSE;
 			}
 		}
@@ -247,13 +277,29 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 
 		if (!$DatabaseNameCheck) {
 			if ($PermissionsCheck) {
+				$Result = NULL;
 				$Query = 'CREATE DATABASE ' . $this->DatabaseName .'';
 				$Result = mysql_query($Query);
+				if (is_resource($Result) === TRUE) {
+					return $this;
+				} else {
+					$ErrorMessage = mysql_error();
+					array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("createDatabase", "$ErrorMessage");
+					return FALSE;
+				}
 			} else {
 				array_push($this->ErrorMessage,'createDatabase: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("createDatabase", 'Permission has been denied');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'createDatabase: Database name exists!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("createDatabase", 'Database name exists');
+			return FALSE;
 		}
 	}
 
@@ -269,13 +315,29 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 
 		if ($DatabaseNameCheck) {
 			if ($PermissionsCheck) {
+				$Result = NULL;
 				$Query = 'DROP DATABASE ' . $this->DatabaseName .'';
 				$Result = mysql_query($Query);
+				if (is_resource($Result) === TRUE) {
+					return $this;
+				} else {
+					$ErrorMessage = mysql_error();
+					array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("createDatabase", "$ErrorMessage");
+					return FALSE;
+				}
 			} else {
 				array_push($this->ErrorMessage,'deleteDatabase: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("deleteDatabase", 'Permission has been denied!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'deleteDatabase: Database name does not exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("deleteDatabase", 'Database name does not exist!');
+			return FALSE;
 		}
 	}
 
@@ -295,24 +357,73 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 		if ($DatabaseNameCheck) {
 			if ($PermissionsCheck) {
 				if (!$TableNameCheck) {
-					if (!is_array($TableString)) {
+					if (is_array($TableString) === FALSE) {
 						if ($TableString != NULL) {
+							$Result = NULL;
 							$Query = 'CREATE TABLE ' . $this->DatabaseTable . ' ( ' . $TableString . ' ); ';
 							$Result = mysql_query($Query);
-						} else {
+							if (is_resource($Result) === TRUE) {
+								return $this;
+							} else {
+								$ErrorMessage = mysql_error();
+								array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("createDatabase", "$ErrorMessage");
+								return FALSE;
+							}
+						}  else {
 							array_push($this->ErrorMessage,'createTable: Table String cannot be NULL!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("createTable", 'Table String cannot be NULL!');
+							return FALSE;
 						}
 					} else {
-						array_push($this->ErrorMessage,'createTable: Table String cannot be an Array!');
+						if (is_object($TableString) === TRUE) {
+							array_push($this->ErrorMessage,'createTable: Table String cannot be an object!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("createTable", 'Table String cannot be an object!');
+							return FALSE;
+						}
+						
+						$TableString = array_shift($TableString);
+						
+						if ($TableString != NULL) {
+							$Result = NULL;
+							$Query = 'CREATE TABLE ' . $this->DatabaseTable . ' ( ' . $TableString . ' ); ';
+							$Result = mysql_query($Query);
+							if (is_resource($Result) === TRUE) {
+								return $this;
+							} else {
+								$ErrorMessage = mysql_error();
+								array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("createDatabase", "$ErrorMessage");
+								return FALSE;
+							}
+						}  else {
+							array_push($this->ErrorMessage,'createTable: Table String cannot be NULL!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("createTable", 'Table String cannot be NULL!');
+							return FALSE;
+						}
 					}
 				} else {
 					array_push($this->ErrorMessage,'createTable: Table name exists!');
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("createTable", 'Table name exists!');
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'createTable: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("createTable", 'Permission has been denied!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'createTable: Database name does not exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("createTable", 'Database name does not exist!');
+			return FALSE;
 		}
 	}
 
@@ -332,27 +443,62 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 			if ($PermissionsCheck) {
 				if ($TableNameCheck) {
 					if ($TableString != NULL) {
-						if (!is_array($TableString)) {
+						if (is_array($TableString) === FALSE) {
+							$Result = NULL;
 							$Query = 'UPDATE `'  . $this->DatabaseTable . '` SET ' . $TableString . '; ';
 							$Result = mysql_query($Query);
+							if (is_resource($Result) === TRUE) {
+								return $this;
+							} else {
+								$ErrorMessage = mysql_error();
+								array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("createDatabase", "$ErrorMessage");
+								return FALSE;
+							}
 						} else {
+							if (is_object($TableString) === TRUE) {
+								array_push($this->ErrorMessage,'updateTable: Table String cannot be an object!');
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("updateTable", 'Table String cannot be an object!');
+								return FALSE;
+							}
+							$Result = array();
 							while (isset($TableString[key($TableString)])) {
 								$Query = 'UPDATE `'  . $this->DatabaseTable . '` SET ' . current($TableString) . '; ';
-								$Result = mysql_query($Query);
+								$Result[] = mysql_query($Query);
 								next($TableString);
+							}
+							
+							if ($Result != NULL) {
+								return $Result;
+							} else {
+								return $this;
 							}
 						}
 					} else {
 						array_push($this->ErrorMessage,'updateTable: Table string cannot be NULL!');
+						$BackTrace = debug_backtrace(FALSE);
+						throw new SoapFault("updateTable", 'Table string cannot be NULL!');
+						return FALSE;
 					}
 				} else {
 					array_push($this->ErrorMessage,'updateTable: Table name does not exist!');
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("updateTable", 'Table name does not exist!');
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'updateTable: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("updateTable", 'Permission has been denied!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'updateTable: Database name does not exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("updateTable", 'Database name does not exist!');
+			return FALSE;
 		}
 	}
 
@@ -370,16 +516,35 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 		if ($DatabaseNameCheck) {
 			if ($PermissionsCheck) {
 				if ($TableNameCheck) {
+					$Result = NULL;
 					$Query = 'DROP TABLE ' . $this->DatabaseTable . '';
 					$Result = mysql_query($Query);
+					if (is_resource($Result) === TRUE) {
+						return $this;
+					} else {
+						$ErrorMessage = mysql_error();
+						array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+						$BackTrace = debug_backtrace(FALSE);
+						throw new SoapFault("createDatabase", "$ErrorMessage");
+						return FALSE;
+					}
 				} else {
 					array_push($this->ErrorMessage,'deleteTable: Table name does not exist!');
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("deleteTable", 'Table name does not exist!');
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'deleteTable: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("deleteTable", 'Permission has been denied!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'deleteTable: Database name does not exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("deleteTable", 'Database name does not exist!');
+			return FALSE;
 		}
 	}
 
@@ -396,6 +561,8 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 		$DatabaseNameCheck = $this->checkDatabaseName();
 		$TableNameCheck = $this->checkTableName();
 		$PermissionsCheck = $this->checkPermissions ('INSERT');
+		
+		$Result = NULL;
 		
 		$InsertRow = NULL;
 		$InsertRowValue = NULL;
@@ -432,6 +599,9 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 										if (!$Result) {
 											$Temp = key($RowValue);
 											array_push($this->ErrorMessage,"createRow: Row Value [$Temp] exists in the Database!");
+											$BackTrace = debug_backtrace(FALSE);
+											throw new SoapFault("createRow", "Row Value [$Temp] exists in the Database!");
+											return FALSE;
 										}
 
 										next($RowName);
@@ -442,17 +612,32 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 									}
 								} else {
 									array_push($this->ErrorMessage,'createRow: Row Value cannot be NULL!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("createRow", 'Row Value cannot be NULL!');
+									return FALSE;
 								}
 							} else {
 								array_push($this->ErrorMessage,'createRow: Row Name cannot be NULL!');
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("createRow", 'Row Name cannot be NULL!');
+								return FALSE;
 							}
 						} else if (is_array($RowValue)){
 							array_push($this->ErrorMessage,'createRow: Row Name is a 3 dimmensional Array but Row Value must be an Array!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("createRow", 'Row Name is a 3 dimmensional Array but Row Value must be an Array!');
+							return FALSE;
 						} else {
 							array_push($this->ErrorMessage,'createRow: Row Name is a 3 Dimmensional Array but Row Value must be a 3 Dimmensional Array!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("createRow", 'Row Name is a 3 Dimmensional Array but Row Value must be a 3 Dimmensional Array!');
+							return FALSE;
 						}
 					} else if (is_array($RowValue[0])) {
 						array_push($this->ErrorMessage,'createRow: Row Value is a 3 Dimmensional Array but Row Name must be a 3 Dimmensional Array!');
+						$BackTrace = debug_backtrace(FALSE);
+						throw new SoapFault("createRow", 'Row Value is a 3 Dimmensional Array but Row Name must be a 3 Dimmensional Array!');
+						return FALSE;
 					} else if (is_array($RowName)) {
 						if (is_array($RowValue)) {
 							if ($RowName != NULL) {
@@ -482,29 +667,56 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 									
 									$Result = mysql_query($Query);
 									
-									if (!$Result) {
-										array_push($this->ErrorMessage,'createRow: Row Value exists in the Database!');
+									if (is_resource($Result) === TRUE) {
+										return $this;
+									} else {
+										$ErrorMessage = mysql_error();
+										array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+										$BackTrace = debug_backtrace(FALSE);
+										throw new SoapFault("createDatabase", "$ErrorMessage");
+										return FALSE;
 									}
 								} else {
 									array_push($this->ErrorMessage,'createRow: Row Value cannot be NULL!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("createRow", 'Row Value cannot be NULL!');
+									return FALSE;
 								}
 							} else {
 								array_push($this->ErrorMessage,'createRow: Row Name cannot be NULL!');
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("createRow", 'Row Name cannot be NULL!');
+								return FALSE;
 							}
 						} else {
 							array_push($this->ErrorMessage,'createRow: Row Value must be an Array!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("createRow", 'Row Value must be an Array!');
+							return FALSE;
 						}
 					} else {
 						array_push($this->ErrorMessage,'createRow: Row Name must be an Array!');
+						$BackTrace = debug_backtrace(FALSE);
+						throw new SoapFault("createRow", 'Row Name must be an Array!');
+						return FALSE;
 					}
 				} else {
 					array_push($this->ErrorMessage,'createRow: Table name does not exist!');
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("createRow", 'Table name does not exist!');
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'createRow: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("createRow", 'Permission has been denied!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'createRow: Database name does not exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("createRow", 'Database name does not exist!');
+			return FALSE;
 		}
 	}
 
@@ -522,6 +734,8 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * @access public
 	*/
 	public function updateRow ($RowName, $RowValue, $RowNumberName, $RowNumber) {
+		$Result = NULL;
+		
 		$DatabaseNameCheck = $this->checkDatabaseName();
 		$TableNameCheck = $this->checkTableName();
 		$PermissionsCheck = $this->checkPermissions ('UPDATE');
@@ -540,26 +754,56 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 													$RowNumber = mysql_real_escape_string($RowNumber);
 													$Query = 'UPDATE `'  . $this->DatabaseTable . '` SET `' . $RowName . '` = \'' . $RowValue . '\' WHERE `' . $RowNumberName .'` = "' . $RowNumber . '" ';
 													$Result = mysql_query($Query);
+													if (is_resource($Result) === TRUE) {
+														return $this;
+													} else {
+														$ErrorMessage = mysql_error();
+														array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+														$BackTrace = debug_backtrace(FALSE);
+														throw new SoapFault("createDatabase", "$ErrorMessage");
+														return FALSE;
+													}
 												} else {
 													array_push($this->ErrorMessage,'updateRow: Row Number cannot be NULL!');
+													$BackTrace = debug_backtrace(FALSE);
+													throw new SoapFault("updateRow", 'Row Number cannot be NULL!');
+													return FALSE;
 												}
 											} else {
 												array_push($this->ErrorMessage,'updateRow: Row Number Name cannot be NULL!');
+												$BackTrace = debug_backtrace(FALSE);
+												throw new SoapFault("updateRow", 'Row Number Name cannot be NULL!');
+												return FALSE;
 											}
 										} else {
 											array_push($this->ErrorMessage,'updateRow: Row Value cannot be NULL!');
+											$BackTrace = debug_backtrace(FALSE);
+											throw new SoapFault("updateRow", 'Row Value cannot be NULL!');
+											return FALSE;
 										}
 									} else {
 										array_push($this->ErrorMessage,'updateRow: Row Name cannot be NULL!');
+										$BackTrace = debug_backtrace(FALSE);
+										throw new SoapFault("updateRow", 'Row Name cannot be NULL!');
+										return FALSE;
 									}
 								} else {
 									array_push($this->ErrorMessage,'updateRow: Row Name is not an Array, Row Value is not an Array, Row Number Name is not an Array so Row Number cannot be an Array!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("updateRow", 'Row Name is not an Array, Row Value is not an Array, Row Number Name is not an Array so Row Number cannot be an Array!');
+									return FALSE;
 								}
 							} else {
 								array_push($this->ErrorMessage,'updateRow: Row Name is not an Array, Row Value is not an Array so Row Number Name cannot be an Array!');
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("updateRow", 'Row Name is not an Array, Row Value is not an Array so Row Number Name cannot be an Array!');
+								return FALSE;
 							}
 						} else {
 							array_push($this->ErrorMessage, 'updateRow: Row Name is not an Array so Row Value cannot be an Array!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("updateRow", 'Row Name is not an Array so Row Value cannot be an Array!');
+							return FALSE;
 						}
 					} else {
 						if (is_array($RowValue)){
@@ -622,22 +866,40 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 
 								} else {
 									array_push($this->ErrorMessage,'updateRow: Row Name is an Array, Row Value is an Array, Row Number Name is an Array and Row Number must be an Array!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("updateRow", 'Row Name is an Array, Row Value is an Array, Row Number Name is an Array and Row Number must be an Array!');
+									return FALSE;
 								}
 							} else {
 								array_push($this->ErrorMessage,'updateRow: Row Name is an Array, Row Value is an Array and Row Number Name must be an Array!');
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("updateRow", 'Row Name is an Array, Row Value is an Array and Row Number Name must be an Array!');
+								return FALSE;
 							}
 						} else {
 							array_push($this->ErrorMessage,'updateRow: Row Name is an Array and Row Value must be an Array!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("updateRow", 'Row Name is an Array and Row Value must be an Array!');
+							return FALSE;
 						}
 					}
 				} else {
 					array_push($this->ErrorMessage,'updateRow: Table name does not exist!');
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("updateRow", 'Table name does not exist!');
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'updateRow: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("updateRow", 'Permission has been denied!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'updateRow: Database name does not exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("updateRow", 'Database name does not exist!');
+			return FALSE;
 		}
 	}
 
@@ -651,6 +913,8 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * @access public
 	*/
 	public function deleteRow ($RowName, $RowValue) {
+		$Result = NULL;
+		
 		$DatabaseNameCheck = $this->checkDatabaseName();
 		$TableNameCheck = $this->checkTableName();
 		$PermissionsCheck = $this->checkPermissions ('DELETE');
@@ -664,19 +928,46 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 								if ($RowValue != NULL) {
 									$Query = 'DELETE FROM ' . $this->DatabaseTable . ' WHERE ' . $RowName . ' = ' . $RowValue . '';
 									$Result = mysql_query($Query);
+									if (is_resource($Result) === TRUE) {
+										return $this;
+									} else {
+										$ErrorMessage = mysql_error();
+										array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+										$BackTrace = debug_backtrace(FALSE);
+										throw new SoapFault("createDatabase", "$ErrorMessage");
+										return FALSE;
+									}
 								} else {
 									array_push($this->ErrorMessage,'deleteRow: Row Name has a value but Row Value cannot be NULL!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("deleteRow", 'Row Name has a value but Row Value cannot be NULL!');
+									return FALSE;
 								}
 							} else {
 								if ($RowValue == NULL) {
 									$Query = 'DELETE FROM ' . $this->DatabaseTable . ' ';
 									$Result = mysql_query($Query);
+									if (is_resource($Result) === TRUE) {
+										return $this;
+									} else {
+										$ErrorMessage = mysql_error();
+										array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+										$BackTrace = debug_backtrace(FALSE);
+										throw new SoapFault("createDatabase", "$ErrorMessage");
+										return FALSE;
+									}
 								} else {
 									array_push($this->ErrorMessage,'deleteRow: Row Name is NULL but Row Value cannot have a value!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("deleteRow", 'Row Name is NULL but Row Value cannot have a value!');
+									return FALSE;
 								}
 							}
 						} else {
 							array_push($this->ErrorMessage,'deleteRow: Row Value cannot be an Array!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("deleteRow", 'Row Value cannot be an Array!');
+							return FALSE;
 						}
 					} else {
 						if (is_array($RowValue)) {
@@ -690,25 +981,49 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 									}
 								} else {
 									array_push($this->ErrorMessage,'deleteRow: Row Name is an array and has a value. Row Value is an array but cannot be NULL!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("deleteRow", 'Row Name is an array and has a value. Row Value is an array but cannot be NULL!');
+									return FALSE;
 								}
 							} else {
 								if ($RowValue == NULL) {
 									$Query = 'DELETE FROM ' . $this->DatabaseTable . ' ';
 									$Result = mysql_query($Query);
+									if (is_resource($Result) === TRUE) {
+										return $this;
+									} else {
+										$ErrorMessage = mysql_error();
+										array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+										$BackTrace = debug_backtrace(FALSE);
+										throw new SoapFault("createDatabase", "$ErrorMessage");
+										return FALSE;
+									}
 								} else {
 									array_push($this->ErrorMessage,'deleteRow: Row Name is an array and is NULL but Row Value is an array but cannot have a value!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("deleteRow", 'Row Name is an array and is NULL but Row Value is an array but cannot have a value!');
+									return FALSE;
 								}
 							}
 						}
 					}
 				} else {
 					array_push($this->ErrorMessage,'deleteRow: Table name does not exist!');
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("deleteRow", 'Table name does not exist!');
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'deleteRow: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("deleteRow", 'Permission has been denied!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'deleteRow: Database name does not exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("deleteRow", 'Database name does not exist!');
+			return FALSE;
 		}
 	}
 
@@ -726,6 +1041,8 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * @access public
 	*/
 	public function createField ($FieldString, $FieldFlag, $FieldFlagColumn) {
+		$Result = NULL;
+		
 		$DatabaseNameCheck = $this->checkDatabaseName();
 		$TableNameCheck = $this->checkTableName();
 		$PermissionsCheck = $this->checkPermissions ('ALTER');
@@ -742,41 +1059,78 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 											if ($FieldFlagColumn == NULL) {
 												$Query = 'ALTER TABLE `' . $this->DatabaseTable . '` ADD ' . $FieldString . ' FIRST; ';
 												$Result = mysql_query($Query);
-												if (!$Result) {
-													array_push($this->ErrorMessage,"createField: FIRST: Field String exists in the Database!");
+												
+												if (is_resource($Result) === TRUE) {
+													return $this;
+												} else {
+													$ErrorMessage = mysql_error();
+													array_push($this->ErrorMessage,"createDatabase: $ErrorMessage; FIRST: Field String exists in the Database!");
+													$BackTrace = debug_backtrace(FALSE);
+													throw new SoapFault("createDatabase", "$ErrorMessage; FIRST: Field String exists in the Database!");
+													return FALSE;
 												}
 											} else {
 												array_push($this->ErrorMessage,'createField: Field Flag has been set to FIRST and Field Flag Column has to be NULL!');
+												$BackTrace = debug_backtrace(FALSE);
+												throw new SoapFault("createField", 'Field Flag has been set to FIRST and Field Flag Column has to be NULL!');
+												return FALSE;
 											}
 										} else if ($FieldFlag == 'AFTER') {
 											if ($FieldFlagColumn != NULL) {
 												$Query = 'ALTER TABLE `' . $this->DatabaseTable . '` ADD ' . $FieldString . ' AFTER `' . $FieldFlagColumn .'` ; ';
 												$Result = mysql_query($Query);
-												if (!$Result) {
-													array_push($this->ErrorMessage,"createField: AFTER: Field String exists in the Database!");
+												if (is_resource($Result) === TRUE) {
+													return $this;
+												} else {
+													$ErrorMessage = mysql_error();
+													array_push($this->ErrorMessage,"createDatabase: $ErrorMessage; AFTER: Field String exists in the Database!");
+													$BackTrace = debug_backtrace(FALSE);
+													throw new SoapFault("createDatabase", "$ErrorMessage; AFTER: Field String exists in the Database!");
+													return FALSE;
 												}
 											} else {
 												array_push($this->ErrorMessage,'createField: Field Flag has been set to AFTER and Field Flag Column cannot be NULL!');
+												$BackTrace = debug_backtrace(FALSE);
+												throw new SoapFault("createField", 'Field Flag has been set to AFTER and Field Flag Column cannot be NULL!');
+												return FALSE;
 											}
 										} else {
 											array_push($this->ErrorMessage,'createField: Field Flag can only be FIRST or AFTER');
+											$BackTrace = debug_backtrace(FALSE);
+											throw new SoapFault("createField", 'Field Flag can only be FIRST or AFTER');
+											return FALSE;
 										}
 									} else {
 										$Query = 'ALTER TABLE `' . $this->DatabaseTable . '` ADD ' . $FieldString . ' ; ';
 										$Result = mysql_query($Query);
-										if (!$Result) {
-											array_push($this->ErrorMessage,"createField: Field String exists in the Database!");
+										
+										if (is_resource($Result) === TRUE) {
+											return $this;
+										} else {
+											$ErrorMessage = mysql_error();
+											array_push($this->ErrorMessage,"createDatabase: $ErrorMessage; Field String exists in the Database");
+											$BackTrace = debug_backtrace(FALSE);
+											throw new SoapFault("createDatabase", "$ErrorMessage; Field String exists in the Database");
+											return FALSE;
 										}
 									}
 								} else {
 									array_push($this->ErrorMessage,'createField: Field String cannot be NULL!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("createField", 'Field String cannot be NULL!');
+									return FALSE;
 								}
 							} else {
-
 								array_push($this->ErrorMessage,'createField: Field Flag Column cannot be an Array!');
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("createField", 'Field Flag Column cannot be an Array!');
+								return FALSE;
 							}
 						} else {
 							array_push($this->ErrorMessage,'createField: Field Flag cannot be an Array!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("createField", 'Field Flag cannot be an Array!');
+							return FALSE;
 						}
 					} else {
 						if (is_array($FieldFlag)) {
@@ -791,9 +1145,15 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 													if (!$Result) {
 														$Temp = key($FieldString);
 														array_push($this->ErrorMessage,"createField: FIRST: Field String [$Temp] exists in the Database!");
+														$BackTrace = debug_backtrace(FALSE);
+														throw new SoapFault("createField", "FIRST: Field String [$Temp] exists in the Database!");
+														return FALSE;
 													}
 												} else {
 													array_push($this->ErrorMessage,"createField: Field Flag [current($FieldFlag)] has been set to FIRST and Field Flag Column [current($FieldFlagColumn)]has to be NULL!");
+													$BackTrace = debug_backtrace(FALSE);
+													throw new SoapFault("createField", "Field Flag [current($FieldFlag)] has been set to FIRST and Field Flag Column [current($FieldFlagColumn)]has to be NULL!");
+													return FALSE;
 												}
 											} else if (current($FieldFlag) == 'AFTER') {
 												if ($FieldFlagColumn != NULL) {
@@ -802,12 +1162,21 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 													if (!$Result) {
 														$Temp = key($FieldString);
 														array_push($this->ErrorMessage,"createField: AFTER: Field String [$Temp] and Field Flag Column [$Temp] exists in the Database!");
+														$BackTrace = debug_backtrace(FALSE);
+														throw new SoapFault("createField", "AFTER: Field String [$Temp] and Field Flag Column [$Temp] exists in the Database!");
+														return FALSE;
 													}
 												} else {
 													array_push($this->ErrorMessage,'createField: Field Flag [current($FieldFlag)] has been set to AFTER and Field Flag Column [current($FieldFlagColumn)] cannot be NULL!');
+													$BackTrace = debug_backtrace(FALSE);
+													throw new SoapFault("createField", "Field Flag [current($FieldFlag)] has been set to AFTER and Field Flag Column [current($FieldFlagColumn)] cannot be NULL!");
+													return FALSE;
 												}
 											} else {
 												array_push($this->ErrorMessage,'createField: Field Flag [current($FieldFlag)] can only be FIRST or AFTER');
+												$BackTrace = debug_backtrace(FALSE);
+												throw new SoapFault("createField", "Field Flag [current($FieldFlag)] can only be FIRST or AFTER");
+												return FALSE;
 											}
 										} else {
 											$Query = 'ALTER TABLE `' . $this->DatabaseTable . '` ADD ' . current($FieldString) . ' ; ';
@@ -815,6 +1184,9 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 											if (!$Result) {
 												$Temp = key($FieldString);
 												array_push($this->ErrorMessage,"createField: Field String [$Temp] exists in the Database!");
+												$BackTrace = debug_backtrace(FALSE);
+												throw new SoapFault("createField", "Field String [$Temp] exists in the Database!");
+												return FALSE;
 											}
 										}
 										next($FieldString);
@@ -823,22 +1195,40 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 									}
 								} else {
 									array_push($this->ErrorMessage,'createField: Field String cannot be NULL!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("createField", 'Field String cannot be NULL!');
+									return FALSE;
 								}
 							} else {
 								array_push($this->ErrorMessage,'createField: Field String is an Array. Field Flag is an Array so Field Flag Column must be an Array!');
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("createField", 'Field String is an Array. Field Flag is an Array so Field Flag Column must be an Array!');
+								return FALSE;
 							}
 						} else {
 							array_push($this->ErrorMessage,'createField: Field String is an Array so Field Flag must be an Array!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("createField", 'Field String is an Array so Field Flag must be an Array!');
+							return FALSE;
 						}
 					}
 				} else {
 					array_push($this->ErrorMessage,'createField: Table name does not exist!');
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("createField", 'Table name does not exist!');
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'createField: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("createField", 'Permission has been denied!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'createField: Database name does not exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("createField", 'Database name does not exist!');
+			return FALSE;
 		}
 	}
 
@@ -852,6 +1242,8 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * @access public
 	*/
 	public function updateField ($Field, $FieldChange) {
+		$Result = NULL;
+		
 		$DatabaseNameCheck = $this->checkDatabaseName();
 		$TableNameCheck = $this->checkTableName();
 		$PermissionsCheck = $this->checkPermissions ('ALTER');
@@ -914,20 +1306,34 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 											$Result2 = mysql_query($Query2);
 										} else {
 											array_push($this->ErrorMessage,'updateField: Field Change - Field name exists!');
+											$BackTrace = debug_backtrace(FALSE);
+											throw new SoapFault("updateField", 'Field Change - Field name exists!');
+											return FALSE;
 										}
 									} else {
 										array_push($this->ErrorMessage,'updateField: Field Change cannot be NULL!');
+										$BackTrace = debug_backtrace(FALSE);
+										throw new SoapFault("updateField", 'Field Change cannot be NULL!');
+										return FALSE;
 									}
 								} else {
-
 									array_push($this->ErrorMessage,'updateField: Field Change cannot be an Array!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("updateField", 'Field Change cannot be an Array!');
+									return FALSE;
 								}
 
 							} else {
 								array_push($this->ErrorMessage,'updateField: Field name does not exist!');
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("updateField", 'Field name does not exist!');
+								return FALSE;
 							}
 						} else {
 							array_push($this->ErrorMessage,'updateField: Field cannot be NULL!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("updateField", 'Field cannot be NULL!');
+							return FALSE;
 						}
 					} else {
 						if ($Field != NULL) {
@@ -986,32 +1392,56 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 											} else {
 												$Temp = key($FieldChange);
 												array_push($this->ErrorMessage,"updateField: Field is an Array and Field Change [$Temp] - Field name exists!");
+												$BackTrace = debug_backtrace(FALSE);
+												throw new SoapFault("updateField", "Field is an Array and Field Change [$Temp] - Field name exists!");
+												return FALSE;
 											}
 										} else {
 											array_push($this->ErrorMessage,'updateField: Field is an Array so Field Change cannot be NULL!');
+											$BackTrace = debug_backtrace(FALSE);
+											throw new SoapFault("updateField", 'Field is an Array so Field Change cannot be NULL!');
+											return FALSE;
 										}
 									} else {
 										array_push($this->ErrorMessage,'updateField: Field is an Array so Field Change must be an Array!');
+										$BackTrace = debug_backtrace(FALSE);
+										throw new SoapFault("updateField", 'Field is an Array so Field Change must be an Array!');
+										return FALSE;
 									}
 								} else {
 									$Temp = key($Field);
 									array_push($this->ErrorMessage,"updateField: Field [$Temp] is an Array and Field name does not exist!");
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("updateField", "Field [$Temp] is an Array and Field name does not exist!");
+									return FALSE;
 								}
 								next($Field);
 								next($FieldChange);
 							}
 						} else {
 							array_push($this->ErrorMessage,'updateField: Field is an Array and cannot be NULL!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("updateField", 'Field is an Array and cannot be NULL!');
+							return FALSE;
 						}
 					}
 				} else {
 					array_push($this->ErrorMessage,'updateField: Table name does not exist!');
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("updateField", 'Table name does not exist!');
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'updateField: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("updateField", 'Permission has been denied!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'updateField: Database name does not exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("updateField", 'Database name does not exist!');
+			return FALSE;
 		}
 	}
 
@@ -1024,6 +1454,8 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * @access public
 	*/
 	public function deleteField ($Field) {
+		$Result = NULL;
+		
 		$DatabaseNameCheck = $this->checkDatabaseName();
 		$TableNameCheck = $this->checkTableName();
 		$PermissionsCheck = $this->checkPermissions ('ALTER');
@@ -1037,11 +1469,26 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 							if ($FieldCheck) {
 								$Query = 'ALTER TABLE `' . $this->DatabaseTable . '` DROP `' . $Field . '` ; ';
 								$Result = mysql_query($Query);
+								if (is_resource($Result) === TRUE) {
+									return $this;
+								} else {
+									$ErrorMessage = mysql_error();
+									array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("createDatabase", "$ErrorMessage");
+									return FALSE;
+								}
 							} else {
 								array_push($this->ErrorMessage,'deleteField: Field does not exist!');
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("deleteField", 'Field does not exist!');
+								return FALSE;
 							}
 						} else {
 							array_push($this->ErrorMessage,'deleteField: Field cannot be NULL!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("deleteField", 'Field cannot be NULL!');
+							return FALSE;
 						}
 					} else {
 						if ($Field != NULL) {
@@ -1053,24 +1500,39 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 									next($Field);
 								} else {
 									array_push($this->ErrorMessage,'deleteField: Field is an Array but does not exist!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("deleteField", 'Field is an Array but does not exist!');
+									return FALSE;
 								}
 							}
 						} else {
 							array_push($this->ErrorMessage,'deleteField: Field is an Array but cannot be NULL!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("deleteField", 'Database name does not exist!');
+							return FALSE;
 						}
 					}
 				} else {
 					array_push($this->ErrorMessage,'deleteField: Table name does not exist!');
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("deleteField", 'Table name does not exist!');
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'deleteField: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("deleteField", 'Permission has been denied!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'deleteField: Database name does not exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("deleteField", 'Database name does not exist!');
+			return FALSE;
 		}
 
 	}
-	
+
 	/**
 	 * emptyTable
 	 * Empties current database table.
@@ -1078,8 +1540,18 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * @access public
 	*/
 	public function emptyTable() {
+		$Result = NULL;
 		$Query = 'TRUNCATE TABLE `' . $this->DatabaseTable . '` ; ';
 		$Result = mysql_query($Query);
+		if (is_resource($Result) === TRUE) {
+			return $this;
+		} else {
+			$ErrorMessage = mysql_error();
+			array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("createDatabase", "$ErrorMessage");
+			return FALSE;
+		}
 	}
 	
 	/**
@@ -1091,10 +1563,48 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * @access public
 	*/
 	public function executeSQlCommand ($SQLCommand) {
-		if (!is_null($SQLCommand)) {
-			$this->Connect();
-			$Result = mysql_query($SQLCommand);
-			$this->Disconnect();
+		if (is_null($SQLCommand) === TRUE) {
+			array_push($this->ErrorMessage,'executeSQlCommand: SQLCommand cannot be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("executeSQlCommand", 'SQLCommand cannot be NULL!');
+			return FALSE;
+		}
+		
+		if (is_array($SQLCommand) === TRUE) {
+			array_push($this->ErrorMessage,'executeSQlCommand: SQLCommand cannot be an array!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("executeSQlCommand", 'SQLCommand cannot be an array!');
+			return FALSE;
+		}
+		
+		if (is_object($SQLCommand) === TRUE) {
+			array_push($this->ErrorMessage,'executeSQlCommand: SQLCommand cannot be an object!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("executeSQlCommand", 'SQLCommand cannot be an object!');
+			return FALSE;
+		}
+		
+		if (is_resource($SQLCommand) === TRUE) {
+			array_push($this->ErrorMessage,'executeSQlCommand: SQLCommand cannot be a resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("executeSQlCommand", 'SQLCommand cannot be a resource!');
+			return FALSE;
+		}
+		
+		$Result = NULL;
+		
+		$this->Connect();
+		$Result = mysql_query($SQLCommand);
+		$this->Disconnect();
+		
+		if (is_resource($Result) === TRUE) {
+			return $this;
+		} else {
+			$ErrorMessage = mysql_error();
+			array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("createDatabase", "$ErrorMessage");
+			return FALSE;
 		}
 	}
 	
@@ -1107,6 +1617,8 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 	 * @access public
 	*/
 	public function sortTable($SortOrder) {
+		$Result = NULL;
+		
 		$DatabaseNameCheck = $this->checkDatabaseName();
 		$TableNameCheck = $this->checkTableName();
 		$PermissionsCheck = $this->checkPermissions ('ALTER');
@@ -1116,16 +1628,31 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 		if ($DatabaseNameCheck) {
 			if ($PermissionsCheck) {
 				if ($TableNameCheck) {
-					if (!is_array($SortOrder)) {
+					if (is_array($SortOrder) === FALSE) {
 						if ($SortOrder != NULL) {
 							if ($FieldCheck) {
 								$Query = 'ALTER TABLE `' . $this->DatabaseTable . '` ORDER BY `' . $SortOrder . '` ; ';
 								$Result = mysql_query($Query);
+								if (is_resource($Result) === TRUE) {
+									return $this;
+								} else {
+									$ErrorMessage = mysql_error();
+									array_push($this->ErrorMessage,"createDatabase: $ErrorMessage");
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("createDatabase", "$ErrorMessage");
+									return FALSE;
+								}
 							} else {
 								array_push($this->ErrorMessage,'sortTable: Field does not exist!');
+								$BackTrace = debug_backtrace(FALSE);
+								throw new SoapFault("sortTable", 'Field does not exist!');
+								return FALSE;
 							}
 						} else {
 							array_push($this->ErrorMessage,'sortTable: Field cannot be NULL!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("sortTable", 'Field cannot be NULL!');
+							return FALSE;
 						}
 					} else {
 						if ($SortOrder != NULL) {
@@ -1143,6 +1670,9 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 									}
 								} else {
 									array_push($this->ErrorMessage,'sortTable: Field is an Array but does not exist!');
+									$BackTrace = debug_backtrace(FALSE);
+									throw new SoapFault("sortTable", 'Field is an Array but does not exist!');
+									return FALSE;
 								}
 							}
 							if ($String != NULL) {
@@ -1151,16 +1681,28 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 							}
 						} else {
 							array_push($this->ErrorMessage,'sortTable: Field is an Array but cannot be NULL!');
+							$BackTrace = debug_backtrace(FALSE);
+							throw new SoapFault("sortTable", 'Field is an Array but cannot be NULL!');
+							return FALSE;
 						}
 					}
 				} else {
 					array_push($this->ErrorMessage,'sortTable: Table name does not exist!');
+					$BackTrace = debug_backtrace(FALSE);
+					throw new SoapFault("sortTable", 'Table name does not exist!');
+					return FALSE;
 				}
 			} else {
 				array_push($this->ErrorMessage,'sortTable: Permission has been denied!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("sortTable", 'Permission has been denied!');
+				return FALSE;
 			}
 		} else {
 			array_push($this->ErrorMessage,'sortTable: Database name does not exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("sortTable", 'Database name does not exist!');
+			return FALSE;
 		}
 	}
 
@@ -1220,6 +1762,9 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 
 		} else {
 			array_push($this->ErrorMessage,'setDatabaseRow: Idnumber must be an Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("setDatabaseRow", 'Idnumber must be an Array!');
+			return FALSE;
 		}
 	}
 
@@ -1310,7 +1855,10 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 				$this->Database = mysql_fetch_assoc($this->RowResult);
 			}
 		} else {
-			array_push($this->ErrorMessage,'setDatabaseRow: Idnumber must be an Array!');
+			array_push($this->ErrorMessage,'BuildDatabaseRows: Idnumber must be an Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("BuildDatabaseRows", 'Idnumber must be an Array!');
+			return FALSE;
 		}
 	}
 	
@@ -1328,6 +1876,7 @@ class MySqlConnect extends Tier2DataAccessLayerModulesAbstract implements Tier2D
 
 		$this->Connect();
 		
+		$Result = NULL;
 		$Query = 'SHOW COLUMNS FROM `' . $this->DatabaseTable . '` ';
 		$Result = mysql_query($Query);
 		

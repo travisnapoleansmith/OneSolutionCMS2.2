@@ -29,19 +29,22 @@
 	*/
 	require_once("$HOME/Testcases/SimpleTest/simpletest/autorun.php");
 	
-	// Tier Settings
+	// Tier 2 Settings
 	require_once "$HOME/Testcases/Configuration/Tier2DataAccessLayerSettings.php";
-	require_once "$HOME/Testcases/Configuration/Tier3ProtectionLayerSettings.php";
+	
+	// Tier 3 Protection Layer Settings
+	require_once "$HOME/Configuration/Tier3ProtectionLayerSettings.php";
 	
 	// All Tier Abstract
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
 	
 	// Tiers Modules Abstract
 	require_once "$HOME/ModulesAbstract/Tier2DataAccessLayer/Tier2DataAccessLayerModulesAbstract.php";
+	require_once "$HOME/ModulesAbstract/Tier3ProtectionLayer/Tier3ProtectionLayerModulesAbstract.php";
 	
 	// Tiers Interface Includes
-	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 	require_once "$HOME/ModulesInterfaces/Tier2DataAccessLayer/Tier2DataAccessLayerModulesInterfaces.php";
+	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 
 	// Tiers Includes
 	require_once "$HOME/Tier2-DataAccessLayer/ClassDataAccessLayer.php";
@@ -115,7 +118,6 @@
 			$this->Tier3Protection = new ProtectionLayer();
 		}
 		
-		
 		/**
 		 * testDisconnectAllAllNull
 		 * Tests if DisconnectAll methods will accept Hostame, User, Password and DatabaseName all as NULL. 
@@ -126,9 +128,11 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll(NULL, NULL, NULL, NULL);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
 			$this->assertFalse($Return);
 			
@@ -140,6 +144,7 @@
 			$Return = $this->Tier3Protection->DisconnectAll();
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
 			$this->assertFalse($Return);
 		}
@@ -154,11 +159,13 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->ConnectAll();
@@ -168,26 +175,29 @@
 			$Return = $this->Tier3Protection->DisconnectAll();
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testDisconnectAllUserNull
+		 * testDisconnectAllUsernameNull
 		 * Tests if DisconnectAll methods will accept User as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testDisconnectAllUserNull() {
+		public function testDisconnectAllUsernameNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->ConnectAll();
@@ -197,8 +207,9 @@
 			$Return = $this->Tier3Protection->DisconnectAll();
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 		}
 		
@@ -212,11 +223,13 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->ConnectAll();
@@ -226,8 +239,9 @@
 			$Return = $this->Tier3Protection->DisconnectAll();
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 		}
 		
@@ -241,11 +255,13 @@
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->ConnectAll();
@@ -255,8 +271,435 @@
 			$Return = $this->Tier3Protection->DisconnectAll();
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testDisconnectAllAllAsArray
+		 * Tests if DisconnectAll methods will accept Hostame, User, Password and DatabaseName all as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllAllAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll(array(1), array(1), array(1), array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testDisconnectAllHostnameAsArray
+		 * Tests if DisconnectAll methods will accept Hostame as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllHostnameAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll(array(1), $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testDisconnectAllUsernameAsArray
+		 * Tests if DisconnectAll methods will accept User as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllUsernameAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, array(1), $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testDisconnectAllPasswordAsArray
+		 * Tests if DisconnectAll methods will accept Password as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllPasswordAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, array(1), $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testDisconnectAllDatabaseNameAsArray
+		 * Tests if DisconnectAll methods will accept DatabaseName as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllDatabaseNameAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+
+		/**
+		 * testDisconnectAllAllAsObject
+		 * Tests if DisconnectAll methods will accept Hostame, User, Password and DatabaseName all as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllAllAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($Object, $Object, $Object, $Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testDisconnectAllHostnameAsObject
+		 * Tests if DisconnectAll methods will accept Hostame as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllHostnameAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($Object, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testDisconnectAllUsernameAsObject
+		 * Tests if DisconnectAll methods will accept User as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllUsernameAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $Object, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testDisconnectAllPasswordAsObject
+		 * Tests if DisconnectAll methods will accept Password as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllPasswordAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $Object, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testDisconnectAllDatabaseNameAsObject
+		 * Tests if DisconnectAll methods will accept DatabaseName as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllDatabaseNameAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+		}
+
+		/**
+		 * testDisconnectAllDatabaseTableNull
+		 * Tests if DisconnectAll methods will accept Database Table as NULL. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllDatabaseTableNull() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(NULL);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(NULL);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testDisconnectAllDatabaseTableAsArray
+		 * Tests if DisconnectAll methods will accept Database Table as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllDatabaseTableAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testDisconnectAllDatabaseTableAsObject
+		 * Tests if DisconnectAll methods will accept Database Table as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllDatabaseTableAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
 			
 		}
 		
@@ -270,22 +713,23 @@
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier3Protection);
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertIsA($Return, 'ProtectionLayer');
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'ProtectionLayer');
 			
-			$Return = NULL;
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->ConnectAll();
-			
 			$this->assertIsA($Return, 'ProtectionLayer');
 			
-			$Return = NULL;
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->DisconnectAll();
-			
 			$this->assertIsA($Return, 'ProtectionLayer');
 			
+			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'ProtectionLayer');
 			

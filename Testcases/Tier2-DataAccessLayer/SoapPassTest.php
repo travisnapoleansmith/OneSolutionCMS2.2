@@ -110,7 +110,7 @@
 			$this->Password = $credentaillogonarray[2];
 			$this->DatabaseName = $credentaillogonarray[3];
 			
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 		}
 		
 		/**
@@ -120,11 +120,12 @@
 		 * @access public
 		*/
 		public function testSoapPassAllNull() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass(NULL, NULL, NULL);
 			$this->assertFalse($Return);
 		}
@@ -136,11 +137,12 @@
 		 * @access public
 		*/
 		public function testSoapPassDatabaseTableNull() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass(NULL, 'FUNCTION', 'FUNCTIONARGUMENTS');
 			$this->assertFalse($Return);
 		}
@@ -152,11 +154,12 @@
 		 * @access public
 		*/
 		public function testSoapPassFunctionNull() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('DATABASETABLE', NULL, 'FUNCTIONARGUMENTS');
 			$this->assertFalse($Return);
 		}
@@ -168,11 +171,12 @@
 		 * @access public
 		*/
 		public function testSoapPassFunctionArgumentsNull() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('DATABASETABLE', 'FUNCTION', NULL);
 			$this->assertFalse($Return);
 		}
@@ -184,11 +188,12 @@
 		 * @access public
 		*/
 		public function testSoapPassNotSetAll() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('DATABASETABLE', 'FUNCTION', 'FUNCTIONARGUMENT');
 			$this->assertFalse($Return);
 			
@@ -201,11 +206,12 @@
 		 * @access public
 		*/
 		public function testSoapPassNotSetDatabaseTable() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('DATABASETABLE', 'getIdnumber', array());
 			$this->assertFalse($Return);
 			
@@ -218,21 +224,167 @@
 		 * @access public
 		*/
 		public function testSoapPassFunctionArgumentNotAsArray() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('DATABASETABLE');
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('DATABASETABLE', 'getIdnumber', 'TEST');
-			
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('DATABASETABLE');
 			$this->assertIsA($Return, 'stdClass');
 			
+		}
+
+		/**
+		 * testSoapPassAsArray
+		 * Tests if pass method will accept All Values as an Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapPassAllAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass(array(1), array(1), array(1));
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapPassDatabaseTableAsArray
+		 * Tests if pass method will accept Database Table as an Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapPassDatabaseTableAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass(array(1), 'FUNCTION', 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapPassFunctionAsArray
+		 * Tests if pass method will accept Function as an Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('DATABASETABLE', array(1), 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapPassFunctionArgumentsAsArray
+		 * Tests if pass method will accept Function Arguments as an Array with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionArgumentsAsArray() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('DATABASETABLE', 'FUNCTION', array(1));
+			$this->assertFalse($Return);
+		}
+
+		/**
+		 * testSoapPassAsObject
+		 * Tests if pass method will accept All Values as an Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapPassAllAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass($Object, $Object, $Object);
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapPassDatabaseTableAsObject
+		 * Tests if pass method will accept Database Table as an Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapPassDatabaseTableAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass($Object, 'FUNCTION', 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapPassFunctionAsObject
+		 * Tests if pass method will accept Function as an Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('DATABASETABLE', $Object, 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapPassFunctionArgumentsAsObject
+		 * Tests if pass method will accept Function Arguments as an Object with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionArgumentsAsObject() {
+			$this->Tier2Database = Tier2SetupSoap();
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('DATABASETABLE', 'FUNCTION', $Object);
+			$this->assertFalse($Return);
 		}
 		
 		/**
@@ -242,19 +394,22 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataFunctionArgumentsEmptyArray() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'getIdnumber', array());
 			$this->assertFalse($Return);
 			//$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -267,19 +422,22 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataFunctionArgumentsNonEmptyArray() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'setIdnumber', array('id' => 1));
 			$this->assertFalse($Return);
 			//$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -292,22 +450,26 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataFunctionArgumentsEmptyArrayWithIntReturn() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
-			$Return = $this->Tier2Database->pass('TEST', 'setIdnumber', array('id' => 1));
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('TEST', 'setIdnumber', array(array('id' => 1)));
 			$this->assertFalse($Return);
 			//$this->assertIsA($Return, 'stdClass');
 			
-			$Return = $this->Tier2Database->pass('TEST', 'getIdnumber', array());
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('TEST', 'getIdnumber', array('id'));
 			$this->assertIdentical($Return, 1);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -320,22 +482,26 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataFunctionArgumentsNonEmptyArrayWithIntReturn() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
-			$Return = $this->Tier2Database->pass('TEST', 'setIdnumber', array('id' => 1));
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('TEST', 'setIdnumber', array(array('id' => 1)));
 			$this->assertFalse($Return);
 			//$this->assertIsA($Return, 'stdClass');
 			
-			$Return = $this->Tier2Database->pass('TEST', 'getIdnumber', array('id' => 1));
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('TEST', 'getIdnumber', array('id'));
 			$this->assertIdentical($Return, 1);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 		}
@@ -347,22 +513,26 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataFunctionArgumentsEmptyArrayWithStringReturn() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
-			$Return = $this->Tier2Database->pass('TEST', 'setIdnumber', array('id' => '1'));
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('TEST', 'setIdnumber', array(array('id' => '1')));
 			$this->assertFalse($Return);
 			//$this->assertIsA($Return, 'stdClass');
 			
-			$Return = $this->Tier2Database->pass('TEST', 'getIdnumber', array());
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('TEST', 'getIdnumber', array('id'));
 			$this->assertIdentical($Return, '1');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -375,22 +545,26 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataFunctionArgumentsNonEmptyArrayWithStringReturn() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
-			$Return = $this->Tier2Database->pass('TEST', 'setIdnumber', array('id' => '1'));
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('TEST', 'setIdnumber', array(array('id' => '1')));
 			$this->assertFalse($Return);
 			//$this->assertIsA($Return, 'stdClass');
 			
-			$Return = $this->Tier2Database->pass('TEST', 'getIdnumber', array('id' => '1'));
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('TEST', 'getIdnumber', array('id'));
 			$this->assertIdentical($Return, '1');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 		}
@@ -402,22 +576,26 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataFunctionArgumentsNonEmptyArrayWithArrayReturn() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
 			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'setIdnumber', array(array('id' => '1', 'id2' => '3')));
 			$this->assertFalse($Return);
 			//$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'getIdnumber', array());
 			$this->assertIsA($Return, 'array');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 		}
@@ -430,20 +608,24 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataCheckPassFunctionArgumentsEmptyArray() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('name' => $this->DatabaseName));
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array());
 			$this->assertIsA($Return, 'String');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -456,17 +638,20 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArray() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('id' => 1));
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -479,20 +664,24 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataCheckPassFunctionArgumentsEmptyArrayWithIntReturn() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('id' => 1));
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array());
 			$this->assertIdentical($Return, 1);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -505,20 +694,24 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithIntReturn() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('id' => 1));
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array('id' => 1));
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array());
 			$this->assertIdentical($Return, 1);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 		}
@@ -530,20 +723,24 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataCheckPassFunctionArgumentsEmptyArrayWithStringReturn() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('id' => '1'));
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array());
 			$this->assertIdentical($Return, '1');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
@@ -556,20 +753,24 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithStringReturn() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array('id' => '1'));
 			$this->assertFalse($Return);
 			
-			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array('id' => '1'));
+			$Return = TRUE;
+			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array());
 			$this->assertIdentical($Return, '1');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 		}
@@ -581,20 +782,24 @@
 		 * @access public
 		*/
 		public function testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithArrayReturn() {
-			$this->Tier2Database = SetupSoap();
+			$this->Tier2Database = Tier2SetupSoap();
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'setDatabasename', array(array('id' => '1', 'id2' => '3')));
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->pass('TEST', 'getDatabasename', array());
 			$this->assertIsA($Return, 'array');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 		}

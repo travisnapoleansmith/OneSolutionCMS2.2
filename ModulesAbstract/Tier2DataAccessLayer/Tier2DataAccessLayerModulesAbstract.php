@@ -58,11 +58,58 @@ abstract class Tier2DataAccessLayerModulesAbstract extends LayerModulesAbstract
 	abstract protected function BuildingEntireTable();
 
 	public function setIdnumber ($IdNumber) {
-		$this->IDNumber = $IdNumber;
+		if (is_null($IdNumber) === TRUE) {
+			array_push($this->ErrorMessage,'setIdnumber: IdNumber Cannot Be Null!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($IdNumber) === TRUE) {
+			array_push($this->ErrorMessage,'setIdnumber: IdNumber Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($IdNumber) === TRUE) {
+			array_push($this->ErrorMessage,'setIdnumber: IdNumber Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($IdNumber) === TRUE) {
+			$this->IDNumber = $IdNumber;
+		} else {
+			array_push($this->ErrorMessage,'setIdnumber: IdNumber Cannot Be Only Be An Array, No Other Types Are Allowed!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
 	}
 
 	public function getIdnumber () {
-		return $this->IDNumber;
+		$Arguments = func_get_args();
+		if ($Arguments[0] != NULL) {
+			if (is_object($Arguments[0]) === TRUE) {
+				array_push($this->ErrorMessage,'getIdnumber: IdNumber Cannot Be An Object!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+			
+			if (is_array($Arguments[0]) === TRUE) {
+				array_push($this->ErrorMessage,'getIdnumber: IdNumber Cannot Be An Array!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+			
+			if (is_resource($Arguments[0]) === TRUE) {
+				array_push($this->ErrorMessage,'getIdnumber: IdNumber Cannot Be A Resource!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+			
+			return $this->IDNumber[$Arguments[0]];
+		} else {
+			return $this->IDNumber;
+		}
 	}
 
 	public function setOrderbyname ($OrderByName) {
@@ -129,12 +176,68 @@ abstract class Tier2DataAccessLayerModulesAbstract extends LayerModulesAbstract
 		return $this->HostName;
 	}
 
+	/**
+	 * setDatabaseAll
+	 *
+	 * Setter for Hostname, User, Password, Database name and Database table
+	 *
+	 * @param string $Hostname the name of the host needed to connect to database.
+	 * @param string $User the user account needed to connect to database.
+	 * @param string $Password the user's password needed to connect to database.
+	 * @param string $DatabaseName the name of the database needed to connect to database.
+	 * @param string $DatabaseTable the name of the database table to connect to databaase.
+	 * @access public
+	 */
+	/*public function setDatabaseAll ($Hostname, $User, $Password, $DatabaseName, $DatabaseTable) {
+		if ($Hostname != NULL & $User != NULL & $Password != NULL & $DatabaseName != NULL & $DatabaseTable != NULL) {
+			if (is_array($Hostname) === TRUE | is_array($User) === TRUE | is_array($Password) === TRUE | is_array($DatabaseName) === TRUE | is_array($DatabaseTable) === TRUE) {
+				$this->Hostname = NULL;
+				$this->User = NULL;
+				$this->Password = NULL;
+				$this->DatabaseName = NULL;
+				$this->DatabaseTable = NULL;
+				
+				array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password, DatabaseName or DatabaseTable Cannot Be An Array!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+			
+			if (is_object($Hostname) === TRUE | is_object($User) === TRUE | is_object($Password) === TRUE | is_object($DatabaseName) === TRUE) {
+				$this->Hostname = NULL;
+				$this->User = NULL;
+				$this->Password = NULL;
+				$this->DatabaseName = NULL;
+				$this->DatabaseTable = NULL;
+				array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password, DatabaseName Cannot Be An Object!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+			
+			$this->Hostname = $Hostname;
+			$this->User = $User;
+			$this->Password = $Password;
+			$this->DatabaseName = $DatabaseName;
+			$this->DatabaseTable = $DatabaseTable;
+			return $this;
+		} else {
+			$this->Hostname = NULL;
+			$this->User = NULL;
+			$this->Password = NULL;
+			$this->DatabaseName = NULL;
+			$this->DatabaseTable = NULL;
+			
+			array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password, DatabaseName or DatabaseTable Cannot Be Null!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+	}*/
+	
 	public function setDatabaseAll ($HostName, $User, $Password, $DatabaseName, $DatabaseTable) {
 		$this->HostName = $HostName;
 		$this->User = $User;
 		$this->Password = $Password;
 		$this->DatabaseName = $DatabaseName;
-		$this->DatabaseTable = $DatabaseTable;
+		$this->DatabaseTable = $DatabaseTable; // TYPE OBJECT OR STRING
 	}
 
 	public function setOrderByAll ($OrderByName, $OrderByType) {
@@ -143,12 +246,36 @@ abstract class Tier2DataAccessLayerModulesAbstract extends LayerModulesAbstract
 	}
 
 	public function setDatabaseField ($IdNumber) {
-		$this->IDNumber = $IdNumber;
-		$this->BuildDatabaseRows();
-		$this->RowFieldNames = Array ();
-		if (is_array($this->Database)) {
-			$this->RowFieldNames = array_keys($this->Database);
+		if (is_null($IdNumber) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseField: IdNumber Cannot Be Null!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
 		}
+		
+		if (is_object($IdNumber) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseField: IdNumber Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($IdNumber) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseField: IdNumber Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($IdNumber) === TRUE) {
+			$this->IDNumber = $IdNumber;
+			$this->BuildDatabaseRows();
+			$this->RowFieldNames = Array ();
+			if (is_array($this->Database)) {
+				$this->RowFieldNames = array_keys($this->Database);
+			}
+		} else {
+			array_push($this->ErrorMessage,'setDatabaseField: IdNumber Cannot Be Only Be An Array, No Other Types Are Allowed!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}		
 	}
 
 	public function searchFieldNames($Search) {

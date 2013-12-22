@@ -32,17 +32,23 @@
 	// Tier 2 Settings
 	require_once "$HOME/Testcases/Configuration/Tier2DataAccessLayerSettings.php";
 	
+	// Tier 3 Protection Layer Settings
+	require_once "$HOME/Configuration/Tier3ProtectionLayerSettings.php";
+	
 	// All Tier Abstract
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
 	
 	// Tiers Modules Abstract
 	require_once "$HOME/ModulesAbstract/Tier2DataAccessLayer/Tier2DataAccessLayerModulesAbstract.php";
+	require_once "$HOME/ModulesAbstract/Tier3ProtectionLayer/Tier3ProtectionLayerModulesAbstract.php";
 	
 	// Tiers Interface Includes
 	require_once "$HOME/ModulesInterfaces/Tier2DataAccessLayer/Tier2DataAccessLayerModulesInterfaces.php";
+	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 
 	// Tiers Includes
 	require_once "$HOME/Tier2-DataAccessLayer/ClassDataAccessLayer.php";
+	require_once "$HOME/Tier3-ProtectionLayer/ClassProtectionLayer.php";
 	
 	// Tier 2 Modules
 	require_once "$HOME/Modules/Tier2DataAccessLayer/Core/MySqlConnect/ClassMySqlConnect.php";
@@ -113,76 +119,249 @@
 		}
 		
 		/**
-		 * testSetDatabaseAllNull
+		 * testSetDatabaseAllAsNull
 		 * Tests if setDatabaseAll methods will accept Hostame, User, Password and DatabaseName all as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllNull() {
+		public function testSetDatabaseAllAsNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, NULL, NULL, NULL);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testSetDatabaseAllHostnameNull
+		 * testSetDatabaseAllHostnameAsNull
 		 * Tests if setDatabaseAll methods will accept Hostame as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllHostnameNull() {
+		public function testSetDatabaseAllHostnameAsNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testSetDatabaseAllUserNull
+		 * testSetDatabaseAllUserAsNull
 		 * Tests if setDatabaseAll methods will accept User as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllUserNull() {
+		public function testSetDatabaseAllUserAsNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testSetDatabaseAllPasswordNull
+		 * testSetDatabaseAllPasswordAsNull
 		 * Tests if setDatabaseAll methods will accept Password as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllPasswordNull() {
+		public function testSetDatabaseAllPasswordAsNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
 		}
 		
 		/**
-		 * testSetDatabaseAllDatabaseNameNull
+		 * testSetDatabaseAllDatabaseNameAsNull
 		 * Tests if setDatabaseAll methods will accept DatabaseName as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testSetDatabaseAllDatabaseNameNull() {
+		public function testSetDatabaseAllDatabaseNameAsNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSetDatabaseAllHostnameAsArray
+		 * Tests if setDatabaseAll methods will accept Hostame as an array. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllHostnameAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll(array(1), $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSetDatabaseAllUserAsArray
+		 * Tests if setDatabaseAll methods will accept User as an array. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllUserAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, array(1), $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSetDatabaseAllPasswordAsArray
+		 * Tests if setDatabaseAll methods will accept Password as an array. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllPasswordAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, array(1), $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSetDatabaseAllDatabaseNameAsArray
+		 * Tests if setDatabaseAll methods will accept DatabaseName as an array. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllDatabaseNameAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, array(1));
+			$this->assertFalse($Return);
+			
+		}
+		/**
+		 * testSetDatabaseAllDataAsArray
+		 * Tests if setDatabaseAll methods will accept all data as an array. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllDataAsArray() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll(array(1), array(1), array(1), array(1));
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSetDatabaseAllHostnameAsObject
+		 * Tests if setDatabaseAll methods will accept Hostame as an object. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllHostnameAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($Object, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSetDatabaseAllUserAsObject
+		 * Tests if setDatabaseAll methods will accept User as an object. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllUserAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $Object, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSetDatabaseAllPasswordAsObject
+		 * Tests if setDatabaseAll methods will accept Password as an object. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllPasswordAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $Object, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSetDatabaseAllDatabaseNameAsObject
+		 * Tests if setDatabaseAll methods will accept DatabaseName as an object. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllDatabaseNameAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $Object);
+			$this->assertFalse($Return);
+			
+		}
+		/**
+		 * testSetDatabaseAllDataAsObject
+		 * Tests if setDatabaseAll methods will accept all data as an object. 
+		 *
+		 * @access public
+		*/
+		public function testSetDatabaseAllDataAsObject() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($Object, $Object, $Object, $Object);
 			$this->assertFalse($Return);
 			
 		}
@@ -197,6 +376,7 @@
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertIsA($Return, 'DataAccessLayer');
 			

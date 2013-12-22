@@ -32,17 +32,23 @@
 	// Tier 2 Settings
 	require_once "$HOME/Testcases/Configuration/Tier2DataAccessLayerSettings.php";
 	
+	// Tier 3 Protection Layer Settings
+	require_once "$HOME/Configuration/Tier3ProtectionLayerSettings.php";
+	
 	// All Tier Abstract
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
 	
 	// Tiers Modules Abstract
 	require_once "$HOME/ModulesAbstract/Tier2DataAccessLayer/Tier2DataAccessLayerModulesAbstract.php";
+	require_once "$HOME/ModulesAbstract/Tier3ProtectionLayer/Tier3ProtectionLayerModulesAbstract.php";
 	
 	// Tiers Interface Includes
 	require_once "$HOME/ModulesInterfaces/Tier2DataAccessLayer/Tier2DataAccessLayerModulesInterfaces.php";
+	require_once "$HOME/ModulesInterfaces/Tier3ProtectionLayer/Tier3ProtectionLayerModulesInterfaces.php";
 
 	// Tiers Includes
 	require_once "$HOME/Tier2-DataAccessLayer/ClassDataAccessLayer.php";
+	require_once "$HOME/Tier3-ProtectionLayer/ClassProtectionLayer.php";
 	
 	// Tier 2 Modules
 	require_once "$HOME/Modules/Tier2DataAccessLayer/Core/MySqlConnect/ClassMySqlConnect.php";
@@ -114,18 +120,20 @@
 		
 		
 		/**
-		 * testDisconnectAllAllNull
+		 * testDisconnectAllAllAsNull
 		 * Tests if DisconnectAll methods will accept Hostame, User, Password and DatabaseName all as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testDisconnectAllAllNull() {
+		public function testDisconnectAllAllAsNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, NULL, NULL, NULL);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable(NULL);
 			$this->assertFalse($Return);
 			
@@ -137,23 +145,26 @@
 			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable(NULL);
 			$this->assertFalse($Return);
 		}
 		
 		/**
-		 * testDisconnectAllHostnameNull
+		 * testDisconnectAllHostnameAsNull
 		 * Tests if DisconnectAll methods will accept Hostame as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testDisconnectAllHostnameNull() {
+		public function testDisconnectAllHostnameAsNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll(NULL, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
@@ -165,24 +176,27 @@
 			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
 		/**
-		 * testDisconnectAllUserNull
+		 * testDisconnectAllUsernameAsNull
 		 * Tests if DisconnectAll methods will accept User as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testDisconnectAllUserNull() {
+		public function testDisconnectAllUsernameAsNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, NULL, $this->Password, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
@@ -194,24 +208,27 @@
 			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
 		/**
-		 * testDisconnectAllPasswordNull
+		 * testDisconnectAllPasswordAsNull
 		 * Tests if DisconnectAll methods will accept Password as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testDisconnectAllPasswordNull() {
+		public function testDisconnectAllPasswordAsNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, NULL, $this->DatabaseName);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
@@ -223,24 +240,27 @@
 			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
 		/**
-		 * testDisconnectAllDatabaseNameNull
+		 * testDisconnectAllDatabaseNameAsNull
 		 * Tests if DisconnectAll methods will accept DatabaseName as NULL. 
 		 *
 		 * @access public
 		*/
-		public function testDisconnectAllDatabaseNameNull() {
+		public function testDisconnectAllDatabaseNameAsNull() {
 			$Return = TRUE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, NULL);
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
@@ -252,11 +272,402 @@
 			$Return = $this->Tier2Database->DisconnectAll();
 			$this->assertFalse($Return);
 			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+		}
+		
+		/**
+		 * testDisconnectAllAllAsArray
+		 * Tests if DisconnectAll methods will accept Hostame, User, Password and DatabaseName all as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllAllAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll(array(1), array(1), array(1), array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testDisconnectAllHostnameAsArray
+		 * Tests if DisconnectAll methods will accept Hostame as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllHostnameAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll(array(1), $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
 		}
 		
+		/**
+		 * testDisconnectAllUsernameAsArray
+		 * Tests if DisconnectAll methods will accept User as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllUsernameAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, array(1), $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+		}
+		
+		/**
+		 * testDisconnectAllPasswordAsArray
+		 * Tests if DisconnectAll methods will accept Password as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllPasswordAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, array(1), $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+		}
+		
+		/**
+		 * testDisconnectAllDatabaseNameAsArray
+		 * Tests if DisconnectAll methods will accept DatabaseName as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllDatabaseNameAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+		}
+		
+		/**
+		 * testDisconnectAllAllAsObject
+		 * Tests if DisconnectAll methods will accept Hostame, User, Password and DatabaseName all as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllAllAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($Object, $Object, $Object, $Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testDisconnectAllHostnameAsObject
+		 * Tests if DisconnectAll methods will accept Hostame as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllHostnameAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($Object, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+		}
+		
+		/**
+		 * testDisconnectAllUsernameAsObject
+		 * Tests if DisconnectAll methods will accept User as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllUsernameAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $Object, $this->Password, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+		}
+		
+		/**
+		 * testDisconnectAllPasswordAsObject
+		 * Tests if DisconnectAll methods will accept Password as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllPasswordAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $Object, $this->DatabaseName);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+		}
+		
+		/**
+		 * testDisconnectAllDatabaseNameAsObject
+		 * Tests if DisconnectAll methods will accept DatabaseName as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllDatabaseNameAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'DataAccessLayer');
+		}
+		
+		/**
+		 * testDisconnectAllDatabaseTableAsArray
+		 * Tests if DisconnectAll methods will accept DatabaseTable as an Array. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllDatabaseTableAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable(array(1));
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testDisconnectAllDatabaseTableAsObject
+		 * Tests if DisconnectAll methods will accept DatabaseTable as an Object. 
+		 *
+		 * @access public
+		*/
+		public function testDisconnectAllDatabaseTableAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier2Database);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
+			$this->assertIsA($Return, 'DataAccessLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->createDatabaseTable($Object);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->ConnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->DisconnectAll();
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier2Database->destroyDatabaseTable($Object);
+			$this->assertFalse($Return);
+		}
+	
 		/**
 		 * testDisconnectAllCorrectData
 		 * Tests if DisconnectAll methods will accept all data correctly. 
@@ -267,22 +678,23 @@
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier2Database);
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
-			$Return = NULL;
+			$Return = TRUE;
 			$Return = $this->Tier2Database->ConnectAll();
-			
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
-			$Return = NULL;
+			$Return = TRUE;
 			$Return = $this->Tier2Database->DisconnectAll();
-			
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
+			$Return = TRUE;
 			$Return = $this->Tier2Database->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'DataAccessLayer');
 			
