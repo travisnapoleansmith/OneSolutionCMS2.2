@@ -13,13 +13,13 @@
 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	* GNU General Public License for more details.
-	*
+	* 
 	* You should have received a copy of the GNU General Public License
 	* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*
 	* @copyright  Copyright (c) 1999 - 2013 One Solution CMS (http://www.onesolutioncms.com/)
 	* @license    http://www.gnu.org/licenses/gpl-2.0.txt
-	* @version    2.2.1, 2013-05-05
+	* @version    2.2.12, 2013-12-30
 	*************************************************************************************
 	*/
 	
@@ -33,6 +33,7 @@
 	require_once "$HOME/Configuration/Tier3ProtectionLayerSettings.php";
 	
 	// All Tier Abstract
+	require_once "$HOME/ModulesAbstract/GlobalTierAbstract.php";
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
 	
 	// Tiers Modules Abstract
@@ -132,7 +133,7 @@
 		
 		/**
 		 * testSoapPassDatabaseTableNull
-		 * Tests if pass method will accept Database Table as NULL with SOAP. 
+		 * Tests if pass method will accept Database Table as NULL with SOAP.
 		 *
 		 * @access public
 		*/
@@ -149,7 +150,7 @@
 		
 		/**
 		 * testSoapPassFunctionNull
-		 * Tests if pass method will accept Function as NULL with SOAP. 
+		 * Tests if pass method will accept Function as NULL with SOAP.
 		 *
 		 * @access public
 		*/
@@ -180,10 +181,10 @@
 			$Return = $this->Tier3Protection->pass('DATABASETABLE', 'FUNCTION', NULL);
 			$this->assertFalse($Return);
 		}
-	
+		
 		/**
 		 * testSoapPassAsArray
-		 * Tests if pass method will accept All Values as an Array with SOAP. 
+		 * Tests if pass method will accept All Values as an Array with SOAP.
 		 *
 		 * @access public
 		*/
@@ -217,7 +218,7 @@
 		
 		/**
 		 * testSoapPassFunctionAsArray
-		 * Tests if pass method will accept Function as an Array with SOAP. 
+		 * Tests if pass method will accept Function as an Array with SOAP.
 		 *
 		 * @access public
 		*/
@@ -234,7 +235,7 @@
 		
 		/**
 		 * testSoapPassFunctionArgumentsAsArray
-		 * Tests if pass method will accept Function Arguments as an Array with SOAP. 
+		 * Tests if pass method will accept Function Arguments as Array with SOAP. 
 		 *
 		 * @access public
 		*/
@@ -289,7 +290,7 @@
 		
 		/**
 		 * testSoapPassFunctionAsObject
-		 * Tests if pass method will accept Function as an Object with SOAP. 
+		 * Tests if pass method will accept Function as an Object with SOAP.
 		 *
 		 * @access public
 		*/
@@ -308,7 +309,7 @@
 		
 		/**
 		 * testSoapPassFunctionArgumentsAsObject
-		 * Tests if pass method will accept Function Arguments as an Object with SOAP. 
+		 * Tests if pass method will accept Function Arguments as Object with SOAP.
 		 *
 		 * @access public
 		*/
@@ -324,10 +325,11 @@
 			$Return = $this->Tier3Protection->pass('DATABASETABLE', 'FUNCTION', $Object);
 			$this->assertFalse($Return);
 		}
+
 		
 		/**
 		 * testSoapPassNotSetAll
-		 * Tests if pass method will accept all arguments that are not set with SOAP. 
+		 * Tests if pass method will accept all arguments that are not set with SOAP.
 		 *
 		 * @access public
 		*/
@@ -345,7 +347,7 @@
 		
 		/**
 		 * testSoapPassNotSetDatabaseTable
-		 * Tests if pass method will accept a Database Table Name that has not been set, but all other arguments are valid with SOAP. 
+		 * Tests if pass method will accept a Database Table Name that has not been set, but all other arguments are valid with SOAP.
 		 *
 		 * @access public
 		*/
@@ -363,7 +365,7 @@
 		
 		/**
 		 * testSoapPassFunctionArgumentNotAsArray
-		 * Tests if pass method will accept a Function Arguments are not an array with SOAP. 
+		 * Tests if pass method will accept a Function Arguments are not an array with SOAP.
 		 *
 		 * @access public
 		*/
@@ -384,11 +386,12 @@
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable('DATABASETABLE');
 			$this->assertIsA($Return, 'stdClass');
+			
 		}
 		
 		/**
 		 * testSoapPassCorrectDataFunctionArgumentsEmptyArray
-		 * Tests if pass method will accept all data correctly with Function Arguments being an empty array with SOAP. 
+		 * Tests if pass method will accept all data correctly with Function Arguments being an empty array with SOAP.
 		 *
 		 * @access public
 		*/
@@ -416,7 +419,7 @@
 		
 		/**
 		 * testSoapPassCorrectDataFunctionArgumentsNonEmptyArray
-		 * Tests if pass method will accept all data correctly with Function Arguments being an non-empty array with SOAP. 
+		 * Tests if pass method will accept all data correctly with Function Arguments being an non-empty array with SOAP.
 		 *
 		 * @access public
 		*/
@@ -432,7 +435,7 @@
 			
 			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
 			$Return = TRUE;
-			$Return = $this->Tier3Protection->pass('TEST', 'setIdnumber', array(array('id' => 1)));
+			$Return = $this->Tier3Protection->pass('TEST', 'setIdnumber', array('id' => 1));
 			$this->assertFalse($Return);
 			//$this->assertIsA($Return, 'stdClass');
 			
@@ -444,7 +447,7 @@
 		
 		/**
 		 * testSoapPassCorrectDataFunctionArgumentsEmptyArrayWithIntReturn
-		 * Tests if pass method will accept all data correctly with Function Arguments being an empty array with a int return with SOAP. 
+		 * Tests if pass method will accept all data correctly with Function Arguments being an empty array with a int return with SOAP.
 		 *
 		 * @access public
 		*/
@@ -476,7 +479,7 @@
 		
 		/**
 		 * testSoapPassCorrectDataFunctionArgumentsNonEmptyArrayWithIntReturn
-		 * Tests if pass method will accept all data correctly with Function Arguments being an non-empty array with a int return with SOAP. 
+		 * Tests if pass method will accept all data correctly with Function Arguments being an non-empty array with a int return with SOAP.
 		 *
 		 * @access public
 		*/
@@ -507,7 +510,7 @@
 		
 		/**
 		 * testSoapPassCorrectDataFunctionArgumentsEmptyArrayWithStringReturn
-		 * Tests if pass method will accept all data correctly with Function Arguments being an empty array with a string return with SOAP. 
+		 * Tests if pass method will accept all data correctly with Function Arguments being an empty array with a string return with SOAP.
 		 *
 		 * @access public
 		*/
@@ -539,7 +542,7 @@
 		
 		/**
 		 * testSoapPassCorrectDataFunctionArgumentsNonEmptyArrayWithStringReturn
-		 * Tests if pass method will accept all data correctly with Function Arguments being an non-empty array with a string return with SOAP. 
+		 * Tests if pass method will accept all data correctly with Function Arguments being an non-empty array with a string return with SOAP.
 		 *
 		 * @access public
 		*/
@@ -570,7 +573,7 @@
 		
 		/**
 		 * testSoapPassCorrectDataFunctionArgumentsNonEmptyArrayWithArrayReturn
-		 * Tests if pass method will accept all data correctly with Function Arguments being an non-empty array with an array return with SOAP. 
+		 * Tests if pass method will accept all data correctly with Function Arguments being an non-empty array with an array return with SOAP.
 		 *
 		 * @access public
 		*/
@@ -599,42 +602,9 @@
 			$this->assertIsA($Return, 'stdClass');
 		}
 		
-		// START HERE
-		// HAVE TO GET VALID DATA THERE FOR IT TO RETURN CORRECT TYPES.
-		// SEE ATPAVERSION3
-		/**
-		 * testSoapPassCorrectDataCheckPassFunctionArgumentsEmptyArray
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an empty array with SOAP. 
-		 *
-		 * @access public
-		*/
-		public function testSoapPassCorrectDataCheckPassFunctionArgumentsEmptyArray() {
-			$this->Tier3Protection = Tier3SetupSoap();
-			
-			$Return = FALSE;
-			$this->assertNotNull($this->Tier3Protection);
-			
-			$Return = TRUE;
-			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'stdClass');
-			
-			$Return = TRUE;
-			$Return = $this->Tier3Protection->pass('TEST', 'setDatabasename', array('name' => $this->DatabaseName));
-			$this->assertFalse($Return);
-			
-			$Return = TRUE;
-			$Return = $this->Tier3Protection->pass('TEST', 'getDatabasename', array());
-			$this->assertIsA($Return, 'String');
-			
-			$Return = TRUE;
-			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'stdClass');
-			
-		}
-
 		/**
 		 * testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArray
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array with SOAP. 
+		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array with SOAP.
 		 *
 		 * @access public
 		*/
@@ -657,15 +627,21 @@
 			$this->assertIsA($Return, 'stdClass');
 			
 		}
-
+		
 		/**
-		 * testSoapPassCorrectDataCheckPassFunctionArgumentsEmptyArrayWithIntReturn
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an empty array with a int return with SOAP. 
+		 * testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArray
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array. This does run Verify for all Modules with SOAP.
 		 *
 		 * @access public
 		*/
-		public function testSoapPassCorrectDataCheckPassFunctionArgumentsEmptyArrayWithIntReturn() {
+		public function testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArray() {
 			$this->Tier3Protection = Tier3SetupSoap();
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['getDatabasename'] = 'getDatabasename';
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier3Protection);
@@ -675,27 +651,82 @@
 			$this->assertIsA($Return, 'stdClass');
 			
 			$Return = TRUE;
-			$Return = $this->Tier3Protection->pass('TEST', 'setDatabasename', array('id' => 1));
+			$Return = $this->Tier3Protection->pass('TEST', 'setDatabasename', array('name' => $this->DatabaseName));
 			$this->assertFalse($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->pass('TEST', 'getDatabasename', array());
+			$this->assertIsA($Return, 'String');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['getDatabasename'] = 'getDatabasename';
+		}
+		
+		/**
+		 * testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArrayWithIntReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array with a int return with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArrayWithIntReturn() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['getDatabasename'] = 'getDatabasename';
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'setIdnumber', array(array('id' => 1)));
+			$this->assertFalse($Return);
+			//$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'getIdnumber', array('id'));
 			$this->assertIdentical($Return, 1);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
+			unset($GLOBALS['Tier3DatabaseDeny']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['getDatabasename'] = 'getDatabasename';
+			
 		}
 		
 		/**
-		 * testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithIntReturn
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array with a int return with SOAP. 
+		 * testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithIntReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array with a int return. This does run Verify for all Modules with SOAP.
 		 *
 		 * @access public
 		*/
-		public function testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithIntReturn() {
-			$this->Tier2Database = Tier3SetupSoap();
+		public function testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithIntReturn() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['getDatabasename'] = 'getDatabasename';
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier3Protection);
@@ -715,16 +746,28 @@
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['getDatabasename'] = 'getDatabasename';
 		}
 		
 		/**
-		 * testSoapPassCorrectDataCheckPassFunctionArgumentsEmptyArrayWithStringReturn
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an empty array with a string return with SOAP. 
+		 * testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArrayWithStringReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array with a string return. This does run Verify for all Modules with SOAP.
 		 *
 		 * @access public
 		*/
-		public function testSoapPassCorrectDataCheckPassFunctionArgumentsEmptyArrayWithStringReturn() {
+		public function testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArrayWithStringReturn() {
 			$this->Tier3Protection = Tier3SetupSoap();
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['getDatabasename'] = 'getDatabasename';
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier3Protection);
@@ -745,16 +788,27 @@
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
+			unset($GLOBALS['Tier3DatabaseDeny']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['getDatabasename'] = 'getDatabasename';
 		}
 		
 		/**
-		 * testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithStringReturn
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array with a string return with SOAP. 
+		 * testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithStringReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array with a string return. This does run Verify for all Modules with SOAP.
 		 *
 		 * @access public
 		*/
-		public function testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithStringReturn() {
+		public function testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithStringReturn() {
 			$this->Tier3Protection = Tier3SetupSoap();
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['getDatabasename'] = 'getDatabasename';
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier3Protection);
@@ -774,16 +828,28 @@
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['getDatabasename'] = 'getDatabasename';
 		}
 		
 		/**
-		 * testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithArrayReturn
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array with an array return with SOAP. 
+		 * testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithArrayReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array with an array return. This does run Verify for all Modules with SOAP.
 		 *
 		 * @access public
 		*/
-		public function testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithArrayReturn() {
+		public function testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithArrayReturn() {
 			$this->Tier3Protection = Tier3SetupSoap();
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['getDatabasename'] = 'getDatabasename';
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier3Protection);
@@ -803,16 +869,28 @@
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['getDatabasename'] = 'getDatabasename';
 		}
 		
 		/**
-		 * testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithNonArrayHookArgumentsWithArrayReturn
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array and non array Hook Arguments with SOAP. 
+		 * testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithNonArrayHookArguments
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array and non array Hook Arguments with SOAP.
 		 *
 		 * @access public
 		*/
-		public function testSoapPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithNonArrayHookArguments() {
+		public function testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithNonArrayHookArguments() {
 			$this->Tier3Protection = Tier3SetupSoap();
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['getDatabasename'] = 'getDatabasename';
 			
 			$Return = FALSE;
 			$this->assertNotNull($this->Tier3Protection);
@@ -829,16 +907,1078 @@
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'stdClass');
 			
+			unset($GLOBALS['Tier3DatabaseDeny']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['getDatabasename'] = 'getDatabasename';
 		}
 		
-		// TEST 1 - Correct Hook TEST
-		// TEST 2 - Database Deny with 3 arguments TEST 
-		// TEST 3 - Database Deny with more than 3 arguments TEST
-		// TEST 4 - $Function = 'PROTECT' TEST
-		// TEST 5 - 'PROTECT' with 3 arguments TEST
-		// TEST 6 - 'PROTECT' with more than 3 arguments TEST
+		/**
+		 * testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithArrayHookArguments
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array and array Hook Arguments. This does run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithArrayHookArguments() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['getDatabasename'] = 'getDatabasename';
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'setDatabasename', array(array('id' => '1', 'id2' => '3')), array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['getDatabasename'] = 'getDatabasename';
+		}
 		
-		// Check all methods to make sure they are running with test cases
+		/**
+		 * testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArray
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array. This does run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArray() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array('name' => $this->DatabaseName));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getDatabasename', array());
+			$this->assertIsA($Return, 'String');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
 		
+		/**
+		 * testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArrayWithIntReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array with a int return. This does run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArrayWithIntReturn() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setIdnumber', array(array('id' => 1)));
+			$this->assertFalse($Return);
+			//$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getIdnumber', array('id'));
+			$this->assertIdentical($Return, 1);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithIntReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array with a int return. This does run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithIntReturn() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array('id' => 1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getDatabasename', array('id' => 1));
+			$this->assertIdentical($Return, 1);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArrayWithStringReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array with a string return. This does run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArrayWithStringReturn() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array('id' => '1'));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getDatabasename', array());
+			$this->assertIdentical($Return, '1');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithStringReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array with a string return. This does run Verify for all Modules with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithStringReturn() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array('id' => '1'));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getDatabasename', array('id' => '1'));
+			$this->assertIdentical($Return, '1');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithArrayReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Allow Function and Function Arguments being an non-empty array with an array return. This does run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithArrayReturn() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array(array('id' => '1', 'id2' => '3')));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getDatabasename', array());
+			$this->assertIsA($Return, 'array');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithNonArrayHookArguments
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Allow Function and Function Arguments being an non-empty array and non array Hook Arguments with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithNonArrayHookArguments() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array(array('id' => '1', 'id2' => '3')), 1);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithArrayHookArguments
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Allow Function and Function Arguments being an non-empty array and array Hook Arguments. This does run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithArrayHookArguments() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array(array('id' => '1', 'id2' => '3')), array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+	
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArray
+		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArray() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(1), array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithoutHookArgument
+		 * Tests if pass method will accept 'PROTECT' as a function name without Hook Arguments. This will call checkPass with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithoutHookArgument() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = FALSE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(1));
+			$this->assertTrue($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentExecuteKey
+		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'Execute' key with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentExecuteKey() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$HookArguments = array();
+			//$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'getLogonHistoryTable';
+			$HookArguments['ObjectType'] = 'LogonMonitor';
+			$HookArguments['ObjectTypeName'] = 'logonmonitor';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(1), $HookArguments);
+			$this->assertFalse($Return);;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentMethodKey
+		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'Method' key with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentMethodKey() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			//$HookArguments['Method'] = 'getLogonHistoryTable';
+			$HookArguments['ObjectType'] = 'LogonMonitor';
+			$HookArguments['ObjectTypeName'] = 'logonmonitor';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentObjectTypeKey
+		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'ObjectKey' key with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentObjectTypeKey() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['getDatabasename'] = 'getDatabasename';
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'getLogonHistoryTable';
+			//$HookArguments['ObjectType'] = 'LogonMonitor';
+			$HookArguments['ObjectTypeName'] = 'logonmonitor';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentObjectTypeNameKey
+		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'ObjectKeyName' key with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentObjectTypeNameKey() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'getLogonHistoryTable';
+			$HookArguments['ObjectType'] = 'LogonMonitor';
+			//$HookArguments['ObjectTypeName'] = 'logonmonitor';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithANonExistingModule
+		 * Tests if pass method will accept 'PROTECT' as a function name with an correct array of Hook Argument with a non existing module with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithANonExistingModule() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'TEST';
+			$HookArguments['ObjectType'] = 'TEST';
+			$HookArguments['ObjectTypeName'] = 'TEST';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithAnExistingMethodOnANonObject
+		 * Tests if pass method will accept 'PROTECT' as a function name with an correct array of Hook Argument with an existing method on a non object with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithAnExistingMethodOnANonObject() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$ModuleName = 'LogonMonitorTEST';
+			$ObjectName = 'logonmonitortest';
+			$ModuleObject = 'TEST';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->setModules($ModuleName, $ObjectName, $ModuleObject);
+			$this->assertFalse($Return);
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'TEST';
+			$HookArguments['ObjectType'] = $ModuleName;
+			$HookArguments['ObjectTypeName'] = $ObjectName;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithANonExistingMethod
+		 * Tests if pass method will accept 'PROTECT' as a function name with an correct array of Hook Argument with a non existing method with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithANonExistingMethod() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'getLogonHistoryTable';
+			$HookArguments['ObjectType'] = 'LogonMonitorNonObject';
+			$HookArguments['ObjectTypeName'] = 'logonmonitornonobject';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithNoReturn
+		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with No Return with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithNoReturn() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'getLogonHistoryTable';
+			$HookArguments['ObjectType'] = 'LogonMonitor';
+			$HookArguments['ObjectTypeName'] = 'logonmonitor';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsNotAnArray
+		 * Tests if pass method will accept 'PROTECT' as a function name with a Hook Arguments as not an array with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsNotAnArray() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseAllow']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseDeny']['getDatabasename'] = 'getDatabasename';
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$HookArguments = 'getLogonHistoryTable';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['setDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['setDatabasename'] = 'setDatabasename';
+			
+			unset($GLOBALS['Tier3DatabaseDeny']['getDatabasename']);
+			$GLOBALS['Tier3DatabaseAllow']['getDatabasename'] = 'getDatabasename';
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithIntReturn
+		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with an Integer Return with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithIntReturn() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'setLogonHistoryTable';
+			$HookArguments['ObjectType'] = 'LogonMonitor';
+			$HookArguments['ObjectTypeName'] = 'logonmonitor';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array('Table' => 1), $HookArguments);
+			$this->assertFalse($Return);
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'getLogonHistoryTable';
+			$HookArguments['ObjectType'] = 'LogonMonitor';
+			$HookArguments['ObjectTypeName'] = 'logonmonitor';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$this->assertIdentical($Return, 1);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithStringReturn
+		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with a String Return with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithStringReturn() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'setLogonHistoryTable';
+			$HookArguments['ObjectType'] = 'LogonMonitor';
+			$HookArguments['ObjectTypeName'] = 'logonmonitor';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array('Table' => '1'), $HookArguments);
+			$this->assertFalse($Return);
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'getLogonHistoryTable';
+			$HookArguments['ObjectType'] = 'LogonMonitor';
+			$HookArguments['ObjectTypeName'] = 'logonmonitor';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array('id' => '1', 'id2' => '3'), $HookArguments);
+			$this->assertIdentical($Return, '1');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+		
+		/**
+		 * testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithArrayReturn
+		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with an Array Return with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithArrayReturn() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'setLogonHistoryTable';
+			$HookArguments['ObjectType'] = 'LogonMonitor';
+			$HookArguments['ObjectTypeName'] = 'logonmonitor';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$this->assertFalse($Return);
+			
+			$HookArguments = array();
+			$HookArguments['Execute'] = TRUE;
+			$HookArguments['Method'] = 'getLogonHistoryTable';
+			$HookArguments['ObjectType'] = 'LogonMonitor';
+			$HookArguments['ObjectTypeName'] = 'logonmonitor';
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$this->assertIsA($Return, 'array');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+		}
+
+		/**
+		 * testSoapCheckPassNull
+		 * Tests if checkPass method will accept All Values as NULL. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassAllNull() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass(NULL, NULL, NULL);
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapCheckPassDatabaseTableNull
+		 * Tests if checkPass method will accept Database Table as NULL. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassDatabaseTableNull() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass(NULL, 'FUNCTION', 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapCheckPassFunctionNull
+		 * Tests if checkPass method will accept Function as NULL. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassFunctionNull() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', NULL, 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapCheckPassFunctionArgumentsNull
+		 * Tests if checkPass method will accept Function Arguments as NULL. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassFunctionArgumentsNull() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'FUNCTION', NULL);
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapCheckPassAsArray
+		 * Tests if checkPass method will accept All Values as an Array. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassAllAsArray() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass(array(1), array(1), array(1));
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapCheckPassDatabaseTableAsArray
+		 * Tests if checkPass method will accept Database Table as an Array. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassDatabaseTableAsArray() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass(array(1), 'FUNCTION', 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapCheckPassFunctionAsArray
+		 * Tests if checkPass method will accept Function as an Array. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassFunctionAsArray() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', array(1), 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapCheckPassFunctionArgumentsAsArray
+		 * Tests if checkPass method will accept Function Arguments as Array.  This does run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassFunctionArgumentsAsArray() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'FUNCTION', array(1));
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapCheckPassAsObject
+		 * Tests if checkPass method will accept All Values as an Object. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassAllAsObject() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass($Object, $Object, $Object);
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapCheckPassDatabaseTableAsObject
+		 * Tests if checkPass method will accept Database Table as an Object. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassDatabaseTableAsObject() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass($Object, 'FUNCTION', 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapCheckPassFunctionAsObject
+		 * Tests if checkPass method will accept Function as an Object. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassFunctionAsObject() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', $Object, 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testSoapCheckPassFunctionArgumentsAsObject
+		 * Tests if checkPass method will accept Function Arguments as Object. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassFunctionArgumentsAsObject() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'FUNCTION', $Object);
+			$this->assertFalse($Return);
+		}
+
+		
+		/**
+		 * testSoapCheckPassNotSetAll
+		 * Tests if checkPass method will accept all arguments that are not set. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassNotSetAll() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'FUNCTION', 'FUNCTIONARGUMENT');
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSoapCheckPassNotSetDatabaseTable
+		 * Tests if checkPass method will accept a Database Table Name that has not been set, but all other arguments are valid.  This does run Verify for all Modules with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassNotSetDatabaseTable() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'getIdnumber', array());
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testSoapCheckPassFunctionArgumentNotAsArray
+		 * Tests if checkPass method will accept a Function Arguments are not an array. This does NOT run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassFunctionArgumentNotAsArray() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('DATABASETABLE');
+			$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'getIdnumber', 'TEST');
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('DATABASETABLE');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapCheckPassCorrectDataFunctionArgumentsEmptyArray
+		 * Tests if checkPass method will accept all data correctly with Function Arguments being an empty array. This does run Verify for all Modules with SOAP. 
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassCorrectDataFunctionArgumentsEmptyArray() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getIdnumber', array());
+			$this->assertFalse($Return);
+			//$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
+		
+		/**
+		 * testSoapCheckPassCorrectDataFunctionArgumentsNonEmptyArray
+		 * Tests if checkPass method will accept all data correctly with Function Arguments being an non-empty array. This does run Verify for all Modules with SOAP.
+		 *
+		 * @access public
+		*/
+		public function testSoapCheckPassCorrectDataFunctionArgumentsNonEmptyArray() {
+			$this->Tier3Protection = Tier3SetupSoap();
+			
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setIdnumber', array('id' => 1));
+			$this->assertFalse($Return);
+			//$this->assertIsA($Return, 'stdClass');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'stdClass');
+			
+		}
 	}
 ?>

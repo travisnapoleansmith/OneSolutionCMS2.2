@@ -13,16 +13,15 @@
 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	* GNU General Public License for more details.
-	*
+	* 
 	* You should have received a copy of the GNU General Public License
 	* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*
 	* @copyright  Copyright (c) 1999 - 2013 One Solution CMS (http://www.onesolutioncms.com/)
 	* @license    http://www.gnu.org/licenses/gpl-2.0.txt
-	* @version    2.1.141, 2013-01-14
+	* @version    2.2.12, 2013-12-30
 	*************************************************************************************
 	*/
-
 	// MySql Connect Allow and Deny Member Functions For Tier 3 Protection Layer
 	$Tier5DatabaseAllow = Array();
 	$Tier5DatabaseDeny = Array();

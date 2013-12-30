@@ -13,15 +13,16 @@
 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	* GNU General Public License for more details.
-	*
+	* 
 	* You should have received a copy of the GNU General Public License
 	* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*
 	* @copyright  Copyright (c) 1999 - 2013 One Solution CMS (http://www.onesolutioncms.com/)
 	* @license    http://www.gnu.org/licenses/gpl-2.0.txt
-	* @version    2.2.1, 2013-05-05
+	* @version    2.2.12, 2013-12-30
 	*************************************************************************************
 	*/
+	
 	if ($_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] != NULL) {
 		$HOME = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
 	} else {
@@ -65,6 +66,15 @@
 											'encoding' => 'utf-8'));
 		//$Header = new SoapHeader($Uri,'ConnectionOverride', TRUE);
 		//$Tier3ProtectionLayerClient->__setSoapHeaders($Header);
+		$credentaillogonarray = $GLOBALS['credentaillogonarray'];
+		$ServerName = $credentaillogonarray[0];
+		$Username = $credentaillogonarray[1];
+		$Password = $credentaillogonarray[2];
+		$DatabaseName = $credentaillogonarray[3];
+			
+		$Tier3ProtectionLayerClient->createDatabaseTable('ContentLayer');
+		$Tier3ProtectionLayerClient->setDatabaseAll ($ServerName, $Username, $Password, $DatabaseName, NULL);
+		$Tier3ProtectionLayerClient->buildModules('ProtectionLayerModules', 'ProtectionLayerTables', 'ProtectionLayerModulesSettings');
 		
 		return $Tier3ProtectionLayerClient;
 	}

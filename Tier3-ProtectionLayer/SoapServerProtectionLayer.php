@@ -13,15 +13,16 @@
 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	* GNU General Public License for more details.
-	*
+	* 
 	* You should have received a copy of the GNU General Public License
 	* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*
 	* @copyright  Copyright (c) 1999 - 2013 One Solution CMS (http://www.onesolutioncms.com/)
 	* @license    http://www.gnu.org/licenses/gpl-2.0.txt
-	* @version    2.1.141, 2013-01-14
+	* @version    2.2.12, 2013-12-30
 	*************************************************************************************
 	*/
+	
 	ini_set("soap.wsdl_cache_enabled", 0); 
 	ini_set("session.auto_start", 0);
 	
@@ -67,8 +68,9 @@
 		
 		session_start();
 		
-		global $LayerModuleOn;
-		$LayerModuleOn = TRUE;
+		$LayerModuleOn = FALSE;
+		
+		//$Tier3Protection = new ProtectionLayer();
 		
 		try {
 			$ServerLocation = $sitelink . 'Tier3-ProtectionLayer/';
@@ -77,7 +79,7 @@
 												/*'soap_version' => 'SOAP_1_2',*/
 												'encoding' => 'utf-8'));
 			
-			$Server->setClass('ProtectionLayer');
+			$Server->setClass('ProtectionLayer', $LayerModuleOn);
 			
 			$Server->setPersistence(SOAP_PERSISTENCE_SESSION);
 			

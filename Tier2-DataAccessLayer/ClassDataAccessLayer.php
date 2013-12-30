@@ -13,13 +13,13 @@
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
-*
+* 
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 * @copyright  Copyright (c) 1999 - 2013 One Solution CMS (http://www.onesolutioncms.com/)
 * @license    http://www.gnu.org/licenses/gpl-2.0.txt
-* @version    2.1.141, 2013-01-14
+* @version    2.2.12, 2013-12-30
 *************************************************************************************
 */
 
@@ -100,61 +100,116 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * Setter for Hostname, User, Password, Database name and Database table
 	 *
 	 * @param string $Hostname the name of the host needed to connect to database.
-	 * @param string $User the user account needed to connect to database.
+	 * @param string $Username the user account needed to connect to database.
 	 * @param string $Password the user's password needed to connect to database.
 	 * @param string $DatabaseName the name of the database needed to connect to database.
 	 * @access public
 	 */
-	public function setDatabaseAll ($Hostname, $User, $Password, $DatabaseName) {
-		if ($Hostname != NULL & $User != NULL & $Password != NULL & $DatabaseName != NULL) {
-			if (is_array($Hostname) === TRUE | is_array($User) === TRUE | is_array($Password) === TRUE | is_array($DatabaseName) === TRUE) {
-				$this->Hostname = NULL;
-				$this->User = NULL;
-				$this->Password = NULL;
-				$this->DatabaseName = NULL;
-				
-				array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password or DatabaseName Cannot Be An Array!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-			
-			if (is_object($Hostname) === TRUE | is_object($User) === TRUE | is_object($Password) === TRUE | is_object($DatabaseName) === TRUE) {
-				$this->Hostname = NULL;
-				$this->User = NULL;
-				$this->Password = NULL;
-				$this->DatabaseName = NULL;
-				array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password or DatabaseName Cannot Be An Object!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-			
-			if (is_resource($Hostname) === TRUE | is_resource($User) === TRUE | is_resource($Password) === TRUE | is_resource($DatabaseName) === TRUE) {
-				$this->Hostname = NULL;
-				$this->User = NULL;
-				$this->Password = NULL;
-				$this->DatabaseName = NULL;
-				array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password or DatabaseName Cannot Be A Resource!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-			
-			$this->Hostname = $Hostname;
-			$this->User = $User;
-			$this->Password = $Password;
-			$this->DatabaseName = $DatabaseName;
-			return $this;
-		} else {
-			$this->Hostname = NULL;
-			$this->User = NULL;
-			$this->Password = NULL;
-			$this->DatabaseName = NULL;
-			
-			array_push($this->ErrorMessage,'setDatabaseAll: Hostname, User, Password or DatabaseName Cannot Be Null!');
+	public function setDatabaseAll ($Hostname, $Username, $Password, $DatabaseName) {
+		if (is_null($Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Hostname Cannot Be NULL!');
 			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
-	}
+		
+		if (is_array($Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Hostname Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Hostname Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Hostname Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_null($Username) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Username Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($Username) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Username Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($Username) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Username Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($Username) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Username Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_null($Password) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Password Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($Password) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Password Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($Password) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Password Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($Password) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: Password Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_null($DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: DatabaseName Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: DatabaseName Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: DatabaseName Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'setDatabaseAll: DatabaseName Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
 
+		$this->Hostname = $Hostname;
+		$this->User = $Username;
+		$this->Password = $Password;
+		$this->DatabaseName = $DatabaseName;
+		
+		return $this;
+	}
+	
 	/**
 	 * ConnectAll
 	 *
@@ -163,58 +218,125 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @access public
 	*/
 	public function ConnectAll () {
-		if ($this->Hostname != NULL & $this->User != NULL & $this->Password != NULL & $this->DatabaseName != NULL) {
-			if (is_array($this->Hostname) === TRUE | is_array($this->User) === TRUE | is_array($this->Password) === TRUE | is_array($this->DatabaseName) === TRUE) {
-				$BackTrace = debug_backtrace(FALSE);
-				array_push($this->ErrorMessage,'ConnectAll: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be An Array!');
-				return FALSE;
-			}
+		if (is_null($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: Hostname Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: Hostname Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: Hostname Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+
+		if (is_resource($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: Hostname Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_null($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: User Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: User Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: User Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: User Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+
+		if (is_null($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: Password Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: Password Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: Password Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: Password Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+
+		if (is_null($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: DatabaseName Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: DatabaseName Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: DatabaseName Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'ConnectAll: DatabaseName Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
 			
-			if (is_object($this->Hostname) === TRUE| is_object($this->User) === TRUE | is_object($this->Password) === TRUE | is_object($this->DatabaseName) === TRUE) {
-				$BackTrace = debug_backtrace(FALSE);
-				array_push($this->ErrorMessage,'ConnectAll: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be An Object!');
-				return FALSE;
-			}
-			
-			if (is_resource($this->Hostname) === TRUE| is_resource($this->User) === TRUE | is_resource($this->Password) === TRUE | is_resource($this->DatabaseName) === TRUE) {
-				$BackTrace = debug_backtrace(FALSE);
-				array_push($this->ErrorMessage,'ConnectAll: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be A Resource!');
-				return FALSE;
-			}
-			
-			if ($this->DatabaseTable != NULL) {
-				if (is_array($this->DatabaseTable) === TRUE) {
-					foreach ($this->DatabaseTable as $TableNameKey => $TableNameValue) {
-						try {
-							if (empty($TableNameKey) === FALSE) {
-								$this->DatabaseTable[$TableNameKey]->setDatabaseAll($this->Hostname, $this->User, $this->Password, $this->DatabaseName, $TableNameValue);
-								$this->DatabaseTable[$TableNameKey]->Connect();
-							}
-						} catch (Exception $e) {
-							array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: ' . $e->getMessage() . '!');
-							$BackTrace = debug_backtrace(FALSE);
-							return FALSE;
+		if ($this->DatabaseTable != NULL) {
+			if (is_array($this->DatabaseTable) === TRUE) {
+				foreach ($this->DatabaseTable as $TableNameKey => $TableNameValue) {
+					try {
+						if (empty($TableNameKey) === FALSE) {
+							$this->DatabaseTable[$TableNameKey]->setDatabaseAll($this->Hostname, $this->User, $this->Password, $this->DatabaseName, $TableNameValue);
+							$this->DatabaseTable[$TableNameKey]->Connect();
 						}
+					} catch (Exception $e) {
+						array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: ' . $e->getMessage() . '!');
+						$BackTrace = debug_backtrace(FALSE);
+						return FALSE;
 					}
-					
-					return $this;
-				} else {
-					array_push($this->ErrorMessage,'ConnectAll: $this->DatabaseTable Must Be An Array!');
-					$BackTrace = debug_backtrace(FALSE);
-					return FALSE;
 				}
+				
+				return $this;
 			} else {
-				array_push($this->ErrorMessage,'ConnectAll: $this->DatabaseTable Cannot Be Null!');
+				array_push($this->ErrorMessage,'ConnectAll: $this->DatabaseTable Must Be An Array!');
 				$BackTrace = debug_backtrace(FALSE);
 				return FALSE;
 			}
 		} else {
-			$this->Hostname = NULL;
-			$this->User = NULL;
-			$this->Password = NULL;
-			$this->DatabaseName = NULL;
-			
-			array_push($this->ErrorMessage,'ConnectAll: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be Null!');
+			array_push($this->ErrorMessage,'ConnectAll: $this->DatabaseTable Cannot Be Null!');
 			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
@@ -229,70 +351,142 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @access public
 	 */
 	public function Connect ($Key) {
-		if ($this->Hostname != NULL & $this->User != NULL & $this->Password != NULL & $this->DatabaseName != NULL) {
-			if (is_array($this->HostName) === TRUE| is_array($this->User) === TRUE | is_array($this->Password) === TRUE | is_array($this->DatabaseName) === TRUE) {
-				$BackTrace = debug_backtrace(FALSE);
-				array_push($this->ErrorMessage,'Connect: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be An Array!');
-				return FALSE;
-			}
-			
-			if (is_object($this->HostName) === TRUE| is_object($this->User) === TRUE | is_object($this->Password) === TRUE | is_object($this->DatabaseName) === TRUE) {
-				$BackTrace = debug_backtrace(FALSE);
-				array_push($this->ErrorMessage,'Connect: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be An Object!');
-				return FALSE;
-			}
-			
-			if (is_resource($this->HostName) === TRUE| is_resource($this->User) === TRUE | is_resource($this->Password) === TRUE | is_resource($this->DatabaseName) === TRUE) {
-				$BackTrace = debug_backtrace(FALSE);
-				array_push($this->ErrorMessage,'Connect: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be A Resource!');
-				return FALSE;
-			}
-			
-			if ($Key != NULL) {
-				if (is_array($Key) === FALSE) {
-					if (is_object($Key) === FALSE) {
-						if (is_resource($Key) === FALSE) {
-							if (isset($this->DatabaseTable[$Key])) {
-								try {
-									$this->DatabaseTable[$Key]->setDatabaseAll($this->Hostname, $this->User, $this->Password, $this->DatabaseName, $Key);
-									$this->DatabaseTable[$Key]->Connect();
-								} catch (Exception $E) {
-									array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: ' . $E->getMessage() . '!');
-									$BackTrace = debug_backtrace(FALSE);
-									return FALSE;
-								} 
-								
-								return $this;
-							} else {
-								array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: Key Doesn\'t Exist!');
-								$BackTrace = debug_backtrace(FALSE);
-								throw new SoapFault("Connect", 'Key Doesn\'t Exist!');
-							}
-						} else {
-							array_push($this->ErrorMessage,'Connect: Key Cannot Be A Resource!');
-							$BackTrace = debug_backtrace(FALSE);
-							return FALSE;
-						}
-					} else {
-						array_push($this->ErrorMessage,'Connect: Key Cannot Be An Object!');
-						$BackTrace = debug_backtrace(FALSE);
-						return FALSE;
-					}
-				} else {
-					array_push($this->ErrorMessage,'Connect: Key Cannot Be An Array!');
-					$BackTrace = debug_backtrace(FALSE);
-					return FALSE;
-				}
-			} else {
-				array_push($this->ErrorMessage,'Connect: Key Cannot Be Null!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-		} else {
-			array_push($this->ErrorMessage,'Connect: $this->Hostname, $this->User, $this->Password or $this->DatabaseName Cannot Be Null!');
+		if (is_null($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Hostname Cannot Be NULL!');
 			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
+		
+		if (is_array($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Hostname Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Hostname Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+
+		if (is_resource($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Hostname Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_null($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: User Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: User Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: User Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: User Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+
+		if (is_null($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Password Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Password Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Password Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Password Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+
+		if (is_null($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: DatabaseName Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: DatabaseName Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: DatabaseName Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: DatabaseName Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_null($Key) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Key Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($Key) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Key Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($Key) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Key Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+
+		if (is_resource($Key) === TRUE) {
+			array_push($this->ErrorMessage,'Connect: Key Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (isset($this->DatabaseTable[$Key]) === FALSE) {
+			array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: Key Doesn\'t Exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("Connect", 'Key Doesn\'t Exist!');
+		}
+		
+		try {
+			$this->DatabaseTable[$Key]->setDatabaseAll($this->Hostname, $this->User, $this->Password, $this->DatabaseName, $Key);
+			$this->DatabaseTable[$Key]->Connect();
+		} catch (Exception $E) {
+			array_push($this->ErrorMessage,'ConnectAll: Exception Thrown - Message: ' . $E->getMessage() . '!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		} 
+		
+		return $this;
 	}
 
 	/**
@@ -303,33 +497,154 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @access public
 	 */
 	public function DisconnectAll () {
-		if ($this->DatabaseTable != NULL) {
-			if (is_array($this->DatabaseTable) === TRUE) {
-				foreach($this->DatabaseTable as $Key => $Value) {
-					try {
-						$Return = $this->DatabaseTable[$Key]->Disconnect();
-						
-						if ($Return != TRUE) {
-							array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
-							$BackTrace = debug_backtrace(FALSE);
-							return FALSE;
-						}
-					} catch (SoapFault $E) {
-						array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
-						$BackTrace = debug_backtrace(FALSE);
-						return FALSE;
-					}
-				}
-			} else {
-				array_push($this->ErrorMessage,'DisconnectAll: $this->DatabaseTable Must Be An Array!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-		} else {
-			array_push($this->ErrorMessage,'DisconnectAll: $this->DatabaseTable Cannot Be Null!');
+		if (is_null($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: Hostname Cannot Be NULL!');
 			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
+		
+		if (is_array($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: Hostname Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: Hostname Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+
+		if (is_resource($this->Hostname) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: Hostname Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_null($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: User Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: User Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: User Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($this->User) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: User Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+
+		if (is_null($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: Password Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: Password Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: Password Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($this->Password) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: Password Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+
+		if (is_null($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: DatabaseName Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: DatabaseName Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: DatabaseName Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($this->DatabaseName) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: DatabaseName Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_null($this->DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: DatabaseTable Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($this->DatabaseTable) === FALSE) {
+			array_push($this->ErrorMessage,'DisconnectAll: DatabaseTable MUST Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($this->DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: DatabaseTable Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($this->DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: DatabaseTable Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (empty($this->DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'DisconnectAll: DatabaseTable Is An Empty Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		foreach($this->DatabaseTable as $Key => $Value) {
+			if (isset($this->DatabaseTable[$Key]) === FALSE) {
+				array_push($this->ErrorMessage,'DisconnectAll: Exception Thrown - Message: Key Doesn\'t Exist!');
+				$BackTrace = debug_backtrace(FALSE);
+				throw new SoapFault("Connect", 'Key Doesn\'t Exist!');
+			}
+			
+			try {
+				$Return = $this->DatabaseTable[$Key]->Disconnect();
+				
+				if ($Return != TRUE) {
+					array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+					$BackTrace = debug_backtrace(FALSE);
+					return FALSE;
+				}
+			} catch (SoapFault $E) {
+				array_push($this->ErrorMessage,'DisconnectAll: Could Not Disconnect From Database!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			}
+		}
+			
 		return $this;
 	}
 
@@ -342,46 +657,48 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @access public
 	*/
 	public function Disconnect ($Key) {
-		if ($Key != NULL) {
-			$Return = NULL;
-			if (is_array($Key) === TRUE) {
-				array_push($this->ErrorMessage,'Disconnect: Key Cannot Be An Array!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-			
-			if (is_object($Key) === TRUE) {
-				array_push($this->ErrorMessage,'Disconnect: Key Cannot Be An Object!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-			
-			if (is_resource($Key) === TRUE) {
-				array_push($this->ErrorMessage,'Disconnect: Key Cannot Be A Resource!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-			
-			if (isset($this->DatabaseTable[$Key])) {
-				$Return = $this->DatabaseTable[$Key]->Disconnect();
-			} else {
-				array_push($this->ErrorMessage,'Disconnect: Exception Thrown - Message: Key Doesn\'t Exist!');
-				$BackTrace = debug_backtrace(FALSE);
-				throw new SoapFault("Disconnect", 'Key Doesn\'t Exist!');
-			}
-			
-			if ($Return == TRUE) {
-				return $this;
-			} else {
-				array_push($this->ErrorMessage,'Disconnect: Could Not Disconnect From Database!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-		} else {
-			array_push($this->ErrorMessage,'Disconnect: Key Cannot Be Null!');
+		if (is_null($Key) === TRUE) {
+			array_push($this->ErrorMessage,'Disconnect: Key Cannot Be NULL!');
 			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
+		
+		if (is_array($Key) === TRUE) {
+			array_push($this->ErrorMessage,'Disconnect: Key Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($Key) === TRUE) {
+			array_push($this->ErrorMessage,'Disconnect: Key Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+
+		if (is_resource($Key) === TRUE) {
+			array_push($this->ErrorMessage,'Disconnect: Key Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		$Return = NULL;
+		
+		if (isset($this->DatabaseTable[$Key]) === TRUE) {
+			$Return = $this->DatabaseTable[$Key]->Disconnect();
+		} else {
+			array_push($this->ErrorMessage,'Disconnect: Exception Thrown - Message: Key Doesn\'t Exist!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("Disconnect", 'Key Doesn\'t Exist!');
+		}
+		
+		if ($Return == TRUE) {
+			return $this;
+		} else {
+			array_push($this->ErrorMessage,'Disconnect: Could Not Disconnect From Database!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
 	}
 
 	public function buildDatabase() {
@@ -397,39 +714,38 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @access public
 	 */
 	public function createDatabaseTable($DatabaseTableName) {
-		if ($DatabaseTableName != NULL) {
-			if (is_array($DatabaseTableName) === FALSE) {
-				if (is_object($DatabaseTableName) === FALSE) {
-					if (is_resource($DatabaseTableName) === FALSE) {
-						if (isset($this->DatabaseTable[$DatabaseTableName]) === FALSE) {
-							$this->DatabaseTable[$DatabaseTableName] =  new MySqlConnect();
-							return $this;
-						} else {
-							array_push($this->ErrorMessage,'createDatabaseTable: Exception Thrown - Message: DatabaseTableName Has Already Been Set!');
-							$BackTrace = debug_backtrace(FALSE);
-							throw new SoapFault("createDatabaseTable", 'DatabaseTableName Has Already Been Set!');
-						}
-					} else {
-						array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be A Resource!');
-						$BackTrace = debug_backtrace(FALSE);
-						return FALSE;
-					}
-				} else {
-					array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be An Object!');
-					$BackTrace = debug_backtrace(FALSE);
-					return FALSE;
-				}
-			} else {
-				array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be An Array!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-		} else {
-			array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be Null!');
+		if (is_null($DatabaseTableName) === TRUE) {
+			array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be NULL!');
 			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
 		
+		if (is_array($DatabaseTableName) === TRUE) {
+			array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($DatabaseTableName) === TRUE) {
+			array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($DatabaseTableName) === TRUE) {
+			array_push($this->ErrorMessage,'createDatabaseTable: DatabaseTableName Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (isset($this->DatabaseTable[$DatabaseTableName]) === FALSE) {
+			$this->DatabaseTable[$DatabaseTableName] =  new MySqlConnect();
+			return $this;
+		} else {
+			array_push($this->ErrorMessage,'createDatabaseTable: Exception Thrown - Message: DatabaseTableName Has Already Been Set!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("createDatabaseTable", 'DatabaseTableName Has Already Been Set!');
+		}
 	}
 	
 	/**
@@ -441,41 +757,53 @@ class DataAccessLayer extends LayerModulesAbstract
 	 * @access public
 	 */
 	public function destroyDatabaseTable($DatabaseTableName) {
-		if ($DatabaseTableName != NULL) {
-			if (is_array($DatabaseTableName) === FALSE) {
-				if (is_object($DatabaseTableName) === FALSE) {
-					if (is_resource($DatabaseTableName) === FALSE) {
-						if (isset($this->DatabaseTable[$DatabaseTableName])) {
-							unset($this->DatabaseTable[$DatabaseTableName]);
-							return $this;
-						} else {
-							array_push($this->ErrorMessage,'destroyDatabaseTable: Exception Thrown - Message: DatabaseTableName Has Not Been Set!');
-							$BackTrace = debug_backtrace(FALSE);
-							throw new SoapFault("destroyDatabaseTable", 'DatabaseTableName Has Not Been Set!');
-						}
-					} else {
-						array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be A Resource!');
-						$BackTrace = debug_backtrace(FALSE);
-						return FALSE;
-					}
-				} else {
-					array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be An Object!');
-					$BackTrace = debug_backtrace(FALSE);
-					return FALSE;
-				}
-			} else {
-				array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be An Array!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-		} else {
-			array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be Null!');
+		if (is_null($DatabaseTableName) === TRUE) {
+			array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be NULL!');
 			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
 		
+		if (is_array($DatabaseTableName) === TRUE) {
+			array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($DatabaseTableName) === TRUE) {
+			array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($DatabaseTableName) === TRUE) {
+			array_push($this->ErrorMessage,'destroyDatabaseTable: DatabaseTableName Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (isset($this->DatabaseTable[$DatabaseTableName])) {
+			unset($this->DatabaseTable[$DatabaseTableName]);
+			return $this;
+		} else {
+			array_push($this->ErrorMessage,'destroyDatabaseTable: Exception Thrown - Message: DatabaseTableName Has Not Been Set!');
+			$BackTrace = debug_backtrace(FALSE);
+			throw new SoapFault("destroyDatabaseTable", 'DatabaseTableName Has Not Been Set!');
+		}
 	}
-
+	
+	/**
+	 * checkPass
+	 *
+	 * Runs safety checks for the Tier's modules.
+	 * 
+	 * @param string $DatabaseTable String for Database Table to access. Must be a string.
+	 * @param string $Function String for method to call or Keyword needed for the Tier. Must be a string.
+	 * @param Array $FunctionArguments Array of Arguments to pass to method call. Must be an Array.
+	 * @param Array $HookArguments String for Database Table to access. Must be a string.
+	 *
+	 * @return BOOL FALSE if no return type for a module call or if an error has occured. Returns the return of the module call.
+	 * @access public
+	 */
 	protected function checkPass($DatabaseTable, $Function, $FunctionArguments) {
 		//reset($this->Modules);
 		
@@ -491,206 +819,213 @@ class DataAccessLayer extends LayerModulesAbstract
 			next($this->Modules);
 		}*/
 		
-		if (is_null($FunctionArguments) === FALSE) {
-			if (is_object($FunctionArguments) === FALSE) {
-				if (is_resource($FunctionArguments) === FALSE) {
-					if (is_null($Function) === FALSE) {
-						if (is_array($Function) === FALSE) {
-							if (is_object($Function) === FALSE) {
-								if (is_resource($Function) === FALSE) {
-									if (is_array($DatabaseTable) === FALSE) {
-										if (is_object($DatabaseTable) === FALSE) {
-											if (is_resource($DatabaseTable) === FALSE) {
-												if (is_array($FunctionArguments) === TRUE) {
-													if (isset($this->DatabaseTable["$DatabaseTable"])) {
-														if ($FunctionArguments[0]) {
-															$PassArguments = array();
-															$PassArguments[0] = $FunctionArguments;
-														} else {
-															$PassArguments = $FunctionArguments;
-														}
-														try {
-															$hold2 = call_user_func_array(array($this->DatabaseTable["$DatabaseTable"], "$Function"), $PassArguments);
-														} catch (Exception $E) {
-															array_push($this->ErrorMessage,'checkPass: Exception Thrown - Message: ' . $E->getMessage() . '!');
-															$BackTrace = debug_backtrace(FALSE);
-															return FALSE;
-														} 
-														
-														if ($hold2) {
-															return $hold2;
-														} else {
-															return FALSE;
-															// NEEDS TO MAKE THIS WORK WITH ALL MODULES
-															//return $this;
-														}
-													} else {
-														array_push($this->ErrorMessage,'checkPass: $DatabaseTable MUST BE SET!');
-														$BackTrace = debug_backtrace(FALSE);
-														return FALSE;
-													}
-												} else {
-													array_push($this->ErrorMessage,'checkPass: Function Arguments Must Be An Array!');
-													$BackTrace = debug_backtrace(FALSE);
-													return FALSE;
-												}
-											} else {
-												array_push($this->ErrorMessage,'checkPass: DatabaseTable Cannot Be A Resource!');
-												$BackTrace = debug_backtrace(FALSE);
-												return FALSE;
-											}
-										} else {
-											array_push($this->ErrorMessage,'checkPass: DatabaseTable Cannot Be An Object!');
-											$BackTrace = debug_backtrace(FALSE);
-											return FALSE;
-										}
-									} else {
-										array_push($this->ErrorMessage,'checkPass: DatabaseTable Cannot Be An Array!');
-										$BackTrace = debug_backtrace(FALSE);
-										return FALSE;
-									}
-								} else {
-									array_push($this->ErrorMessage,'checkPass: Function Cannot Be A Resource!');
-									$BackTrace = debug_backtrace(FALSE);
-									return FALSE;
-									}
-							} else {
-								array_push($this->ErrorMessage,'checkPass: Function Cannot Be An Object!');
-								$BackTrace = debug_backtrace(FALSE);
-								return FALSE;
-							}
-						} else {
-							array_push($this->ErrorMessage,'checkPass: Function Cannot Be An Array!');
-							$BackTrace = debug_backtrace(FALSE);
-							return FALSE;
-						}
-					} else {
-						array_push($this->ErrorMessage,'checkPass: Function Cannot Be Null!');
-						$BackTrace = debug_backtrace(FALSE);
-						return FALSE;
-					}
-				} else {
-					array_push($this->ErrorMessage,'checkPass: Function Arguments Cannot Be A Resource!');
-					$BackTrace = debug_backtrace(FALSE);
-					return FALSE;
-				}
-			} else {
-				array_push($this->ErrorMessage,'checkPass: Function Arguments Cannot Be An Object!');
-				$BackTrace = debug_backtrace(FALSE);
-				return FALSE;
-			}
-		} else {
-			array_push($this->ErrorMessage,'checkPass: Function Arguments Cannot Be Null!');
+		if (is_null($DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: DatabaseTable Cannot Be NULL!');
 			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
+		
+		if (is_array($DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: DatabaseTable Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: DatabaseTable Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: DatabaseTable Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_null($Function) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: Function Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($Function) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: Function Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($Function) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: Function Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($Function) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: Function Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($FunctionArguments) === FALSE) {
+			array_push($this->ErrorMessage,'checkPass: FunctionArguments Must Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (isset($this->DatabaseTable["$DatabaseTable"])) {
+			if ($FunctionArguments[0]) {
+				$PassArguments = array();
+				$PassArguments[0] = $FunctionArguments;
+			} else {
+				$PassArguments = $FunctionArguments;
+			}
+			try {
+				$hold2 = call_user_func_array(array($this->DatabaseTable["$DatabaseTable"], "$Function"), $PassArguments);
+			} catch (Exception $E) {
+				array_push($this->ErrorMessage,'checkPass: Exception Thrown - Message: ' . $E->getMessage() . '!');
+				$BackTrace = debug_backtrace(FALSE);
+				return FALSE;
+			} 
+			
+			if ($hold2) {
+				return $hold2;
+			} else {
+				return FALSE;
+				// NEEDS TO MAKE THIS WORK WITH ALL MODULES
+				//return $this;
+			}
+		} else {
+			array_push($this->ErrorMessage,'checkPass: $DatabaseTable MUST BE SET!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+												
 	}
-
+	
+	/**
+	 * pass
+	 *
+	 * Runs safety checks for the Tier's modules. It will ether call checkPass or Pass it down to Data Access Layer Module, depending on conditions
+	 * 
+	 * @param string $DatabaseTable String for Database Table to access. Must be a string.
+	 * @param string $Function String for method to call or Keyword needed for the Tier. Must be a string.
+	 * @param Array $FunctionArguments Array of Arguments to pass to method call. Must be an Array.
+	 *
+	 * @return BOOL FALSE if no return type for a module call or if an error has occured. Returns the return of the module call.
+	 * @access public
+	 */
 	public function pass($DatabaseTable, $Function, $FunctionArguments) {
-		if (is_null($FunctionArguments) === FALSE) {
-			if (is_object($FunctionArguments) === FALSE) {
-				if (is_resource($FunctionArguments) === FALSE) {
-					if (is_null($Function) === FALSE) {
-						if (is_array($Function) === FALSE) {
-							if (is_object($Function) === FALSE) {
-								if (is_resource($Function) === FALSE) {
-									if (is_array($DatabaseTable) === FALSE) {
-										if (is_object($DatabaseTable) === FALSE) {
-											if (is_resource($DatabaseTable) === FALSE) {
-												if (is_array($FunctionArguments)) {
-													if (isset($this->DatabaseTable[$DatabaseTable])) {
-														if ($this->DatabaseAllow[$Function]) {
-															try {
-																$hold = call_user_func_array(array($this->DatabaseTable["$DatabaseTable"], "$Function"), $FunctionArguments);
-															} catch (Exception $E) {
-																array_push($this->ErrorMessage,'pass: Exception Thrown - Message: ' . $E->getMessage() . '!');
-																$BackTrace = debug_backtrace(FALSE);
-																return FALSE;
-															} 
-															
-															if ($hold) {
-																return $hold;
-															} else {
-																return FALSE;
-																// NEEDS TO MAKE THIS WORK WITH ALL MODULES
-																//return $this;
-															}
-														} else if ($this->DatabaseDeny[$Function]) {
-															$hold = $this->checkPass($DatabaseTable, $Function, $FunctionArguments);
-															if ($hold) {
-																return $hold;
-															} else {
-																return FALSE;
-															}
-														} else {
-															array_push($this->ErrorMessage,"pass: $Function from $DatabaseTable - MySqlConnect Member Does Not Exist!");
-															$BackTrace = debug_backtrace(FALSE);
-															return FALSE;
-														}
-													} else {
-														$Debug = debug_backtrace();
-														$Size = count($Debug);
-														$Size--;
-														$LastTrace = $Debug[$Size]['function'];
-														array_push($this->ErrorMessage,'pass: Function: ' . $Function . ' - $DatabaseTable MUST BE SET! ' . 'Last function: ' . $LastTrace);
-														$BackTrace = debug_backtrace(FALSE);
-														return FALSE;
-													}
-												} else {
-													array_push($this->ErrorMessage,'pass: Function Arguments Must Be An Array!');
-													$BackTrace = debug_backtrace(FALSE);
-													return FALSE;
-												}
-											} else {
-												array_push($this->ErrorMessage,'pass: DatabaseTable Cannot Be A Resource!');
-												$BackTrace = debug_backtrace(FALSE);
-												return FALSE;
-											}
-										} else {
-											array_push($this->ErrorMessage,'pass: DatabaseTable Cannot Be An Object!');
-											$BackTrace = debug_backtrace(FALSE);
-											return FALSE;
-										}
-									} else {
-										array_push($this->ErrorMessage,'pass: DatabaseTable Cannot Be An Array!');
-										$BackTrace = debug_backtrace(FALSE);
-										return FALSE;
-									}
-								} else {
-									array_push($this->ErrorMessage,'pass: Function Cannot Be A Resource!');
-									$BackTrace = debug_backtrace(FALSE);
-									return FALSE;
-								}
-							} else {
-								array_push($this->ErrorMessage,'pass: Function Cannot Be An Object!');
-								$BackTrace = debug_backtrace(FALSE);
-								return FALSE;
-							}
-						} else {
-							array_push($this->ErrorMessage,'pass: Function Cannot Be An Array!');
-							$BackTrace = debug_backtrace(FALSE);
-							return FALSE;
-						}
-					} else {
-						array_push($this->ErrorMessage,'pass: Function Cannot Be Null!');
-						$BackTrace = debug_backtrace(FALSE);
-						return FALSE;
-					}
-				} else {
-					array_push($this->ErrorMessage,'pass: Function Arguments Cannot Be A Resource!');
+		if (is_null($DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: DatabaseTable Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: DatabaseTable Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: DatabaseTable Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($DatabaseTable) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: DatabaseTable Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_null($Function) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: Function Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($Function) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: Function Cannot Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($Function) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: Function Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($Function) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: Function Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_null($FunctionArguments) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: FunctionArguments Cannot Be NULL!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_array($FunctionArguments) === FALSE) {
+			array_push($this->ErrorMessage,'checkPass: FunctionArguments Must Be An Array!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_object($FunctionArguments) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: FunctionArguments Cannot Be An Object!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		
+		if (is_resource($FunctionArguments) === TRUE) {
+			array_push($this->ErrorMessage,'checkPass: FunctionArguments Cannot Be A Resource!');
+			$BackTrace = debug_backtrace(FALSE);
+			return FALSE;
+		}
+		if (isset($this->DatabaseTable[$DatabaseTable])) {
+			if ($this->DatabaseAllow[$Function]) {
+				try {
+					$hold = call_user_func_array(array($this->DatabaseTable["$DatabaseTable"], "$Function"), $FunctionArguments);
+				} catch (Exception $E) {
+					array_push($this->ErrorMessage,'pass: Exception Thrown - Message: ' . $E->getMessage() . '!');
 					$BackTrace = debug_backtrace(FALSE);
+					return FALSE;
+				} 
+				
+				if ($hold) {
+					return $hold;
+				} else {
+					return FALSE;
+					// NEEDS TO MAKE THIS WORK WITH ALL MODULES
+					//return $this;
+				}
+			} else if ($this->DatabaseDeny[$Function]) {
+				$hold = $this->checkPass($DatabaseTable, $Function, $FunctionArguments);
+				if ($hold) {
+					return $hold;
+				} else {
 					return FALSE;
 				}
 			} else {
-				array_push($this->ErrorMessage,'pass: Function Arguments Cannot Be An Object!');
+				array_push($this->ErrorMessage,"pass: $Function from $DatabaseTable - MySqlConnect Member Does Not Exist!");
 				$BackTrace = debug_backtrace(FALSE);
 				return FALSE;
 			}
 		} else {
-			array_push($this->ErrorMessage,'pass: Function Arguments Cannot Be Null!');
+			$Debug = debug_backtrace();
+			$Size = count($Debug);
+			$Size--;
+			$LastTrace = $Debug[$Size]['function'];
+			array_push($this->ErrorMessage,'pass: Function: ' . $Function . ' - $DatabaseTable MUST BE SET! ' . 'Last function: ' . $LastTrace);
 			$BackTrace = debug_backtrace(FALSE);
 			return FALSE;
 		}
+												
 	}
 
 	public function buildModules($LayerModuleTableName, $LayerTableName, $LayerModuleTableNameSetting) {

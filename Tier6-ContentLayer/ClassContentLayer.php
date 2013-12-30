@@ -13,15 +13,18 @@
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
-*
+* 
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 * @copyright  Copyright (c) 1999 - 2013 One Solution CMS (http://www.onesolutioncms.com/)
 * @license    http://www.gnu.org/licenses/gpl-2.0.txt
-* @version    2.1.141, 2013-01-14
+* @version    2.2.12, 2013-12-30
 *************************************************************************************
 */
+
+// SOAP TRACTING CALL
+//throw new SoapFault("Constructor", 'HERE!');
 
 /**
  * Class Content Layer
@@ -1252,22 +1255,27 @@ class ContentLayer extends LayerModulesAbstract
 	public function Login() {
 		$sessionname = $this->SessionStart('UserAuthentication');
 		
+		$EventArray = array();
 		$EventData = array();
+		
 		$PassArray = array();
 		$PassArray['Execute'] = TRUE;
 		$PassArray['Method'] = 'createLogonHistoryEvent';
 		$PassArray['ObjectType'] = 'LogonMonitor';
 		$PassArray['ObjectTypeName'] = 'logonmonitor';
 		
+		$SpamArray = array();
 		$SpamData = array();
 		$SpamData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
+		
 		$SpamPassArray = array();
 		$SpamPassArray['Execute'] = TRUE;
 		$SpamPassArray['Method'] = 'findBannedIPAddress';
 		$SpamPassArray['ObjectType'] = 'SpamFilter';
 		$SpamPassArray['ObjectTypeName'] = 'spamfilter';
 		
-		$Return = $this->LayerModule->pass('BannedIPAddress', 'PROTECT', $SpamData, $SpamPassArray);
+		$SpamArray['SpamData'] = $SpamData;
+		$Return = $this->LayerModule->pass('BannedIPAddress', 'PROTECT', $SpamArray, $SpamPassArray);
 		
 		if ($Return === 'TRUE') {
 			$loginidnumber = Array();
@@ -1291,7 +1299,9 @@ class ContentLayer extends LayerModulesAbstract
 				$EventData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
 				$EventData['Timestamp'] = $_SERVER['REQUEST_TIME'];
 				$EventData['LogonType'] = 'BadCaptcha';
-				$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
+				$EventArray['EventData'] = $EventData;
+				
+				$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventArray, $PassArray);
 				
 				header("Location: $AuthenticationPage&SessionID=$sessionname");
 				
@@ -1303,7 +1313,9 @@ class ContentLayer extends LayerModulesAbstract
 					$EventData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
 					$EventData['Timestamp'] = $_SERVER['REQUEST_TIME'];
 					$EventData['LogonType'] = 'BadLogonAttempt';
-					$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
+					$EventArray['EventData'] = $EventData;
+					
+					$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventArray, $PassArray);
 					
 					$_SESSION['POST'] = $hold;
 					header("Location: $AuthenticationPage&SessionID=$sessionname");
@@ -1328,13 +1340,14 @@ class ContentLayer extends LayerModulesAbstract
 					$EventData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
 					$EventData['Timestamp'] = $_SERVER['REQUEST_TIME'];
 					$EventData['LogonType'] = 'GoodLogonAttempt';
+					$EventArray['EventData'] = $EventData;
 					
 					if ($DestinationPageID) {
-						$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
+						$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventArray, $PassArray);
 						header("Location: index.php?PageID=$DestinationPageID");
 						exit;
 					} else {
-						$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
+						$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventArray, $PassArray);
 						header("Location: index.php");
 						exit;
 					}
@@ -1346,7 +1359,9 @@ class ContentLayer extends LayerModulesAbstract
 			$EventData['IPAddress'] = $_SERVER['REMOTE_ADDR'];
 			$EventData['Timestamp'] = $_SERVER['REQUEST_TIME'];
 			$EventData['LogonType'] = 'Spam';
-			$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventData, $PassArray);
+			$EventArray['EventData'] = $EventData;
+			
+			$this->LayerModule->pass('UserAccountsLogonHistory', 'PROTECT', $EventArray, $PassArray);
 			
 			$_SESSION['POST']['Error']['SPAM'] = 'Your IP Address Has Been Banned From The Accessing Site.';
 			$_SESSION['POST']['Error']['SPAM'] .= "<br />";

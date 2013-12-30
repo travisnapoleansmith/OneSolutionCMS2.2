@@ -1,4 +1,23 @@
-Changes For One Solution CMS 2.2.11 - Sunday, December 22, 2013
+Changes For One Solution CMS 2.2.12 - Monday, December 30, 2013
+Added:
+	1). Nothing Added.
+	
+Updated (Fixed):
+	1). Updated All 2.2 release files so they will work with the 2.1 system. All test cases have been fixed.
+	2). Updated All Tier 3 test cases so SOAP works correctly. The only one that isn't working correctly is SOAP Pass.
+	3). Updated All Modules to check values as a resource, haven't figured out to send a resource to modules yet so there is no test cases.
+	4). Updated Tier3-ProtectionLayer - Updated SOAP capabilities so there is no encoding error when Tier 2 gets returned.
+
+Removed:
+	1). Removed Protection Tier Module - Audit.
+	2). Removed Protection Tier Module - Revisions.
+	3). Removed Protection Tier Module - SpamFilter.
+	4). Removed Protection Tier Module - SqlInjection.
+	5). Removed Protection Tier Module - UserPermissions.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Changes For One Solution CMS 2.2.11 - Sunday, December 22, 2013 - 5:32:31 PM
 Added:
 	1). Added Testcases/Tier3-ProtectionLayer - SoapMethodsExistsTest.php - This test will test if all the methods exist in Tier 3 Protection Layer with SOAP.
 	2). Added Testcases/Tier3-ProtectionLayer - SoapSetDatabaseAllTest.php - This file is designed to test Tier 3's setDatabaseAll method with SOAP.

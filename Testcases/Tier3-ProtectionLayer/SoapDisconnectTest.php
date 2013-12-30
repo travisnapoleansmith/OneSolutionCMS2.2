@@ -13,13 +13,13 @@
 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	* GNU General Public License for more details.
-	*
+	* 
 	* You should have received a copy of the GNU General Public License
 	* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*
 	* @copyright  Copyright (c) 1999 - 2013 One Solution CMS (http://www.onesolutioncms.com/)
 	* @license    http://www.gnu.org/licenses/gpl-2.0.txt
-	* @version    2.2.1, 2013-05-05
+	* @version    2.2.12, 2013-12-30
 	*************************************************************************************
 	*/
 	
@@ -33,6 +33,7 @@
 	require_once "$HOME/Configuration/Tier3ProtectionLayerSettings.php";
 	
 	// All Tier Abstract
+	require_once "$HOME/ModulesAbstract/GlobalTierAbstract.php";
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
 	
 	// Tiers Modules Abstract
@@ -685,15 +686,15 @@
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->Connect('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->Disconnect(NULL);
@@ -701,7 +702,7 @@
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 		}
 		
@@ -719,15 +720,15 @@
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->Connect('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->Disconnect(array(1));
@@ -735,7 +736,7 @@
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 		}
 		
@@ -756,15 +757,15 @@
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->setDatabaseAll($this->ServerName, $this->Username, $this->Password, $this->DatabaseName);
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->Connect('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->Disconnect($Object);
@@ -772,7 +773,7 @@
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertIsA($Return, 'stdClass');
 			
 		}
 		

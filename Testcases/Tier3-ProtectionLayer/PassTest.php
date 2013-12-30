@@ -13,13 +13,13 @@
 	* but WITHOUT ANY WARRANTY; without even the implied warranty of
 	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	* GNU General Public License for more details.
-	*
+	* 
 	* You should have received a copy of the GNU General Public License
 	* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*
 	* @copyright  Copyright (c) 1999 - 2013 One Solution CMS (http://www.onesolutioncms.com/)
 	* @license    http://www.gnu.org/licenses/gpl-2.0.txt
-	* @version    2.2.1, 2013-05-05
+	* @version    2.2.12, 2013-12-30
 	*************************************************************************************
 	*/
 	
@@ -36,6 +36,7 @@
 	require_once "$HOME/Configuration/Tier3ProtectionLayerSettings.php";
 	
 	// All Tier Abstract
+	require_once "$HOME/ModulesAbstract/GlobalTierAbstract.php";
 	require_once "$HOME/ModulesAbstract/LayerModulesAbstract.php";
 	
 	// Tiers Modules Abstract
@@ -567,12 +568,36 @@
 		}
 		
 		/**
-		 * testPassCorrectDataCheckPassFunctionArgumentsEmptyArray
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an empty array. 
+		 * testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArray
+		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array. 
 		 *
 		 * @access public
 		*/
-		public function testPassCorrectDataCheckPassFunctionArgumentsEmptyArray() {
+		public function testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArray() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->pass('TEST', 'setDatabasename', array('id' => 1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+		}
+		
+		/**
+		 * testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArray
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array. This does run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArray() {
 			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
 			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
 			
@@ -606,36 +631,12 @@
 		}
 		
 		/**
-		 * testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArray
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array. 
+		 * testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArrayWithIntReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array with a int return. 
 		 *
 		 * @access public
 		*/
-		public function testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArray() {
-			$Return = FALSE;
-			$this->assertNotNull($this->Tier3Protection);
-			
-			$Return = TRUE;
-			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
-			
-			$Return = TRUE;
-			$Return = $this->Tier3Protection->pass('TEST', 'setDatabasename', array('id' => 1));
-			$this->assertFalse($Return);
-			
-			$Return = TRUE;
-			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
-			$this->assertIsA($Return, 'ProtectionLayer');
-			
-		}
-		
-		/**
-		 * testPassCorrectDataCheckPassFunctionArgumentsEmptyArrayWithIntReturn
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an empty array with a int return. 
-		 *
-		 * @access public
-		*/
-		public function testPassCorrectDataCheckPassFunctionArgumentsEmptyArrayWithIntReturn() {
+		public function testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArrayWithIntReturn() {
 			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
 			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
 			
@@ -672,12 +673,12 @@
 		}
 		
 		/**
-		 * testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithIntReturn
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array with a int return. 
+		 * testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithIntReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array with a int return. This does run Verify for all Modules.
 		 *
 		 * @access public
 		*/
-		public function testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithIntReturn() {
+		public function testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithIntReturn() {
 			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
 			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
 			
@@ -711,12 +712,12 @@
 		}
 		
 		/**
-		 * testPassCorrectDataCheckPassFunctionArgumentsEmptyArrayWithStringReturn
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an empty array with a string return. 
+		 * testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArrayWithStringReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array with a string return. This does run Verify for all Modules.
 		 *
 		 * @access public
 		*/
-		public function testPassCorrectDataCheckPassFunctionArgumentsEmptyArrayWithStringReturn() {
+		public function testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsEmptyArrayWithStringReturn() {
 			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
 			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
 			
@@ -750,12 +751,12 @@
 		}
 		
 		/**
-		 * testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithStringReturn
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array with a string return. 
+		 * testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithStringReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array with a string return. This does run Verify for all Modules. 
 		 *
 		 * @access public
 		*/
-		public function testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithStringReturn() {
+		public function testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithStringReturn() {
 			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
 			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
 			
@@ -789,12 +790,12 @@
 		}
 		
 		/**
-		 * testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithArrayReturn
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array with an array return. 
+		 * testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithArrayReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array with an array return. This does run Verify for all Modules.
 		 *
 		 * @access public
 		*/
-		public function testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithArrayReturn() {
+		public function testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithArrayReturn() {
 			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
 			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
 			
@@ -828,12 +829,12 @@
 		}
 		
 		/**
-		 * testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithNonArrayHookArguments
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array and non array Hook Arguments. 
+		 * testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithNonArrayHookArguments
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array and non array Hook Arguments. 
 		 *
 		 * @access public
 		*/
-		public function testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithNonArrayHookArguments() {
+		public function testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithNonArrayHookArguments() {
 			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
 			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
 			
@@ -863,12 +864,12 @@
 		}
 		
 		/**
-		 * testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithArrayHookArguments
-		 * Tests if pass method will accept all data correctly for a check pass with Function Arguments being an non-empty array and array Hook Arguments. 
+		 * testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithArrayHookArguments
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array and array Hook Arguments. This does run Verify for all Modules.
 		 *
 		 * @access public
 		*/
-		public function testPassCorrectDataCheckPassFunctionArgumentsNonEmptyArrayWithArrayHookArguments() {
+		public function testPassCorrectDataCheckPassDatabaseDenyFunctionArgumentsNonEmptyArrayWithArrayHookArguments() {
 			unset($GLOBALS['Tier3DatabaseAllow']['setDatabasename']);
 			$GLOBALS['Tier3DatabaseDeny']['setDatabasename'] = 'setDatabasename';
 			
@@ -898,8 +899,219 @@
 		}
 		
 		/**
+		 * testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArray
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array. This does run Verify for all Modules. 
+		 *
+		 * @access public
+		*/
+		public function testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArray() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array('name' => $this->DatabaseName));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getDatabasename', array());
+			$this->assertIsA($Return, 'String');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+		}
+		
+		/**
+		 * testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArrayWithIntReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array with a int return. This does run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArrayWithIntReturn() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setIdnumber', array(array('id' => 1)));
+			$this->assertFalse($Return);
+			//$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getIdnumber', array('id'));
+			$this->assertIdentical($Return, 1);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+		}
+		
+		/**
+		 * testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithIntReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array with a int return. This does run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithIntReturn() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array('id' => 1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getDatabasename', array('id' => 1));
+			$this->assertIdentical($Return, 1);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+		}
+		
+		/**
+		 * testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArrayWithStringReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an empty array with a string return. This does run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsEmptyArrayWithStringReturn() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array('id' => '1'));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getDatabasename', array());
+			$this->assertIdentical($Return, '1');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+		}
+		
+		/**
+		 * testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithStringReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Deny Function and Function Arguments being an non-empty array with a string return. This does run Verify for all Modules. 
+		 *
+		 * @access public
+		*/
+		public function testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithStringReturn() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array('id' => '1'));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getDatabasename', array('id' => '1'));
+			$this->assertIdentical($Return, '1');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+		}
+		
+		/**
+		 * testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithArrayReturn
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Allow Function and Function Arguments being an non-empty array with an array return. This does run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithArrayReturn() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array(array('id' => '1', 'id2' => '3')));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getDatabasename', array());
+			$this->assertIsA($Return, 'array');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+		}
+		
+		/**
+		 * testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithNonArrayHookArguments
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Allow Function and Function Arguments being an non-empty array and non array Hook Arguments. 
+		 *
+		 * @access public
+		*/
+		public function testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithNonArrayHookArguments() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array(array('id' => '1', 'id2' => '3')), 1);
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+		}
+		
+		/**
+		 * testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithArrayHookArguments
+		 * Tests if pass method will accept all data correctly for a check pass with a Database Allow Function and Function Arguments being an non-empty array and array Hook Arguments. This does run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testPassCorrectDataCheckPassDatabaseAllowFunctionArgumentsNonEmptyArrayWithArrayHookArguments() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setDatabasename', array(array('id' => '1', 'id2' => '3')), array(1));
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+		}
+	
+		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArray
-		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments. This will call checkPass. 
+		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments. 
 		 *
 		 * @access public
 		*/
@@ -912,7 +1124,7 @@
 			$this->assertIsA($Return, 'ProtectionLayer');
 			
 			$Return = TRUE;
-			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), array(1));
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(1), array(1));
 			$this->assertFalse($Return);
 			
 			$Return = TRUE;
@@ -935,9 +1147,9 @@
 			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
 			$this->assertIsA($Return, 'ProtectionLayer');
 			
-			$Return = TRUE;
-			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')));
-			$this->assertFalse($Return);
+			$Return = FALSE;
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(1));
+			$this->assertTrue($Return);
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
@@ -946,7 +1158,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentExecuteKey
-		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'Execute' key. This will call checkPass.
+		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'Execute' key.
 		 *
 		 * @access public
 		*/
@@ -965,7 +1177,7 @@
 			$HookArguments['ObjectTypeName'] = 'logonmonitor';
 			
 			$Return = TRUE;
-			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(array('id' => '1', 'id2' => '3')), $HookArguments);
+			$Return = $this->Tier3Protection->pass('TEST', 'PROTECT', array(1), $HookArguments);
 			$this->assertFalse($Return);;
 			
 			$Return = TRUE;
@@ -975,7 +1187,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentMethodKey
-		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'Method' key. This will call checkPass.
+		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'Method' key.
 		 *
 		 * @access public
 		*/
@@ -1004,7 +1216,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentObjectTypeKey
-		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'ObjectKey' key. This will call checkPass.
+		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'ObjectKey' key.
 		 *
 		 * @access public
 		*/
@@ -1036,7 +1248,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArrayWithoutAHookArgumentObjectTypeNameKey
-		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'ObjectKeyName' key. This will call checkPass.
+		 * Tests if pass method will accept 'PROTECT' as a function name with an array of Hook Arguments without a hook argument 'ObjectKeyName' key.
 		 *
 		 * @access public
 		*/
@@ -1065,7 +1277,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithANonExistingModule
-		 * Tests if pass method will accept 'PROTECT' as a function name with an correct array of Hook Argument with a non existing module. This will call checkPass.
+		 * Tests if pass method will accept 'PROTECT' as a function name with an correct array of Hook Argument with a non existing module.
 		 *
 		 * @access public
 		*/
@@ -1094,7 +1306,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithAnExistingMethodOnANonObject
-		 * Tests if pass method will accept 'PROTECT' as a function name with an correct array of Hook Argument with an existing method on a non object. This will call checkPass.
+		 * Tests if pass method will accept 'PROTECT' as a function name with an correct array of Hook Argument with an existing method on a non object.
 		 *
 		 * @access public
 		*/
@@ -1112,7 +1324,7 @@
 			
 			$Return = TRUE;
 			$Return = $this->Tier3Protection->setModules($ModuleName, $ObjectName, $ModuleObject);
-			$this->assertIsA($Return, 'ProtectionLayer');
+			$this->assertFalse($Return);
 			
 			$HookArguments = array();
 			$HookArguments['Execute'] = TRUE;
@@ -1131,7 +1343,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithANonExistingMethod
-		 * Tests if pass method will accept 'PROTECT' as a function name with an correct array of Hook Argument with a non existing method. This will call checkPass.
+		 * Tests if pass method will accept 'PROTECT' as a function name with an correct array of Hook Argument with a non existing method.
 		 *
 		 * @access public
 		*/
@@ -1160,7 +1372,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithNoReturn
-		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with No Return. This will call checkPass.
+		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with No Return.
 		 *
 		 * @access public
 		*/
@@ -1189,7 +1401,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsNotAnArray
-		 * Tests if pass method will accept 'PROTECT' as a function name with a Hook Arguments as not an array. This will call checkPass. 
+		 * Tests if pass method will accept 'PROTECT' as a function name with a Hook Arguments as not an array. 
 		 *
 		 * @access public
 		*/
@@ -1226,7 +1438,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithIntReturn
-		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with an Integer Return. This will call checkPass.
+		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with an Integer Return.
 		 *
 		 * @access public
 		*/
@@ -1265,7 +1477,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithStringReturn
-		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with a String Return. This will call checkPass.
+		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with a String Return.
 		 *
 		 * @access public
 		*/
@@ -1304,7 +1516,7 @@
 		
 		/**
 		 * testPassFunctionNameProtectWithHookArgumentAsAnArrayWithCorrectHookArgumentWithArrayReturn
-		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with an Array Return. This will call checkPass. 
+		 * Tests if pass method will accept 'PROTECT' as a function name with a correct array of Hook Argument with an Array Return. 
 		 *
 		 * @access public
 		*/
@@ -1340,19 +1552,302 @@
 			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
 			$this->assertIsA($Return, 'ProtectionLayer');
 		}
+
+		/**
+		 * testCheckPassNull
+		 * Tests if checkPass method will accept All Values as NULL. This does NOT run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testCheckPassAllNull() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass(NULL, NULL, NULL);
+			$this->assertFalse($Return);
+		}
 		
-		// Need To Make Sure That Verify fails with Keyword 'PROTECT' with Hook Argument and without Hook Argument.
-		// Need To Make Sure That Verify fails with no keyword usage with Hook Argument and without Hook Argument. 
+		/**
+		 * testCheckPassDatabaseTableNull
+		 * Tests if checkPass method will accept Database Table as NULL. This does NOT run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testCheckPassDatabaseTableNull() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass(NULL, 'FUNCTION', 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
 		
-		// DON'T FORGET TO ADD SEARCH AND REGULAR EXPRESSIONS TO MYSQLCONNECT: Update all test cases for it!
-		// Don't Forget To Add Test Cases For setModules and getModules as well, move them to GlobalLayer so all tiers can have it!
-		// Try to create a GlobalLayer method for PASS and CHECKPASS. Do it after the tiers have tests for it
+		/**
+		 * testCheckPassFunctionNull
+		 * Tests if checkPass method will accept Function as NULL. This does NOT run Verify for all Modules. 
+		 *
+		 * @access public
+		*/
+		public function testCheckPassFunctionNull() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', NULL, 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
 		
-		// MORE TESTS ARE NEEDED - NEED "PASS TWO" AND "PASS" ALONG WITH ALL checkPass outputs that are not outputting
-		// Anything in ClassProectionLayer.php's pass and checkPass that only have // comment out are fully outputting anything else
-		// Needs to have tests cases done for it.
+		/**
+		 * testCheckPassFunctionArgumentsNull
+		 * Tests if checkPass method will accept Function Arguments as NULL. This does NOT run Verify for all Modules. 
+		 *
+		 * @access public
+		*/
+		public function testCheckPassFunctionArgumentsNull() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'FUNCTION', NULL);
+			$this->assertFalse($Return);
+		}
 		
-		// Still have to update SoapPassTest.php
+		/**
+		 * testCheckPassAsArray
+		 * Tests if checkPass method will accept All Values as an Array. This does NOT run Verify for all Modules. 
+		 *
+		 * @access public
+		*/
+		public function testCheckPassAllAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass(array(1), array(1), array(1));
+			$this->assertFalse($Return);
+		}
 		
+		/**
+		 * testCheckPassDatabaseTableAsArray
+		 * Tests if checkPass method will accept Database Table as an Array. This does NOT run Verify for all Modules. 
+		 *
+		 * @access public
+		*/
+		public function testCheckPassDatabaseTableAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass(array(1), 'FUNCTION', 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testCheckPassFunctionAsArray
+		 * Tests if checkPass method will accept Function as an Array. This does NOT run Verify for all Modules. 
+		 *
+		 * @access public
+		*/
+		public function testCheckPassFunctionAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', array(1), 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testCheckPassFunctionArgumentsAsArray
+		 * Tests if checkPass method will accept Function Arguments as Array.  This does run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testCheckPassFunctionArgumentsAsArray() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'FUNCTION', array(1));
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testCheckPassAsObject
+		 * Tests if checkPass method will accept All Values as an Object. This does NOT run Verify for all Modules. 
+		 *
+		 * @access public
+		*/
+		public function testCheckPassAllAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass($Object, $Object, $Object);
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testCheckPassDatabaseTableAsObject
+		 * Tests if checkPass method will accept Database Table as an Object. This does NOT run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testCheckPassDatabaseTableAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass($Object, 'FUNCTION', 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testCheckPassFunctionAsObject
+		 * Tests if checkPass method will accept Function as an Object. This does NOT run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testCheckPassFunctionAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', $Object, 'FUNCTIONARGUMENTS');
+			$this->assertFalse($Return);
+		}
+		
+		/**
+		 * testCheckPassFunctionArgumentsAsObject
+		 * Tests if checkPass method will accept Function Arguments as Object. This does NOT run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testCheckPassFunctionArgumentsAsObject() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Object = new stdClass;
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'FUNCTION', $Object);
+			$this->assertFalse($Return);
+		}
+
+		
+		/**
+		 * testCheckPassNotSetAll
+		 * Tests if checkPass method will accept all arguments that are not set. This does NOT run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testCheckPassNotSetAll() {
+			$Return = TRUE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'FUNCTION', 'FUNCTIONARGUMENT');
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testCheckPassNotSetDatabaseTable
+		 * Tests if checkPass method will accept a Database Table Name that has not been set, but all other arguments are valid.  This does run Verify for all Modules. 
+		 *
+		 * @access public
+		*/
+		public function testCheckPassNotSetDatabaseTable() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'getIdnumber', array());
+			$this->assertFalse($Return);
+			
+		}
+		
+		/**
+		 * testCheckPassFunctionArgumentNotAsArray
+		 * Tests if checkPass method will accept a Function Arguments are not an array. This does NOT run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testCheckPassFunctionArgumentNotAsArray() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('DATABASETABLE');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('DATABASETABLE', 'getIdnumber', 'TEST');
+			$this->assertFalse($Return);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('DATABASETABLE');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+		}
+		
+		/**
+		 * testCheckPassCorrectDataFunctionArgumentsEmptyArray
+		 * Tests if checkPass method will accept all data correctly with Function Arguments being an empty array. This does run Verify for all Modules. 
+		 *
+		 * @access public
+		*/
+		public function testCheckPassCorrectDataFunctionArgumentsEmptyArray() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'getIdnumber', array());
+			$this->assertFalse($Return);
+			//$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+		}
+		
+		/**
+		 * testCheckPassCorrectDataFunctionArgumentsNonEmptyArray
+		 * Tests if checkPass method will accept all data correctly with Function Arguments being an non-empty array. This does run Verify for all Modules.
+		 *
+		 * @access public
+		*/
+		public function testCheckPassCorrectDataFunctionArgumentsNonEmptyArray() {
+			$Return = FALSE;
+			$this->assertNotNull($this->Tier3Protection);
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->createDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+			// FIX THIS TESTCASE WHEN ALL MODULES SUPPORT THE NEW WAY
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->checkPass('TEST', 'setIdnumber', array('id' => 1));
+			$this->assertFalse($Return);
+			//$this->assertIsA($Return, 'ProtectionLayer');
+			
+			$Return = TRUE;
+			$Return = $this->Tier3Protection->destroyDatabaseTable('TEST');
+			$this->assertIsA($Return, 'ProtectionLayer');
+			
+		}
 	}
 ?>
